@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.DrivetrainConfig;
+import frc.robot.Constants.IntakeConfig;
 
 public class Controls {
 
@@ -15,6 +16,14 @@ public class Controls {
     public Controls(XboxController driver, XboxController operator) {
         this.driver = driver;
         this.operator = operator;
+    }
+
+    public double getIntakeSpeed(){
+        double joystickValue = operator.getLeftY();
+        joystickValue = MathUtil.applyDeadband(-joystickValue, threshold); // deals with stick drag
+
+
+        return joystickValue * IntakeConfig.intakeSpeed;
     }
 
     public double getDriveSpeed() {
