@@ -43,7 +43,7 @@ public class Drivetrain extends SubsystemBase {
 
   private double leftSpeed, rightSpeed;
 
-  /** Creates a new ExampleSubsystem. */
+  /** Creates a new Drivetrain. */
   public Drivetrain() {
     leftDrive = new CANSparkMax(DrivetrainConfig.leftDrivePort, MotorType.kBrushless);
     rightDrive = new CANSparkMax(DrivetrainConfig.rightDrivePort, MotorType.kBrushless);
@@ -99,6 +99,13 @@ public class Drivetrain extends SubsystemBase {
     rightDrive.setIdleMode(IdleMode.kBrake);
     leftFollow.setIdleMode(IdleMode.kBrake);
     rightFollow.setIdleMode(IdleMode.kBrake);
+  }
+
+  public void enableCoastMode() {
+    leftDrive.setIdleMode(IdleMode.kCoast);
+    rightDrive.setIdleMode(IdleMode.kCoast);
+    leftFollow.setIdleMode(IdleMode.kCoast);
+    rightFollow.setIdleMode(IdleMode.kCoast);
   }
 
   public void setSpeeds(double left, double right) {

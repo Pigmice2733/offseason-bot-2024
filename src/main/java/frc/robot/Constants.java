@@ -33,5 +33,14 @@ public final class Constants {
 
     }
 
+    public final class IntakeConfig {
+
+        public static final int leftIntakePort = 0;
+        public static final int rightIntakePort = 1;
+
+        public static final double intakeSpeed = .3;
+
+    }
+
     public final static double axisThreshold = 0.1;
 }
