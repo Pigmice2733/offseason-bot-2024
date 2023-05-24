@@ -40,6 +40,16 @@ public final class Constants {
 
         public static final double intakeSpeed = .2;
 
+        public static final double maxExtendDistance = 4.167;
+        public static final double midExtendDistance = 2.0835;
+    }
+
+    public final class ShooterConfig {
+
+        public static final int leftShootPort = 0;
+        public static final int rightShootPort = 1;
+
+        public static final double maxSpeed = .6;
     }
 
     public final static double axisThreshold = 0.1;

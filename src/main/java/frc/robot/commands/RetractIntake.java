@@ -6,21 +6,21 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConfig;
 import frc.robot.subsystems.Intake;
 
-public class ExtendIntake extends CommandBase {
+public class RetractIntake extends CommandBase {
     @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
     private final Intake intake;
     private final DoubleSupplier speed;
     private final boolean full;
 
     /**
-     * Moves the intake to an extended position.
+     * Moves the intake to a retracted position.
      *
      * @param intake The intake subsystem used by this command.
      * @param speed  The speed at which to move the intake.
-     * @param full   Determines the end position: if true, the intake extends all
-     *               the way; if false, it extends part-way.
+     * @param full   Determines the end position: if true, the intake retracts all
+     *               the way; if false, it retracts part-way.
      */
-    public ExtendIntake(Intake intake, DoubleSupplier speed, boolean full) {
+    public RetractIntake(Intake intake, DoubleSupplier speed, boolean full) {
         this.intake = intake;
         this.speed = speed;
         this.full = full;
@@ -31,7 +31,7 @@ public class ExtendIntake extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        intake.IntakeState++;
+        intake.IntakeState--;
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -39,7 +39,7 @@ public class ExtendIntake extends CommandBase {
     // code to use for tuning the limits of the intake motor
     @Override
     public void execute() {
-        intake.setSpeed(speed.getAsDouble());
+        intake.setSpeed(-speed.getAsDouble());
     }
 
     // Called once the command ends or is interrupted.
@@ -52,14 +52,10 @@ public class ExtendIntake extends CommandBase {
     @Override
     public boolean isFinished() {
         if (full) {
-            return intake.getPosition() >= IntakeConfig.maxExtendDistance;
+            return intake.getPosition() <= 0;
         } else {
-            return intake.getPosition() >= IntakeConfig.midExtendDistance;
+            return intake.getPosition() <= IntakeConfig.midExtendDistance;
         }
-    }
-
-    public static float clamp(float val, float min, float max) {
-        return Math.max(min, Math.min(max, val));
     }
 
 }
