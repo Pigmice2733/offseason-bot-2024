@@ -31,7 +31,7 @@ public class ExtendIntake extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        intake.IntakeState++;
+
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -57,9 +57,4 @@ public class ExtendIntake extends CommandBase {
             return intake.getPosition() >= IntakeConfig.midExtendDistance;
         }
     }
-
-    public static float clamp(float val, float min, float max) {
-        return Math.max(min, Math.min(max, val));
-    }
-
 }

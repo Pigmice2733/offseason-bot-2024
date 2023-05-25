@@ -5,12 +5,17 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.IntakeConfig;
+import frc.robot.Constants.ShooterConfig;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.ExtendIntake;
 import frc.robot.commands.RetractIntake;
+import frc.robot.commands.SpinShooter;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -54,12 +59,20 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
+    new JoystickButton(operator, Button.kA.value)
+        .toggleOnTrue(
+            new SpinShooter(shooter, () -> ShooterConfig.maxSpeed)
+    );
+
     new POVButton(operator, 0) // up
         .onTrue(
-            new ExtendIntake(intake, () -> IntakeConfig.intakeSpeed, intake.IntakeState == 1 ? true : false));
+            new ExtendIntake(intake, () -> IntakeConfig.intakeSpeed, true));
+    new POVButton(operator, 90)
+        .onTrue(
+          new ExtendIntake(intake, () -> IntakeConfig.intakeSpeed, false));
     new POVButton(operator, 180)
         .onTrue(
-            new RetractIntake(intake, () -> IntakeConfig.intakeSpeed, intake.IntakeState == -1 ? true : false));
+            new RetractIntake(intake, () -> IntakeConfig.intakeSpeed, true));
   }
 
   /**

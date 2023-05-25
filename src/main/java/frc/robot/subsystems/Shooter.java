@@ -22,6 +22,13 @@ public class Shooter extends SubsystemBase {
 
         shooters = new MotorControllerGroup(leftShoot, rightShoot);
 
+        speed = 0;
+
+    }
+
+    @Override
+    public void periodic(){
+        updateSpeeds(speed);
     }
 
     public void updateSpeeds(double speed) {
@@ -29,7 +36,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setSpeed(double speed) {
-
+        this.speed = speed;
     }
 
 }
