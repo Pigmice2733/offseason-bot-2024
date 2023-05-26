@@ -5,9 +5,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.IntakeConfig;
@@ -59,18 +59,29 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
+    //Enable Brake Mode for Driver
+    new JoystickButton(driver, Button.kA.value)
+        .toggleOnTrue(
+            new InstantCommand( () -> {drivetrain.enableBrakeMode();}, drivetrain)
+        );
+
+
+    // Revs up the Shooter motor
     new JoystickButton(operator, Button.kA.value)
         .toggleOnTrue(
             new SpinShooter(shooter, () -> ShooterConfig.maxSpeed)
     );
 
-    new POVButton(operator, 0) // up
+    //Used for intake states
+    new POVButton(operator, 0) // Full Extension
         .onTrue(
             new ExtendIntake(intake, () -> IntakeConfig.intakeSpeed, true));
-    new POVButton(operator, 90)
+
+    new POVButton(operator, 90) //Half Extension
         .onTrue(
           new ExtendIntake(intake, () -> IntakeConfig.intakeSpeed, false));
-    new POVButton(operator, 180)
+
+    new POVButton(operator, 180)//Full Retraction
         .onTrue(
             new RetractIntake(intake, () -> IntakeConfig.intakeSpeed, true));
   }
