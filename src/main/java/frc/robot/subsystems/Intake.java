@@ -11,21 +11,25 @@ public class Intake extends SubsystemBase {
 
     private final CANSparkMax leftIntake;
     private final CANSparkMax rightIntake;
+    private final CANSparkMax intakeWheels;
     private final MotorControllerGroup intakeGroup;
     private double speed;
+    private boolean spinning;
 
     public Intake() {
 
         leftIntake = new CANSparkMax(IntakeConfig.leftIntakePort, MotorType.kBrushless);
         rightIntake = new CANSparkMax(IntakeConfig.rightIntakePort, MotorType.kBrushless);
+        intakeWheels = new CANSparkMax(IntakeConfig.intakeWheelsPort, MotorType.kBrushless);
 
         intakeGroup = new MotorControllerGroup(leftIntake, rightIntake);
 
         leftIntake.restoreFactoryDefaults();
         rightIntake.restoreFactoryDefaults();
+        intakeWheels.restoreFactoryDefaults();
 
         speed = 0;
-
+        spinning = false;
     }
 
     @Override
@@ -52,5 +56,31 @@ public class Intake extends SubsystemBase {
 
     public double getPosition() {
         return (leftIntake.getEncoder().getPosition() + rightIntake.getEncoder().getPosition()) / 2;
+    }
+
+    public boolean getSpinning() {
+        return spinning;
+    }
+
+    public void startSpinning() {
+        spinning = true;
+        intakeWheels.set(IntakeConfig.spinningSpeed);
+    }
+
+    public void stopSpinning() {
+        spinning = false;
+        intakeWheels.set(0.0);
+    }
+
+    public void toggleSpinning() {
+        if (spinning)
+            stopSpinning();
+        else
+            startSpinning();
+    }
+
+    public void spinBackwards() {
+        spinning = true;
+        intakeWheels.set(-IntakeConfig.spinningSpeed);
     }
 }

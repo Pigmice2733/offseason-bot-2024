@@ -37,8 +37,10 @@ public final class Constants {
 
         public static final int leftIntakePort = 0;
         public static final int rightIntakePort = 1;
+        public static final int intakeWheelsPort = 2;
 
-        public static final double intakeSpeed = .2;
+        public static final double extendingSpeed = .2;
+        public static final double spinningSpeed = 1;
 
         public static final double maxExtendDistance = 4.167;
         public static final double midExtendDistance = 2.0835;

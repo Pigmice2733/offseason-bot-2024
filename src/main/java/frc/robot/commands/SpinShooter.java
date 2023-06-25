@@ -5,11 +5,11 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
-public class SpinShooter extends CommandBase{
+public class SpinShooter extends CommandBase {
     private final Shooter shooter;
     private final DoubleSupplier speed;
 
-    public SpinShooter(Shooter shooter, DoubleSupplier speed){
+    public SpinShooter(Shooter shooter, DoubleSupplier speed) {
         this.shooter = shooter;
         this.speed = speed;
 
@@ -17,13 +17,13 @@ public class SpinShooter extends CommandBase{
     }
 
     @Override
-    public void execute(){
+    public void initialize() {
         shooter.setSpeed(speed.getAsDouble());
     }
 
     @Override
-    public boolean isFinished(){
+    public boolean isFinished() {
         return false;
     }
-    
+
 }

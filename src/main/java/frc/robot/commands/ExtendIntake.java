@@ -12,6 +12,9 @@ public class ExtendIntake extends CommandBase {
     private final DoubleSupplier speed;
     private final boolean full;
 
+    // !! IMPORTANT !!: This will not be how the intake works, this is temporary
+    // code to use for tuning the limits of the intake motor
+
     /**
      * Moves the intake to an extended position.
      *
@@ -31,21 +34,15 @@ public class ExtendIntake extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-
-    }
-
-    // Called every time the scheduler runs while the command is scheduled.
-    // !! IMPORTANT !!: This will not be how the intake works, this is temporary
-    // code to use for tuning the limits of the intake motor
-    @Override
-    public void execute() {
         intake.setSpeed(speed.getAsDouble());
     }
 
-    // Called once the command ends or is interrupted.
+    // Called when the command finishes.
     @Override
     public void end(boolean interrupted) {
-
+        if (!interrupted) {
+            intake.startSpinning();
+        }
     }
 
     // Returns true when the command should end.
