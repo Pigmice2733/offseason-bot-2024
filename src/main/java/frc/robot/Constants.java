@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import frc.robot.subsystems.Intake.IntakeState;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean
@@ -17,42 +19,45 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
-    public static final int joystickPort = 0;
+    public static final int JOYSTICK_PORT = 0;
 
     public final class DrivetrainConfig {
 
-        public static final int leftDrivePort = 0;
-        public static final int rightDrivePort = 1;
+        public static final int LEFT_DRIVE_PORT = 0;
+        public static final int RIGHT_DRIVE_PORT = 1;
 
-        public static final int leftFollowPort = 2;
+        public static final int LEFT_FOLLOW_PORT = 2;
         public static final int rightFollowPort = 3;
 
-        public static final double driveSpeed = 0.5;
-        public static final double turnSpeed = 0.3;
+        public static final double DRIVE_SPEED = 0.5;
+        public static final double TURN_SPEED = 0.3;
 
     }
 
     public final class IntakeConfig {
 
-        public static final int leftIntakePort = 0;
-        public static final int rightIntakePort = 1;
-        public static final int intakeWheelsPort = 2;
+        public static final int LEFT_INTAKE_PORT = 0;
+        public static final int RIGHT_INTAKE_PORT = 1;
+        public static final int INTAKE_WHEELS_PORT = 2;
 
-        public static final double extendingSpeed = .2;
-        public static final double spinningSpeed = 1;
+        public static final double EXTENDING_SPEED = .2;
+        public static final double SPINNING_SPEED = 1;
 
-        public static final double maxExtendDistance = 4.167;
-        public static final double midExtendDistance = 2.0835;
+        public static final double INTAKE_SPEED = 1;
+
+        public static final double MAX_EXTEND_DISTANCE = 4.167;
+        public static final double MID_EXTEND_DISTANCE = 2.0835;
+
+        public static final double POSITION_TOLERANCE = 0.1;
     }
 
     public final class ShooterConfig {
 
-        public static final int leftShootPort = 0;
-        public static final int rightShootPort = 1;
+        public static final int LEFT_SHOOT_PORT = 0;
+        public static final int RIGHT_SHOOT_PORT = 1;
 
-        public static final double maxSpeed = .6;
+        public static final double MAX_SPEED = .6;
     }
 
-    public final static double axisThreshold = 0.1;
+    public final static double AXIS_THRESHOLD = 0.1;
 }

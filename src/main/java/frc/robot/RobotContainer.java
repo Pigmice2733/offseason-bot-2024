@@ -10,15 +10,14 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.robot.Constants.IntakeConfig;
 import frc.robot.Constants.ShooterConfig;
 import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.ExtendIntake;
-import frc.robot.commands.RetractIntake;
+import frc.robot.commands.MoveIntakeToPositionPID;
 import frc.robot.commands.SpinShooter;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Intake.IntakeState;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -69,21 +68,21 @@ public class RobotContainer {
     // Revs up the Shooter motor
     new JoystickButton(operator, Button.kA.value)
         .toggleOnTrue(
-            new SpinShooter(shooter, () -> ShooterConfig.maxSpeed)
+            new SpinShooter(shooter, () -> ShooterConfig.MAX_SPEED)
     );
 
     //Used for intake states
     new POVButton(operator, 0) // Full Extension
         .onTrue(
-            new ExtendIntake(intake, () -> IntakeConfig.intakeSpeed, true));
+            new MoveIntakeToPositionPID(intake, IntakeState.Extended));
 
     new POVButton(operator, 90) //Half Extension
         .onTrue(
-          new ExtendIntake(intake, () -> IntakeConfig.intakeSpeed, false));
+            new MoveIntakeToPositionPID(intake, IntakeState.Middle));
 
     new POVButton(operator, 180)//Full Retraction
         .onTrue(
-            new RetractIntake(intake, () -> IntakeConfig.intakeSpeed, true));
+            new MoveIntakeToPositionPID(intake, IntakeState.Extended));
   }
 
   /**

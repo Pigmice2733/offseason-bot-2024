@@ -14,8 +14,8 @@ public class Shooter extends SubsystemBase {
     MotorControllerGroup shooters;
 
     public Shooter() {
-        leftShoot = new CANSparkMax(ShooterConfig.leftShootPort, MotorType.kBrushless);
-        rightShoot = new CANSparkMax(ShooterConfig.rightShootPort, MotorType.kBrushless);
+        leftShoot = new CANSparkMax(ShooterConfig.LEFT_SHOOT_PORT, MotorType.kBrushless);
+        rightShoot = new CANSparkMax(ShooterConfig.RIGHT_SHOOT_PORT, MotorType.kBrushless);
 
         leftShoot.restoreFactoryDefaults();
         rightShoot.restoreFactoryDefaults();
@@ -32,7 +32,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void updateSpeeds(double speed) {
-        shooters.set(speed * ShooterConfig.maxSpeed);
+        shooters.set(speed * ShooterConfig.MAX_SPEED);
     }
 
     public void setSpeed(double speed) {

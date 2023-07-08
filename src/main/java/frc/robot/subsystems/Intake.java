@@ -18,9 +18,9 @@ public class Intake extends SubsystemBase {
 
     public Intake() {
 
-        leftIntake = new CANSparkMax(IntakeConfig.leftIntakePort, MotorType.kBrushless);
-        rightIntake = new CANSparkMax(IntakeConfig.rightIntakePort, MotorType.kBrushless);
-        intakeWheels = new CANSparkMax(IntakeConfig.intakeWheelsPort, MotorType.kBrushless);
+        leftIntake = new CANSparkMax(IntakeConfig.LEFT_INTAKE_PORT, MotorType.kBrushless);
+        rightIntake = new CANSparkMax(IntakeConfig.RIGHT_INTAKE_PORT, MotorType.kBrushless);
+        intakeWheels = new CANSparkMax(IntakeConfig.INTAKE_WHEELS_PORT, MotorType.kBrushless);
 
         intakeGroup = new MotorControllerGroup(leftIntake, rightIntake);
 
@@ -34,12 +34,11 @@ public class Intake extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (getPosition() <= IntakeConfig.maxExtendDistance || speed < 0) {
+        if (getPosition() <= IntakeConfig.MAX_EXTEND_DISTANCE || speed < 0) {
             setSpeed(speed);
         } else {
             setSpeed(0);
         }
-
     }
 
     public void updateSpeed(double speed) {
@@ -64,7 +63,7 @@ public class Intake extends SubsystemBase {
 
     public void startSpinning() {
         spinning = true;
-        intakeWheels.set(IntakeConfig.spinningSpeed);
+        intakeWheels.set(IntakeConfig.SPINNING_SPEED);
     }
 
     public void stopSpinning() {
@@ -81,6 +80,29 @@ public class Intake extends SubsystemBase {
 
     public void spinBackwards() {
         spinning = true;
-        intakeWheels.set(-IntakeConfig.spinningSpeed);
+        intakeWheels.set(-IntakeConfig.SPINNING_SPEED);
+    }
+
+    public boolean atState(IntakeState state) {
+        return Math.abs(getPosition() - getExtendDistance(state)) < IntakeConfig.POSITION_TOLERANCE;
+    }
+
+    public static double getExtendDistance(IntakeState state) {
+        switch (state) {
+            case Retracted:
+                return 0;
+            case Middle:
+                return IntakeConfig.MID_EXTEND_DISTANCE;
+            case Extended:
+                return IntakeConfig.MAX_EXTEND_DISTANCE;
+                default:
+            return 0;
+        }
+    }
+
+    public enum IntakeState {
+        Retracted,
+        Middle,
+        Extended
     }
 }
