@@ -4,24 +4,13 @@
 
 package frc.robot;
 
-import com.pigmice.frc.lib.drivetrain.differential.DifferentialDrivetrain;
 import com.pigmice.frc.lib.drivetrain.differential.commands.manual.ArcadeDriveDifferential;
+import com.pigmice.frc.lib.drivetrain.subysytems.DifferentialDrivetrain;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.DrivetrainConfig;
-import frc.robot.Constants.ShooterConfig;
-import frc.robot.commands.MoveIntakeToPositionPID;
-import frc.robot.commands.SpinShooter;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Intake.IntakeState;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -34,8 +23,8 @@ import frc.robot.subsystems.Intake.IntakeState;
  */
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
-    private final DifferentialDrivetrain drivetrain = new DifferentialDrivetrain(DrivetrainConfig.DRIVETRAIN_CONFIG,
-            DrivetrainConfig.ACCEL_LIM_CONFIG);
+    private final DifferentialDrivetrain drivetrain = new DifferentialDrivetrain(
+            DrivetrainConfig.DRIVETRAIN_CONFIG, false);
     // private final Intake intake = new Intake();
     // private final Shooter shooter = new Shooter();
 
@@ -63,14 +52,6 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-
-        // Enable Brake Mode for Driver
-        new JoystickButton(driver, Button.kA.value)
-                .toggleOnTrue(
-                        new InstantCommand(() -> {
-                            drivetrain.enableBrakeMode();
-                        }, drivetrain));
-
         // Revs up the Shooter motor
         /*
          * new JoystickButton(operator, Button.kA.value)
