@@ -8,7 +8,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DrivetrainConfig;
 
@@ -19,12 +18,6 @@ public class Drivetrain extends SubsystemBase {
 
   private final CANSparkMax leftDrive;
   private final CANSparkMax rightDrive;
-
-  private final CANSparkMax leftFollow;
-  private final CANSparkMax rightFollow;
-
-  private final MotorControllerGroup leftGroup;
-  private final MotorControllerGroup rightGroup;
 
   // private final AHRS gyro;
 
@@ -37,20 +30,12 @@ public class Drivetrain extends SubsystemBase {
     leftDrive = new CANSparkMax(DrivetrainConfig.LEFT_DRIVE_PORT, MotorType.kBrushless);
     rightDrive = new CANSparkMax(DrivetrainConfig.RIGHT_DRIVE_PORT, MotorType.kBrushless);
 
-    leftFollow = new CANSparkMax(DrivetrainConfig.LEFT_FOLLOW_PORT, MotorType.kBrushless);
-    rightFollow = new CANSparkMax(DrivetrainConfig.rightFollowPort, MotorType.kBrushless);
-
-    leftGroup = new MotorControllerGroup(leftDrive, leftFollow);
-    rightGroup = new MotorControllerGroup(rightDrive, rightFollow);
-
     // gyro = new AHRS();
 
     // odometry = new DifferentialDriveOdometry(new Rotation2d(), new Pose2d());
 
     rightDrive.restoreFactoryDefaults();
     leftDrive.restoreFactoryDefaults();
-    leftFollow.restoreFactoryDefaults();
-    rightFollow.restoreFactoryDefaults();
 
     enableBrakeMode();
 
@@ -66,13 +51,13 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    
+
     updateSpeeds(leftSpeed, rightSpeed);
   }
 
   public void updateSpeeds(double left, double right) {
-    leftGroup.set(left);
-    rightGroup.set(right);
+    leftDrive.set(left);
+    rightDrive.set(right);
 
     // leftOutputEntry.setDouble(left);
     // rightOutputEntry.setDouble(right);
@@ -86,15 +71,11 @@ public class Drivetrain extends SubsystemBase {
   public void enableBrakeMode() {
     leftDrive.setIdleMode(IdleMode.kBrake);
     rightDrive.setIdleMode(IdleMode.kBrake);
-    leftFollow.setIdleMode(IdleMode.kBrake);
-    rightFollow.setIdleMode(IdleMode.kBrake);
   }
 
   public void enableCoastMode() {
     leftDrive.setIdleMode(IdleMode.kCoast);
     rightDrive.setIdleMode(IdleMode.kCoast);
-    leftFollow.setIdleMode(IdleMode.kCoast);
-    rightFollow.setIdleMode(IdleMode.kCoast);
   }
 
   public void setSpeeds(double left, double right) {

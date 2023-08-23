@@ -26,9 +26,6 @@ public final class Constants {
         public static final int LEFT_DRIVE_PORT = 0;
         public static final int RIGHT_DRIVE_PORT = 1;
 
-        public static final int LEFT_FOLLOW_PORT = 2;
-        public static final int rightFollowPort = 3;
-
         public static final double DRIVE_SPEED = 0.5;
         public static final double TURN_SPEED = 0.3;
 
