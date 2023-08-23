@@ -4,7 +4,9 @@
 
 package frc.robot;
 
-import frc.robot.subsystems.Intake.IntakeState;
+import com.pigmice.frc.lib.drivetrain.differential.AccelLimiterConfig;
+import com.pigmice.frc.lib.drivetrain.differential.DifferentialConfig;
+import com.pigmice.frc.lib.drivetrain.swerve.SwerveConfig;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -21,20 +23,32 @@ import frc.robot.subsystems.Intake.IntakeState;
 public final class Constants {
     public static final int JOYSTICK_PORT = 0;
 
-    public final class DrivetrainConfig {
+    public static final class DrivetrainConfig {
 
         public static final int LEFT_DRIVE_PORT = 0;
         public static final int RIGHT_DRIVE_PORT = 1;
 
         public static final int LEFT_FOLLOW_PORT = 2;
-        public static final int rightFollowPort = 3;
+        public static final int RIGHT_FOLLOW_PORT = 3;
+
+        public static final boolean LEFT_INVERTED = false;
+        public static final boolean RIGHT_INVERTED = false;
 
         public static final double DRIVE_SPEED = 0.5;
         public static final double TURN_SPEED = 0.3;
 
+        public static final double TRACK_WIDTH = 0.336;
+        public static final double GEAR_RATIO = 1.0 / 1.0; // TODO
+        public static final double SLOW_MULTIPLIER = 0.5;
+
+        public static final DifferentialConfig DRIVETRAIN_CONFIG = new DifferentialConfig(
+                LEFT_DRIVE_PORT, RIGHT_DRIVE_PORT, LEFT_FOLLOW_PORT,
+                RIGHT_FOLLOW_PORT, LEFT_INVERTED, RIGHT_INVERTED, TRACK_WIDTH, GEAR_RATIO, SLOW_MULTIPLIER);
+
+        public static final AccelLimiterConfig ACCEL_LIM_CONFIG = new AccelLimiterConfig(1, 1, 0, 0, 0, 0, 0);
     }
 
-    public final class IntakeConfig {
+    public static final class IntakeConfig {
 
         public static final int LEFT_INTAKE_PORT = 0;
         public static final int RIGHT_INTAKE_PORT = 1;
@@ -51,7 +65,7 @@ public final class Constants {
         public static final double POSITION_TOLERANCE = 0.1;
     }
 
-    public final class ShooterConfig {
+    public static final class ShooterConfig {
 
         public static final int LEFT_SHOOT_PORT = 0;
         public static final int RIGHT_SHOOT_PORT = 1;
@@ -59,5 +73,5 @@ public final class Constants {
         public static final double MAX_SPEED = .6;
     }
 
-    public final static double AXIS_THRESHOLD = 0.1;
+    public static final double AXIS_THRESHOLD = 0.1;
 }
