@@ -9,85 +9,89 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.MotorTester;
 import frc.robot.Constants.DrivetrainConfig;
 
 public class Drivetrain extends SubsystemBase {
 
-  // private final NetworkTableEntry xPosEntry, yPosEntry,
-  // leftOutputEntry, rightOutputEntry;
+    // private final NetworkTableEntry xPosEntry, yPosEntry,
+    // leftOutputEntry, rightOutputEntry;
 
-  private final CANSparkMax leftDrive;
-  private final CANSparkMax rightDrive;
+    private final CANSparkMax leftDrive;
+    private final CANSparkMax rightDrive;
 
-  // private final AHRS gyro;
+    // private final AHRS gyro;
 
-  // private final DifferentialDriveOdometry odometry;
+    // private final DifferentialDriveOdometry odometry;
 
-  private double leftSpeed, rightSpeed;
+    private double leftSpeed, rightSpeed;
 
-  /** Creates a new Drivetrain. */
-  public Drivetrain() {
-    leftDrive = new CANSparkMax(DrivetrainConfig.LEFT_DRIVE_PORT, MotorType.kBrushless);
-    rightDrive = new CANSparkMax(DrivetrainConfig.RIGHT_DRIVE_PORT, MotorType.kBrushless);
+    /** Creates a new Drivetrain. */
+    public Drivetrain() {
+        leftDrive = new CANSparkMax(DrivetrainConfig.LEFT_DRIVE_PORT, MotorType.kBrushless);
+        rightDrive = new CANSparkMax(DrivetrainConfig.RIGHT_DRIVE_PORT, MotorType.kBrushless);
 
-    // gyro = new AHRS();
+        MotorTester.registerCANMotor("Left Drive", leftDrive);
+        MotorTester.registerCANMotor("Right Drive", rightDrive);
 
-    // odometry = new DifferentialDriveOdometry(new Rotation2d(), new Pose2d());
+        // gyro = new AHRS();
 
-    rightDrive.restoreFactoryDefaults();
-    leftDrive.restoreFactoryDefaults();
+        // odometry = new DifferentialDriveOdometry(new Rotation2d(), new Pose2d());
 
-    enableBrakeMode();
+        rightDrive.restoreFactoryDefaults();
+        leftDrive.restoreFactoryDefaults();
 
-    // ShuffleboardTab driveTab = Shuffleboard.getTab("Drivetrain");
+        enableBrakeMode();
 
-    // xPosEntry = driveTab.add("X", 0.0).getEntry();
-    // yPosEntry = driveTab.add("Y", 0.0).getEntry();
-    // leftOutputEntry = driveTab.add("Left Speed", 0.0).getEntry();
-    // rightOutputEntry = driveTab.add("Right Speed", 0.0).getEntry();
+        // ShuffleboardTab driveTab = Shuffleboard.getTab("Drivetrain");
 
-    leftSpeed = rightSpeed = 0;
-  }
+        // xPosEntry = driveTab.add("X", 0.0).getEntry();
+        // yPosEntry = driveTab.add("Y", 0.0).getEntry();
+        // leftOutputEntry = driveTab.add("Left Speed", 0.0).getEntry();
+        // rightOutputEntry = driveTab.add("Right Speed", 0.0).getEntry();
 
-  @Override
-  public void periodic() {
+        leftSpeed = rightSpeed = 0;
+    }
 
-    updateSpeeds(leftSpeed, rightSpeed);
-  }
+    @Override
+    public void periodic() {
 
-  public void updateSpeeds(double left, double right) {
-    leftDrive.set(left);
-    rightDrive.set(right);
+        updateSpeeds(leftSpeed, rightSpeed);
+    }
 
-    // leftOutputEntry.setDouble(left);
-    // rightOutputEntry.setDouble(right);
-  }
+    public void updateSpeeds(double left, double right) {
+        leftDrive.set(left);
+        rightDrive.set(right);
 
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
-  }
+        // leftOutputEntry.setDouble(left);
+        // rightOutputEntry.setDouble(right);
+    }
 
-  public void enableBrakeMode() {
-    leftDrive.setIdleMode(IdleMode.kBrake);
-    rightDrive.setIdleMode(IdleMode.kBrake);
-  }
+    @Override
+    public void simulationPeriodic() {
+        // This method will be called once per scheduler run during simulation
+    }
 
-  public void enableCoastMode() {
-    leftDrive.setIdleMode(IdleMode.kCoast);
-    rightDrive.setIdleMode(IdleMode.kCoast);
-  }
+    public void enableBrakeMode() {
+        leftDrive.setIdleMode(IdleMode.kBrake);
+        rightDrive.setIdleMode(IdleMode.kBrake);
+    }
 
-  public void setSpeeds(double left, double right) {
-    leftSpeed = left;
-    rightSpeed = right;
-  }
+    public void enableCoastMode() {
+        leftDrive.setIdleMode(IdleMode.kCoast);
+        rightDrive.setIdleMode(IdleMode.kCoast);
+    }
 
-  public double getLeftSpeed() {
-    return leftSpeed;
-  }
+    public void setSpeeds(double left, double right) {
+        leftSpeed = left;
+        rightSpeed = right;
+    }
 
-  public double getRightSpeed() {
-    return rightSpeed;
-  }
+    public double getLeftSpeed() {
+        return leftSpeed;
+    }
+
+    public double getRightSpeed() {
+        return rightSpeed;
+    }
 }
