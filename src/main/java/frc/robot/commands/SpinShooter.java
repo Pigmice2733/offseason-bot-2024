@@ -18,7 +18,7 @@ public class SpinShooter extends CommandBase {
 
     @Override
     public void initialize() {
-        shooter.setSpeed(speed.getAsDouble());
+        shooter.setOutputs(speed.getAsDouble());
     }
 
     @Override

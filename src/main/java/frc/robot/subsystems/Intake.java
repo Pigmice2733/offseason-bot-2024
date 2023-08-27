@@ -8,79 +8,43 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConfig;
 
 public class Intake extends SubsystemBase {
+    private final CANSparkMax leftExtend;
+    private final CANSparkMax rightExtend;
 
-    private final CANSparkMax leftIntake;
-    private final CANSparkMax rightIntake;
+    private final MotorControllerGroup extendGroup;
+
     private final CANSparkMax intakeWheels;
-    private final MotorControllerGroup intakeGroup;
-    private double speed;
-    private boolean spinning;
+
+    private double targetOutput;
 
     public Intake() {
-
-        leftIntake = new CANSparkMax(IntakeConfig.LEFT_INTAKE_PORT, MotorType.kBrushless);
-        rightIntake = new CANSparkMax(IntakeConfig.RIGHT_INTAKE_PORT, MotorType.kBrushless);
+        leftExtend = new CANSparkMax(IntakeConfig.LEFT_INTAKE_EXTEND_PORT, MotorType.kBrushless);
+        rightExtend = new CANSparkMax(IntakeConfig.RIGHT_INTAKE_EXTEND_PORT, MotorType.kBrushless);
         intakeWheels = new CANSparkMax(IntakeConfig.INTAKE_WHEELS_PORT, MotorType.kBrushless);
 
-        intakeGroup = new MotorControllerGroup(leftIntake, rightIntake);
-
-        leftIntake.restoreFactoryDefaults();
-        rightIntake.restoreFactoryDefaults();
+        leftExtend.restoreFactoryDefaults();
+        rightExtend.restoreFactoryDefaults();
         intakeWheels.restoreFactoryDefaults();
 
-        speed = 0;
-        spinning = false;
+        rightExtend.setInverted(true);
+        extendGroup = new MotorControllerGroup(leftExtend, rightExtend);
     }
 
     @Override
     public void periodic() {
-        if (getPosition() <= IntakeConfig.MAX_EXTEND_DISTANCE || speed < 0) {
-            setSpeed(speed);
-        } else {
-            setSpeed(0);
-        }
+        setExtensionOutputs(targetOutput);
     }
 
-    public void updateSpeed(double speed) {
-        this.speed = speed;
+    public void setExtensionOutputs(double percent) {
+        extendGroup.set(percent);
     }
 
-    public void setSpeed(double speed) {
-        intakeGroup.set(speed);
-    }
-
-    public double getSpeed() {
-        return speed;
+    public void setIntakeWheelsOutput(double percent) {
+        intakeWheels.set(percent);
     }
 
     public double getPosition() {
-        return (leftIntake.getEncoder().getPosition() + rightIntake.getEncoder().getPosition()) / 2;
-    }
-
-    public boolean getSpinning() {
-        return spinning;
-    }
-
-    public void startSpinning() {
-        spinning = true;
-        intakeWheels.set(IntakeConfig.SPINNING_SPEED);
-    }
-
-    public void stopSpinning() {
-        spinning = false;
-        intakeWheels.set(0.0);
-    }
-
-    public void toggleSpinning() {
-        if (spinning)
-            stopSpinning();
-        else
-            startSpinning();
-    }
-
-    public void spinBackwards() {
-        spinning = true;
-        intakeWheels.set(-IntakeConfig.SPINNING_SPEED);
+        return (leftExtend.getEncoder().getPosition() + rightExtend.getEncoder().getPosition()) / 2;
     }
 
     public boolean atState(IntakeState state) {
@@ -95,8 +59,8 @@ public class Intake extends SubsystemBase {
                 return IntakeConfig.MID_EXTEND_DISTANCE;
             case Extended:
                 return IntakeConfig.MAX_EXTEND_DISTANCE;
-                default:
-            return 0;
+            default:
+                return 0;
         }
     }
 

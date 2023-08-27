@@ -19,9 +19,9 @@ public class MoveIntakeToPosition extends CommandBase {
      * @param intake The intake subsystem used by this command.
      * @param speed  The speed at which to move the intake.
      */
-    public MoveIntakeToPosition(Intake intake, DoubleSupplier speed, IntakeState intakeState) {
+    public MoveIntakeToPosition(Intake intake, IntakeState targetState) {
         this.intake = intake;
-        targetPosition = Intake.getExtendDistance(intakeState);
+        targetPosition = Intake.getExtendDistance(targetState);
 
         addRequirements(intake);
     }
@@ -29,25 +29,23 @@ public class MoveIntakeToPosition extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        
+
     }
 
     @Override
     public void execute() {
-        if (intake.getPosition() < targetPosition)
-            intake.startSpinning();
-        else intake.spinBackwards();
+        intake.setExtensionOutputs(IntakeConfig.EXTENDING_SPEED);
     }
 
     // Called when the command finishes.
     @Override
     public void end(boolean interrupted) {
-        intake.stopSpinning();
+        intake.setExtensionOutputs(0);
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return Math.abs(intake.getPosition()-targetPosition) < IntakeConfig.POSITION_TOLERANCE;
+        return Math.abs(intake.getPosition() - targetPosition) < IntakeConfig.POSITION_TOLERANCE;
     }
 }

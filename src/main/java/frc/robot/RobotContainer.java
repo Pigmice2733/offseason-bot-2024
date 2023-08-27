@@ -24,7 +24,7 @@ import frc.robot.Constants.DrivetrainConfig;
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final DifferentialDrivetrain drivetrain = new DifferentialDrivetrain(
-            DrivetrainConfig.DRIVETRAIN_CONFIG, false);
+            DrivetrainConfig.DRIVETRAIN_CONFIG, true);
     // private final Intake intake = new Intake();
     // private final Shooter shooter = new Shooter();
 

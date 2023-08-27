@@ -8,35 +8,22 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConfig;
 
 public class Shooter extends SubsystemBase {
-    private final CANSparkMax leftShoot, rightShoot;
-    private double speed;
+    private final CANSparkMax leftMotor, rightMotor;
 
-    MotorControllerGroup shooters;
+    private final MotorControllerGroup motorGroup;
 
     public Shooter() {
-        leftShoot = new CANSparkMax(ShooterConfig.LEFT_SHOOT_PORT, MotorType.kBrushless);
-        rightShoot = new CANSparkMax(ShooterConfig.RIGHT_SHOOT_PORT, MotorType.kBrushless);
+        leftMotor = new CANSparkMax(ShooterConfig.LEFT_SHOOT_PORT, MotorType.kBrushless);
+        rightMotor = new CANSparkMax(ShooterConfig.RIGHT_SHOOT_PORT, MotorType.kBrushless);
 
-        leftShoot.restoreFactoryDefaults();
-        rightShoot.restoreFactoryDefaults();
+        leftMotor.restoreFactoryDefaults();
+        rightMotor.restoreFactoryDefaults();
+        rightMotor.setInverted(true);
 
-        shooters = new MotorControllerGroup(leftShoot, rightShoot);
-
-        speed = 0;
-
+        motorGroup = new MotorControllerGroup(leftMotor, rightMotor);
     }
 
-    @Override
-    public void periodic() {
-        updateSpeeds(speed);
+    public void setOutputs(double speed) {
+        motorGroup.set(speed);
     }
-
-    public void updateSpeeds(double speed) {
-        shooters.set(speed * ShooterConfig.MAX_SPEED);
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
 }

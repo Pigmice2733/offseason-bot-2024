@@ -7,15 +7,13 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Intake.IntakeState;
 
 public class MoveIntakeToPositionPID extends PIDCommand {
-
     public MoveIntakeToPositionPID(Intake intake, IntakeState state) {
         super(
-            new PIDController(0.1, 0, 0),
+                new PIDController(0.1, 0, 0),
                 intake::getPosition,
                 Intake.getExtendDistance(state),
-                (output) -> intake.setSpeed(output),
-                intake
-        );
+                (output) -> intake.setExtensionOutputs(output),
+                intake);
 
         getController().setTolerance(IntakeConfig.POSITION_TOLERANCE);
         addRequirements(intake);

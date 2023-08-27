@@ -25,11 +25,11 @@ public final class Constants {
 
     public static final class DrivetrainConfig {
 
-        public static final int LEFT_DRIVE_PORT = 0;
-        public static final int RIGHT_DRIVE_PORT = 1;
+        public static final int LEFT_DRIVE_PORT = 11;
+        public static final int RIGHT_DRIVE_PORT = 12;
 
-        public static final int LEFT_FOLLOW_PORT = 2;
-        public static final int RIGHT_FOLLOW_PORT = 3;
+        public static final int LEFT_FOLLOW_PORT = 0;
+        public static final int RIGHT_FOLLOW_PORT = 0;
 
         public static final boolean LEFT_INVERTED = false;
         public static final boolean RIGHT_INVERTED = false;
@@ -50,12 +50,12 @@ public final class Constants {
 
     public static final class IntakeConfig {
 
-        public static final int LEFT_INTAKE_PORT = 0;
-        public static final int RIGHT_INTAKE_PORT = 1;
+        public static final int LEFT_INTAKE_EXTEND_PORT = 0;
+        public static final int RIGHT_INTAKE_EXTEND_PORT = 1;
         public static final int INTAKE_WHEELS_PORT = 2;
 
         public static final double EXTENDING_SPEED = .2;
-        public static final double SPINNING_SPEED = 1;
+        public static final double SPINNING_SPEED = 0.5;
 
         public static final double INTAKE_SPEED = 1;
 
