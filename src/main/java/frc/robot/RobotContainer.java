@@ -58,14 +58,6 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-
-        // Enable Brake Mode for Driver
-        new JoystickButton(driver, Button.kA.value)
-                .toggleOnTrue(
-                        new InstantCommand(() -> {
-                            drivetrain.enableBrakeMode();
-                        }, drivetrain));
-
         // Revs up the Shooter motor
         /*
          * new JoystickButton(operator, Button.kA.value)

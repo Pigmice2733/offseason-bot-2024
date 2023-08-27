@@ -30,6 +30,9 @@ public class Drivetrain extends SubsystemBase {
     public Drivetrain() {
         leftDrive = new CANSparkMax(DrivetrainConfig.LEFT_DRIVE_PORT, MotorType.kBrushless);
         rightDrive = new CANSparkMax(DrivetrainConfig.RIGHT_DRIVE_PORT, MotorType.kBrushless);
+        leftDrive.restoreFactoryDefaults();
+        rightDrive.restoreFactoryDefaults();
+        rightDrive.setInverted(true);
 
         MotorTester.registerCANMotor("Left Drive", leftDrive);
         MotorTester.registerCANMotor("Right Drive", rightDrive);
@@ -40,58 +43,27 @@ public class Drivetrain extends SubsystemBase {
 
         rightDrive.restoreFactoryDefaults();
         leftDrive.restoreFactoryDefaults();
-
-        enableBrakeMode();
-
-        // ShuffleboardTab driveTab = Shuffleboard.getTab("Drivetrain");
-
-        // xPosEntry = driveTab.add("X", 0.0).getEntry();
-        // yPosEntry = driveTab.add("Y", 0.0).getEntry();
-        // leftOutputEntry = driveTab.add("Left Speed", 0.0).getEntry();
-        // rightOutputEntry = driveTab.add("Right Speed", 0.0).getEntry();
-
-        leftSpeed = rightSpeed = 0;
     }
 
     @Override
     public void periodic() {
-
-        updateSpeeds(leftSpeed, rightSpeed);
+        applyTargetOutputs();
     }
 
-    public void updateSpeeds(double left, double right) {
-        leftDrive.set(left);
-        rightDrive.set(right);
-
-        // leftOutputEntry.setDouble(left);
-        // rightOutputEntry.setDouble(right);
+    private void applyTargetOutputs() {
+        leftDrive.set(leftSpeed);
+        rightDrive.set(rightSpeed);
     }
 
-    @Override
-    public void simulationPeriodic() {
-        // This method will be called once per scheduler run during simulation
+    public void arcadeDrive(double forwardSpeed, double turnSpeed) {
+        double left = forwardSpeed + turnSpeed;
+        double right = forwardSpeed - turnSpeed;
+
+        setTargetOutputs(left, right);
     }
 
-    public void enableBrakeMode() {
-        leftDrive.setIdleMode(IdleMode.kBrake);
-        rightDrive.setIdleMode(IdleMode.kBrake);
-    }
-
-    public void enableCoastMode() {
-        leftDrive.setIdleMode(IdleMode.kCoast);
-        rightDrive.setIdleMode(IdleMode.kCoast);
-    }
-
-    public void setSpeeds(double left, double right) {
-        leftSpeed = left;
-        rightSpeed = right;
-    }
-
-    public double getLeftSpeed() {
-        return leftSpeed;
-    }
-
-    public double getRightSpeed() {
-        return rightSpeed;
+    public void setTargetOutputs(double leftPercent, double rightPercent) {
+        leftSpeed = leftPercent;
+        rightSpeed = rightPercent;
     }
 }
