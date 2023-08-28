@@ -9,8 +9,11 @@ import com.pigmice.frc.lib.drivetrain.subysytems.DifferentialDrivetrain;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DrivetrainConfig;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -22,11 +25,10 @@ import frc.robot.Constants.DrivetrainConfig;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    // The robot's subsystems and commands are defined here...
     private final DifferentialDrivetrain drivetrain = new DifferentialDrivetrain(
             DrivetrainConfig.DRIVETRAIN_CONFIG, true);
-    // private final Intake intake = new Intake();
-    // private final Shooter shooter = new Shooter();
+    private final Intake intake = new Intake();
+    private final Shooter shooter = new Shooter();
 
     private final XboxController driver = new XboxController(0);
     private final XboxController operator = new XboxController(1);
@@ -36,6 +38,7 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+        SmartDashboard.putNumber("Test", 0);
         // Configure the button bindings
         configureButtonBindings();
 
