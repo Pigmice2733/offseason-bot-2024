@@ -72,7 +72,7 @@ public class RobotContainer {
 
         new JoystickButton(operator, Button.kX.value)
                 .onTrue(Commands.sequence(
-                        new FeedShooter(shooter),
+                        new FeedShooter(intake),
                         Commands.waitSeconds(1),
                         shooter.spinUpFlywheelsCommand(ShooterConfig.STOPPED_SPEEDS)));
 

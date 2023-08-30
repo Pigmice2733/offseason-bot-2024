@@ -78,6 +78,8 @@ public final class Constants {
 
         public static final double MAX_EXTENSION_VELOSITY = 1; // rad/sec
         public static final double MAX_EXTENSION_ACCELERATION = 1; // rad/sec/sec
+
+        public static final double FEED_SHOOTER_SPEEDS = 0.3;
     }
 
     public static final class ShooterConfig {

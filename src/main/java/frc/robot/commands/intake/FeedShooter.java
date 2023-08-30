@@ -4,34 +4,16 @@
 
 package frc.robot.commands.intake;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.IntakeConfig;
+import frc.robot.subsystems.Intake;
 
-// TODO: this
-public class FeedShooter extends CommandBase {
-  /** Creates a new FeedShooter. */
-  public FeedShooter(Shooter shooter) {
-    // Use addRequirements() here to declare subsystem dependencies.
-  }
-
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+public class FeedShooter extends SequentialCommandGroup {
+    public FeedShooter(Intake intake) {
+        addCommands(Commands.run(() -> intake.setIntakeWheelsOutput(IntakeConfig.FEED_SHOOTER_SPEEDS)),
+                Commands.waitSeconds(1),
+                Commands.run(() -> intake.setIntakeWheelsOutput(0)));
+        addRequirements(intake);
+    }
 }
