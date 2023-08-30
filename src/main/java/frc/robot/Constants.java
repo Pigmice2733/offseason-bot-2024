@@ -7,6 +7,7 @@ package frc.robot;
 import com.pigmice.frc.lib.drivetrain.differential.AccelLimiterConfig;
 import com.pigmice.frc.lib.drivetrain.differential.DifferentialConfig;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.subsystems.Shooter;
@@ -51,14 +52,15 @@ public final class Constants {
         public static final double TURN_SPEED = 0.3;
 
         public static final double TRACK_WIDTH = 0.336;
-        public static final double GEAR_RATIO = 1.0 / 1.0; // TODO
+        public static final double GEAR_RATIO = 0.175;
+        public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(4);
+
         public static final double SLOW_MULTIPLIER = 0.5;
 
         public static final DifferentialConfig DRIVETRAIN_CONFIG = new DifferentialConfig(
                 CANConfig.LEFT_DRIVE_PORT, CANConfig.RIGHT_DRIVE_PORT, -1,
-                -1, LEFT_INVERTED, RIGHT_INVERTED, TRACK_WIDTH, GEAR_RATIO, SLOW_MULTIPLIER);
-
-        public static final AccelLimiterConfig ACCEL_LIM_CONFIG = new AccelLimiterConfig(1, 1, 0, 0, 0, 0, 0);
+                -1, LEFT_INVERTED, RIGHT_INVERTED, TRACK_WIDTH, GEAR_RATIO, WHEEL_DIAMETER_METERS, SLOW_MULTIPLIER,
+                0, 0, 0, 0.089779, 2.4706, 1, 1);
     }
 
     public static final class IntakeConfig {

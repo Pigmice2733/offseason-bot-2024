@@ -10,7 +10,6 @@ import com.pigmice.frc.lib.drivetrain.subysytems.DifferentialDrivetrain;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -45,12 +44,10 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        SmartDashboard.putNumber("Test", 0);
-        // Configure the button bindings
-        configureButtonBindings();
-
         drivetrain.setDefaultCommand(
                 new ArcadeDriveDifferential(drivetrain, controls::getDriveSpeed, controls::getTurnSpeed));
+
+        configureButtonBindings();
     }
 
     /**
@@ -62,14 +59,15 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        // Revs up the Shooter motor
-
+        // A - Set shooter wheels to mid speeds
         new JoystickButton(operator, Button.kA.value)
                 .toggleOnTrue(shooter.spinUpFlywheelsCommand(ShooterConfig.MID_SPEEDS));
 
+        // Y - Set shooter wheels to high speeds
         new JoystickButton(operator, Button.kY.value)
                 .onTrue(shooter.spinUpFlywheelsCommand(ShooterConfig.HIGH_SPEEDS));
 
+        // X - Feed intake
         new JoystickButton(operator, Button.kX.value)
                 .onTrue(Commands.sequence(
                         new FeedShooter(intake),
