@@ -9,11 +9,18 @@ import com.pigmice.frc.lib.drivetrain.subysytems.DifferentialDrivetrain;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.DrivetrainConfig;
+import frc.robot.Constants.ShooterConfig;
+import frc.robot.commands.intake.FeedShooter;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Intake.IntakeState;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -56,27 +63,32 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         // Revs up the Shooter motor
-        /*
-         * new JoystickButton(operator, Button.kA.value)
-         * .toggleOnTrue(
-         * new SpinShooter(shooter, () -> ShooterConfig.MAX_SPEED)
-         * );
-         */
 
-        // Used for intake states
-        /*
-         * new POVButton(operator, 0) // Full Extension
-         * .onTrue(
-         * new MoveIntakeToPositionPID(intake, IntakeState.Extended));
-         * 
-         * new POVButton(operator, 90) //Half Extension
-         * .onTrue(
-         * new MoveIntakeToPositionPID(intake, IntakeState.Middle));
-         * 
-         * new POVButton(operator, 180)//Full Retraction
-         * .onTrue(
-         * new MoveIntakeToPositionPID(intake, IntakeState.Extended));
-         */
+        new JoystickButton(operator, Button.kA.value)
+                .toggleOnTrue(shooter.spinUpFlywheelsCommand(ShooterConfig.MID_SPEEDS));
+
+        new JoystickButton(operator, Button.kY.value)
+                .onTrue(shooter.spinUpFlywheelsCommand(ShooterConfig.HIGH_SPEEDS));
+
+        new JoystickButton(operator, Button.kX.value)
+                .onTrue(Commands.sequence(
+                        new FeedShooter(shooter),
+                        Commands.waitSeconds(1),
+                        shooter.spinUpFlywheelsCommand(ShooterConfig.STOPPED_SPEEDS)));
+
+        // POV UP - Fully retracted intake
+        new POVButton(operator, 0)
+                .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Retracted));
+
+        // POV RIGHT - Half extend intake
+        new POVButton(operator, 90)
+                .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Middle));
+        new POVButton(operator, 270)
+                .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Middle));
+
+        // POV DOWN - Fully extended intake
+        new POVButton(operator, 180)
+                .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Extended));
     }
 
     /**

@@ -4,6 +4,8 @@ import com.pigmice.frc.lib.shuffleboard_helper.ShuffleboardHelper;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.CANConfig;
@@ -41,6 +43,7 @@ public class Intake extends SubsystemBase {
 
     @Override
     public void periodic() {
+
     }
 
     public void setExtensionOutputs(double percent) {
@@ -49,6 +52,14 @@ public class Intake extends SubsystemBase {
 
     public void setTargetExtensionState(IntakeState state) {
         targetExtensionPosition = getExtendDistance(state);
+    }
+
+    public Command setTargetExtensionStateCommand(IntakeState state) {
+        return Commands.runOnce(() -> setTargetExtensionState(state), this);
+    }
+
+    public void changeSetpoint(double delta) {
+        targetExtensionPosition += delta;
     }
 
     public double getTargetExtensionPosition() {

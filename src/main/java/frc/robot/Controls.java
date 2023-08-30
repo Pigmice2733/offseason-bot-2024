@@ -11,19 +11,11 @@ public class Controls {
     XboxController operator;
 
     private double threshold = Constants.AXIS_THRESHOLD; // If a value from a joystick is less than this, it will return
-                                                        // 0.
+                                                         // 0.
 
     public Controls(XboxController driver, XboxController operator) {
         this.driver = driver;
         this.operator = operator;
-    }
-
-    public double getIntakeSpeed(){
-        double joystickValue = operator.getLeftY();
-        joystickValue = MathUtil.applyDeadband(-joystickValue, threshold); // deals with stick drag
-
-
-        return joystickValue * IntakeConfig.INTAKE_SPEED;
     }
 
     public double getDriveSpeed() {
@@ -39,5 +31,12 @@ public class Controls {
         joystickValue = MathUtil.applyDeadband(joystickValue, threshold); // deals with stick drag
 
         return joystickValue * DrivetrainConfig.TURN_SPEED;
+    }
+
+    public double getArmRotationSpeed() {
+        double joystickValue = operator.getRightTriggerAxis() - operator.getLeftTriggerAxis();
+        joystickValue = MathUtil.applyDeadband(joystickValue, threshold);
+
+        return Math.signum(joystickValue) * IntakeConfig.MANUAL_EXTENSION_SPEED;
     }
 }

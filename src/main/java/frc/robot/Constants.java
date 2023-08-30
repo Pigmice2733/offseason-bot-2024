@@ -9,6 +9,8 @@ import com.pigmice.frc.lib.drivetrain.differential.DifferentialConfig;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Shooter.ShooterSpeeds;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -63,7 +65,7 @@ public final class Constants {
         public static final double EXTENDING_SPEED = .2;
         public static final double SPINNING_SPEED = 0.5;
 
-        public static final double INTAKE_SPEED = 1;
+        public static final double MANUAL_EXTENSION_SPEED = 0.2;
 
         public static final double MAX_EXTEND_DISTANCE = 4.167;
         public static final double MID_EXTEND_DISTANCE = 2.0835;
@@ -79,7 +81,8 @@ public final class Constants {
     }
 
     public static final class ShooterConfig {
-        // TODO: Shooter speed management
-        // public static final double MAX_SPEED = .6;
+        public static final ShooterSpeeds STOPPED_SPEEDS = new ShooterSpeeds(0, 0);
+        public static final ShooterSpeeds MID_SPEEDS = new ShooterSpeeds(0.5, 0.5);
+        public static final ShooterSpeeds HIGH_SPEEDS = new ShooterSpeeds(0.5, 0.5);
     }
 }

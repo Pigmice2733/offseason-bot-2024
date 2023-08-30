@@ -11,10 +11,13 @@ import frc.robot.Constants.IntakeConfig;
 import frc.robot.subsystems.Intake;
 import static edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 
-public class AutomaticIntakeExtension extends ProfiledPIDCommand {
-    private final Intake intake;
+import java.util.function.Supplier;
 
-    public AutomaticIntakeExtension(Intake intake) {
+public class IntakeExtension extends ProfiledPIDCommand {
+    private final Intake intake;
+    private final Supplier<Double> manualControl;
+
+    public IntakeExtension(Intake intake, Supplier<Double> manualControl) {
         super(new ProfiledPIDController(
                 IntakeConfig.EXTENSION_P, IntakeConfig.EXTENSION_I, IntakeConfig.EXTENSION_D,
                 new Constraints(IntakeConfig.MAX_EXTENSION_VELOSITY, IntakeConfig.MAX_EXTENSION_ACCELERATION)),
@@ -22,11 +25,15 @@ public class AutomaticIntakeExtension extends ProfiledPIDCommand {
                 (output, state) -> intake.setExtensionOutputs(output));
 
         this.intake = intake;
+        this.manualControl = manualControl;
         addRequirements(intake);
     }
 
     @Override
     public void execute() {
+        super.execute();
+
+        intake.changeSetpoint(manualControl.get());
         getController().setGoal(intake.getExtensionPosition());
     }
 }
