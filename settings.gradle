@@ -1,6 +1,7 @@
 import org.gradle.internal.os.OperatingSystem
 
 pluginManagement {
+    include 'robolib'
     repositories {
         mavenLocal()
         gradlePluginPortal()

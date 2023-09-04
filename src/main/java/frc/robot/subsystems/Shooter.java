@@ -1,42 +1,63 @@
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ShooterConfig;
+import frc.robot.Constants;
+import frc.robot.Constants.CANConfig;
 
 public class Shooter extends SubsystemBase {
-    private final CANSparkMax leftShoot, rightShoot;
-    private double speed;
+    private final CANSparkMax frontMotor, backMotor;
 
-    MotorControllerGroup shooters;
+    private final GenericEntry frontSpeedEntry, backSpeedEntry;
 
     public Shooter() {
-        leftShoot = new CANSparkMax(ShooterConfig.LEFT_SHOOT_PORT, MotorType.kBrushless);
-        rightShoot = new CANSparkMax(ShooterConfig.RIGHT_SHOOT_PORT, MotorType.kBrushless);
+        frontMotor = new CANSparkMax(CANConfig.LEFT_SHOOT_PORT, MotorType.kBrushless);
+        backMotor = new CANSparkMax(CANConfig.RIGHT_SHOOT_PORT, MotorType.kBrushless);
 
-        leftShoot.restoreFactoryDefaults();
-        rightShoot.restoreFactoryDefaults();
+        frontMotor.restoreFactoryDefaults();
+        backMotor.restoreFactoryDefaults();
+        backMotor.setInverted(true);
 
-        shooters = new MotorControllerGroup(leftShoot, rightShoot);
+        frontSpeedEntry = Constants.SHOOTER_TAB.add("Front Speed", 0)
+                .withWidget(BuiltInWidgets.kNumberBar)
+                .withProperties(Map.of("min", 0, "max", 1)).getEntry();
 
-        speed = 0;
-
+        backSpeedEntry = Constants.SHOOTER_TAB.add("Back Speed", 0)
+                .withWidget(BuiltInWidgets.kNumberBar)
+                .withProperties(Map.of("min", 0, "max", 1)).getEntry();
     }
 
-    @Override
-    public void periodic() {
-        updateSpeeds(speed);
+    public void spinUpFlywheels(ShooterSpeeds speeds) {
+        setMotorOutputs(speeds.frontSpeed, speeds.backSpeed);
     }
 
-    public void updateSpeeds(double speed) {
-        shooters.set(speed * ShooterConfig.MAX_SPEED);
+    public Command spinUpFlywheelsCommand(ShooterSpeeds speeds) {
+        return Commands.runOnce(() -> spinUpFlywheels(speeds), this);
     }
 
-    public void setSpeed(double speed) {
-        this.speed = speed;
+    private void setMotorOutputs(double frontSpeed, double backSpeed) {
+        frontMotor.set(frontSpeed);
+        backMotor.set(backSpeed);
+
+        frontSpeedEntry.setDouble(frontSpeed);
+        backSpeedEntry.setDouble(backSpeed);
     }
 
+    public static class ShooterSpeeds {
+        public final double backSpeed;
+        public final double frontSpeed;
+
+        public ShooterSpeeds(double backSpeed, double frontSpeed) {
+            this.backSpeed = backSpeed;
+            this.frontSpeed = frontSpeed;
+        }
+    }
 }

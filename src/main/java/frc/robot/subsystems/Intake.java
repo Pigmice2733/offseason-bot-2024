@@ -1,90 +1,81 @@
 package frc.robot.subsystems;
 
+import com.pigmice.frc.lib.shuffleboard_helper.ShuffleboardHelper;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Constants.CANConfig;
 import frc.robot.Constants.IntakeConfig;
 
 public class Intake extends SubsystemBase {
+    private final CANSparkMax leftExtend = new CANSparkMax(CANConfig.LEFT_INTAKE_EXTEND_PORT,
+            MotorType.kBrushless);
 
-    private final CANSparkMax leftIntake;
-    private final CANSparkMax rightIntake;
+    private final CANSparkMax rightExtend = new CANSparkMax(CANConfig.RIGHT_INTAKE_EXTEND_PORT,
+            MotorType.kBrushless);
+
+    private final MotorControllerGroup extendGroup;
     private final CANSparkMax intakeWheels;
-    private final MotorControllerGroup intakeGroup;
-    private double speed;
-    private boolean spinning;
+
+    private double targetExtensionPosition;
 
     public Intake() {
+        intakeWheels = new CANSparkMax(CANConfig.INTAKE_WHEELS_PORT, MotorType.kBrushless);
 
-        leftIntake = new CANSparkMax(IntakeConfig.LEFT_INTAKE_PORT, MotorType.kBrushless);
-        rightIntake = new CANSparkMax(IntakeConfig.RIGHT_INTAKE_PORT, MotorType.kBrushless);
-        intakeWheels = new CANSparkMax(IntakeConfig.INTAKE_WHEELS_PORT, MotorType.kBrushless);
-
-        intakeGroup = new MotorControllerGroup(leftIntake, rightIntake);
-
-        leftIntake.restoreFactoryDefaults();
-        rightIntake.restoreFactoryDefaults();
+        leftExtend.restoreFactoryDefaults();
+        rightExtend.restoreFactoryDefaults();
         intakeWheels.restoreFactoryDefaults();
 
-        speed = 0;
-        spinning = false;
+        rightExtend.setInverted(true);
+
+        extendGroup = new MotorControllerGroup(leftExtend, rightExtend);
+
+        ShuffleboardHelper.addOutput("Target Intake Position", Constants.INTAKE_TAB, () -> targetExtensionPosition)
+                .asDial(0.0, IntakeConfig.MAX_EXTEND_DISTANCE);
+
+        ShuffleboardHelper.addOutput("Current Intake Position", Constants.INTAKE_TAB, () -> getExtensionPosition())
+                .asDial(0.0, IntakeConfig.MAX_EXTEND_DISTANCE);
     }
 
     @Override
     public void periodic() {
-        if (getPosition() <= IntakeConfig.MAX_EXTEND_DISTANCE || speed < 0) {
-            setSpeed(speed);
-        } else {
-            setSpeed(0);
-        }
+
     }
 
-    public void updateSpeed(double speed) {
-        this.speed = speed;
+    public void setExtensionOutputs(double percent) {
+        extendGroup.set(percent);
     }
 
-    public void setSpeed(double speed) {
-        intakeGroup.set(speed);
+    public void setTargetExtensionState(IntakeState state) {
+        targetExtensionPosition = getExtendDistance(state);
     }
 
-    public double getSpeed() {
-        return speed;
+    public Command setTargetExtensionStateCommand(IntakeState state) {
+        return Commands.runOnce(() -> setTargetExtensionState(state), this);
     }
 
-    public double getPosition() {
-        return (leftIntake.getEncoder().getPosition() + rightIntake.getEncoder().getPosition()) / 2;
+    public void changeSetpoint(double delta) {
+        targetExtensionPosition += delta;
     }
 
-    public boolean getSpinning() {
-        return spinning;
+    public double getTargetExtensionPosition() {
+        return targetExtensionPosition;
     }
 
-    public void startSpinning() {
-        spinning = true;
-        intakeWheels.set(IntakeConfig.SPINNING_SPEED);
+    public void setIntakeWheelsOutput(double percent) {
+        intakeWheels.set(percent);
     }
 
-    public void stopSpinning() {
-        spinning = false;
-        intakeWheels.set(0.0);
-    }
-
-    public void toggleSpinning() {
-        if (spinning)
-            stopSpinning();
-        else
-            startSpinning();
-    }
-
-    public void spinBackwards() {
-        spinning = true;
-        intakeWheels.set(-IntakeConfig.SPINNING_SPEED);
+    public double getExtensionPosition() {
+        return (leftExtend.getEncoder().getPosition() + rightExtend.getEncoder().getPosition()) / 2;
     }
 
     public boolean atState(IntakeState state) {
-        return Math.abs(getPosition() - getExtendDistance(state)) < IntakeConfig.POSITION_TOLERANCE;
+        return Math.abs(getExtensionPosition() - getExtendDistance(state)) < IntakeConfig.POSITION_TOLERANCE;
     }
 
     public static double getExtendDistance(IntakeState state) {
@@ -95,8 +86,8 @@ public class Intake extends SubsystemBase {
                 return IntakeConfig.MID_EXTEND_DISTANCE;
             case Extended:
                 return IntakeConfig.MAX_EXTEND_DISTANCE;
-                default:
-            return 0;
+            default:
+                return 0;
         }
     }
 
