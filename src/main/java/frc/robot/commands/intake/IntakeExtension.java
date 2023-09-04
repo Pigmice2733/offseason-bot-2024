@@ -34,6 +34,5 @@ public class IntakeExtension extends ProfiledPIDCommand {
         super.execute();
 
         intake.changeSetpoint(manualControl.get());
-        getController().setGoal(intake.getExtensionPosition());
     }
 }

@@ -4,13 +4,11 @@
 
 package frc.robot;
 
-import com.pigmice.frc.lib.drivetrain.differential.AccelLimiterConfig;
 import com.pigmice.frc.lib.drivetrain.differential.DifferentialConfig;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Shooter.ShooterSpeeds;
 
 /**
