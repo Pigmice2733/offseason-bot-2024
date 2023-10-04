@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import com.pigmice.frc.lib.shuffleboard_helper.ShuffleboardHelper;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -18,10 +20,12 @@ public class Intake extends SubsystemBase {
     private final CANSparkMax rightExtend = new CANSparkMax(CANConfig.RIGHT_INTAKE_EXTEND_PORT,
             MotorType.kBrushless);
 
-    private final MotorControllerGroup extendGroup;
     private final CANSparkMax intakeWheels;
 
     private double targetExtensionPosition;
+    public double setpoint;
+
+    GenericEntry leftSpeedEntry, rightSpeedEntry;
 
     public Intake() {
         intakeWheels = new CANSparkMax(CANConfig.INTAKE_WHEELS_PORT, MotorType.kBrushless);
@@ -31,14 +35,23 @@ public class Intake extends SubsystemBase {
         intakeWheels.restoreFactoryDefaults();
 
         rightExtend.setInverted(true);
+        leftExtend.setInverted(false);
 
-        extendGroup = new MotorControllerGroup(leftExtend, rightExtend);
-
-        ShuffleboardHelper.addOutput("Target Intake Position", Constants.INTAKE_TAB, () -> targetExtensionPosition)
+        ShuffleboardHelper.addOutput("Target Pos", Constants.INTAKE_TAB, () -> targetExtensionPosition)
                 .asDial(0.0, IntakeConfig.MAX_EXTEND_DISTANCE);
 
-        ShuffleboardHelper.addOutput("Current Intake Position", Constants.INTAKE_TAB, () -> getExtensionPosition())
+        ShuffleboardHelper.addOutput("Left Pos", Constants.INTAKE_TAB, () -> getLeftPosition())
                 .asDial(0.0, IntakeConfig.MAX_EXTEND_DISTANCE);
+
+        ShuffleboardHelper.addOutput("Right Pos", Constants.INTAKE_TAB, () -> getRightPosition())
+                .asDial(0.0, IntakeConfig.MAX_EXTEND_DISTANCE);
+
+        ShuffleboardHelper.addOutput("Setpoint", Constants.INTAKE_TAB, () -> setpoint)
+                .asDial(0.0, IntakeConfig.MAX_EXTEND_DISTANCE);
+
+        leftSpeedEntry = Constants.INTAKE_TAB.add("left out", 0).getEntry();
+        rightSpeedEntry = Constants.INTAKE_TAB.add("right out", 0).getEntry();
+
     }
 
     @Override
@@ -46,8 +59,14 @@ public class Intake extends SubsystemBase {
 
     }
 
-    public void setExtensionOutputs(double percent) {
-        extendGroup.set(percent);
+    public void rightExtensionOutput(double percent) {
+        leftExtend.set(percent);
+        leftSpeedEntry.setDouble(percent);
+    }
+
+    public void leftExtensionOutput(double percent) {
+        rightExtend.set(percent);
+        rightSpeedEntry.setDouble(percent);
     }
 
     public void setTargetExtensionState(IntakeState state) {
@@ -70,13 +89,18 @@ public class Intake extends SubsystemBase {
         intakeWheels.set(percent);
     }
 
-    public double getExtensionPosition() {
-        return (leftExtend.getEncoder().getPosition() + rightExtend.getEncoder().getPosition()) / 2;
+    public double getLeftPosition() {
+        return leftExtend.getEncoder().getPosition();
     }
 
-    public boolean atState(IntakeState state) {
-        return Math.abs(getExtensionPosition() - getExtendDistance(state)) < IntakeConfig.POSITION_TOLERANCE;
+    public double getRightPosition() {
+        return rightExtend.getEncoder().getPosition();
     }
+
+    // public boolean atState(IntakeState state) {
+    // return Math.abs(getLeftPosition() - getExtendDistance(state)) <
+    // IntakeConfig.POSITION_TOLERANCE;
+    // }
 
     public static double getExtendDistance(IntakeState state) {
         switch (state) {
@@ -95,5 +119,10 @@ public class Intake extends SubsystemBase {
         Retracted,
         Middle,
         Extended
+    }
+
+    public void resetEncoders() {
+        leftExtend.getEncoder().setPosition(0);
+        rightExtend.getEncoder().setPosition(0);
     }
 }

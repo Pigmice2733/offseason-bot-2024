@@ -34,12 +34,12 @@ public final class Constants {
         public static final int LEFT_DRIVE_PORT = 11;
         public static final int RIGHT_DRIVE_PORT = 12;
 
-        public static final int LEFT_INTAKE_EXTEND_PORT = 0;
-        public static final int RIGHT_INTAKE_EXTEND_PORT = 1;
+        public static final int LEFT_INTAKE_EXTEND_PORT = 31;
+        public static final int RIGHT_INTAKE_EXTEND_PORT = 30;
         public static final int INTAKE_WHEELS_PORT = 2;
 
-        public static final int LEFT_SHOOT_PORT = 3;
-        public static final int RIGHT_SHOOT_PORT = 4;
+        public static final int LEFT_SHOOT_PORT = 21;
+        public static final int RIGHT_SHOOT_PORT = 20;
     }
 
     public static final class DrivetrainConfig {
@@ -58,7 +58,7 @@ public final class Constants {
         public static final DifferentialConfig DRIVETRAIN_CONFIG = new DifferentialConfig(
                 CANConfig.LEFT_DRIVE_PORT, CANConfig.RIGHT_DRIVE_PORT, -1,
                 -1, LEFT_INVERTED, RIGHT_INVERTED, TRACK_WIDTH, GEAR_RATIO, WHEEL_DIAMETER_METERS, SLOW_MULTIPLIER,
-                0, 0, 0, 0.089779, 2.4706, 1, 1);
+                0, 0, 0, 0.089779, 2.4 - 706, 1, 1);
     }
 
     public static final class IntakeConfig {
@@ -67,17 +67,17 @@ public final class Constants {
 
         public static final double MANUAL_EXTENSION_SPEED = 0.2;
 
-        public static final double MAX_EXTEND_DISTANCE = 4.167;
-        public static final double MID_EXTEND_DISTANCE = 2.0835;
+        public static final double MAX_EXTEND_DISTANCE = 10;
+        public static final double MID_EXTEND_DISTANCE = 5;
 
         public static final double POSITION_TOLERANCE = 0.1;
 
-        public static final double EXTENSION_P = 0.001;
-        public static final double EXTENSION_I = 0;
+        public static final double EXTENSION_P = 0.028;
+        public static final double EXTENSION_I = 0.000;
         public static final double EXTENSION_D = 0;
 
-        public static final double MAX_EXTENSION_VELOSITY = 1; // rad/sec
-        public static final double MAX_EXTENSION_ACCELERATION = 1; // rad/sec/sec
+        public static final double MAX_EXTENSION_VELOSITY = 2; // rad/sec
+        public static final double MAX_EXTENSION_ACCELERATION = 5; // rad/sec/sec
 
         public static final double FEED_SHOOTER_SPEEDS = 0.3;
     }

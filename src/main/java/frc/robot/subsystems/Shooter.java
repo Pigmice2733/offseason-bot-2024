@@ -44,11 +44,16 @@ public class Shooter extends SubsystemBase {
     }
 
     private void setMotorOutputs(double frontSpeed, double backSpeed) {
-        frontMotor.set(frontSpeed);
-        backMotor.set(backSpeed);
+        // frontMotor.set(frontSpeed);
+        // backMotor.set(backSpeed);
 
         frontSpeedEntry.setDouble(frontSpeed);
         backSpeedEntry.setDouble(backSpeed);
+    }
+
+    public void periodic() {
+        frontMotor.set(0.5);
+        backMotor.set(0.5);
     }
 
     public static class ShooterSpeeds {
