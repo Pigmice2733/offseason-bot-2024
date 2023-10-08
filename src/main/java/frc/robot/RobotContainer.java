@@ -13,12 +13,14 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.DrivetrainConfig;
 import frc.robot.Constants.ShooterConfig;
 import frc.robot.commands.intake.FeedShooter;
 import frc.robot.commands.intake.IntakeExtension;
+import frc.robot.commands.intake.LeaveAuto;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake.IntakeState;
@@ -51,7 +53,7 @@ public class RobotContainer {
                         controls::getTurnSpeed));
 
         // intake.setDefaultCommand(new IntakeExtension(intake,
-        // controls::getManualIntakeSpeed));
+        // controls::getManualIntakeSpeed)); TODO
 
         configureButtonBindings();
 
@@ -84,7 +86,7 @@ public class RobotContainer {
 
         // POV UP - Fully retracted intake
 
-        // new POVButton(operator, 180)
+        // new POVButton(operator, 180) TODO
         // .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Retracted));
 
         // // POV RIGHT or LEFT - Half extend intake
@@ -97,9 +99,25 @@ public class RobotContainer {
         // new POVButton(operator, 0)
         // .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Extended));
 
-        new JoystickButton(operator, Button.kX.value)
-                .onTrue(shooter.spinUpFlywheelsCommand(ShooterConfig.HIGH_SPEEDS))
-                .onFalse(shooter.stopFlywheelsCommand());
+        // new JoystickButton(operator, Button.kX.value)
+        // .onTrue(shooter.spinUpFlywheelsCommand(ShooterConfig.HIGH_SPEEDS))
+        // .onFalse(shooter.stopFlywheelsCommand());
+        // new JoystickButton(operator, Button.kA.value)
+        // .onTrue(shooter.spinUpFlywheelsCommand(ShooterConfig.INTAKE_SPEEDS))
+        // .onFalse(shooter.stopFlywheelsCommand());
+
+        // intake
+        new JoystickButton(operator, Button.kY.value).onTrue(shooter.setTopMotorOutputCommand(-0.14))
+                .onFalse(shooter.setTopMotorOutputCommand(0));
+
+        // spin up
+        // new JoystickButton(operator,
+        // Button.kA.value).onTrue(shooter.setBottomMotorOutputCommand(1))
+        // .onFalse(shooter.setBottomMotorOutputCommand(0));
+
+        // shoot
+        new JoystickButton(operator, Button.kX.value).onTrue(shooter.setTopMotorOutputCommand(1))
+                .onFalse(shooter.setTopMotorOutputCommand(0));
     }
 
     /**
@@ -108,6 +126,12 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return null;
+        return new SequentialCommandGroup(// shooter.setBottomMotorOutputCommand(1),
+                // Commands.waitSeconds(2),
+                shooter.setTopMotorOutputCommand(0.7),
+                Commands.waitSeconds(1), shooter.setTopMotorOutputCommand(0),
+                new LeaveAuto(drivetrain).withTimeout(10));
+        // return shooter.setBottomMotorOutputCommand(1);
+        // return new LeaveAuto(drivetrain);
     }
 }

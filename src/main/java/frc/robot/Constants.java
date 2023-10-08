@@ -24,7 +24,7 @@ import frc.robot.subsystems.Shooter.ShooterSpeeds;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static final double AXIS_THRESHOLD = 0.1;
+    public static final double AXIS_THRESHOLD = 0.2;
 
     public static final ShuffleboardTab DRIVETRAIN_TAB = Shuffleboard.getTab("Drivetrain");
     public static final ShuffleboardTab INTAKE_TAB = Shuffleboard.getTab("Intake");
@@ -38,8 +38,8 @@ public final class Constants {
         public static final int RIGHT_INTAKE_EXTEND_PORT = 30;
         public static final int INTAKE_WHEELS_PORT = 2;
 
-        public static final int BOTTOM_SHOOT_PORT = 21;
-        public static final int TOP_SHOOT_PORT = 22;
+        public static final int BOTTOM_SHOOT_PORT = 22;
+        public static final int TOP_SHOOT_PORT = 21;
     }
 
     public static final class DrivetrainConfig {
@@ -86,5 +86,6 @@ public final class Constants {
         public static final ShooterSpeeds STOPPED_SPEEDS = new ShooterSpeeds(0, 0);
         public static final ShooterSpeeds MID_SPEEDS = new ShooterSpeeds(0.5, 0.5);
         public static final ShooterSpeeds HIGH_SPEEDS = new ShooterSpeeds(1, 1);
+        public static final ShooterSpeeds INTAKE_SPEEDS = new ShooterSpeeds(-0.2, -0.2);
     }
 }

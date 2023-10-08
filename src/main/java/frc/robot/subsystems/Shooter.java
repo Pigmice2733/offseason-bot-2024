@@ -24,7 +24,8 @@ public class Shooter extends SubsystemBase {
 
         bottomMotor.restoreFactoryDefaults();
         topMotor.restoreFactoryDefaults();
-        topMotor.setInverted(true);
+        topMotor.setInverted(false);
+        bottomMotor.setInverted(false);
 
         bottomSpeedEntry = Constants.SHOOTER_TAB.add("Bottom Speed", 0)
                 .withWidget(BuiltInWidgets.kNumberBar)
@@ -35,13 +36,13 @@ public class Shooter extends SubsystemBase {
                 .withProperties(Map.of("min", -1, "max", 1)).getEntry();
     }
 
-    public void spinUpFlywheels(ShooterSpeeds speeds) {
-        setMotorOutputs(speeds.topSpeed, speeds.bottomSpeed);
-    }
+    // public void spinUpFlywheels(ShooterSpeeds speeds) {
+    // setMotorOutputs(speeds.topSpeed, speeds.bottomSpeed);
+    // }
 
-    public Command spinUpFlywheelsCommand(ShooterSpeeds speeds) {
-        return Commands.runOnce(() -> spinUpFlywheels(speeds), this);
-    }
+    // public Command spinUpFlywheelsCommand(ShooterSpeeds speeds) {
+    // return Commands.runOnce(() -> spinUpFlywheels(speeds), this);
+    // }
 
     public void stopFlywheels() {
         setMotorOutputs(0, 0);
@@ -51,12 +52,31 @@ public class Shooter extends SubsystemBase {
         return Commands.runOnce(() -> stopFlywheels());
     }
 
-    private void setMotorOutputs(double bottomSpeed, double topSpeed) {
-        topMotor.set(bottomSpeed);
-        bottomMotor.set(topSpeed);
+    public void setMotorOutputs(double bottomSpeed, double topSpeed) {
+        setTopMotorOutput(topSpeed);
+        setBottomMotorOutput(bottomSpeed);
+    }
 
-        bottomSpeedEntry.setDouble(bottomSpeed);
-        topSpeedEntry.setDouble(topSpeed);
+    public Command setMotorOutputsCommand(double bottomSpeed, double topSpeed) {
+        return Commands.runOnce(() -> setMotorOutputs(bottomSpeed, topSpeed));
+    }
+
+    public void setTopMotorOutput(double speed) {
+        topMotor.set(speed);
+        topSpeedEntry.setDouble(speed);
+    }
+
+    public Command setTopMotorOutputCommand(double speed) {
+        return Commands.runOnce(() -> setTopMotorOutput(speed));
+    }
+
+    public void setBottomMotorOutput(double speed) {
+        bottomMotor.set(speed);
+        bottomSpeedEntry.setDouble(speed);
+    }
+
+    public Command setBottomMotorOutputCommand(double speed) {
+        return Commands.runOnce(() -> setBottomMotorOutput(speed));
     }
 
     public void periodic() {
