@@ -48,13 +48,14 @@ public class IntakeExtension extends CommandBase {
         super.execute();
         // intake.changeSetpoint(manualControl.get());
 
-        // public double
+        double leftPos = intake.getLeftPosition();
+        double rightPos = intake.getRightPosition();
+        double difference = leftPos - rightPos;
 
-        leftController.setGoal(intake.getTargetExtensionPosition());
-        rightController.setGoal(intake.getTargetExtensionPosition());
+        double diffSq = difference * difference * 0.1;
 
-        double leftOutput = leftController.calculate(intake.getLeftPosition(), intake.getTargetExtensionPosition());
-        double rightOutput = rightController.calculate(intake.getRightPosition(), intake.getTargetExtensionPosition());
+        double leftOutput = leftController.calculate(leftPos, intake.getTargetExtensionPosition() - diffSq);
+        double rightOutput = rightController.calculate(rightPos, intake.getTargetExtensionPosition() + diffSq);
 
         intake.leftExtensionOutput(leftOutput);
         intake.rightExtensionOutput(rightOutput);
