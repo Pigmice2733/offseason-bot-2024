@@ -55,7 +55,7 @@ public class RobotContainer {
 
         configureButtonBindings();
 
-        shooter.spinUpFlywheels(ShooterConfig.HIGH_SPEEDS);
+        // shooter.spinUpFlywheels(ShooterConfig.HIGH_SPEEDS);
     }
 
     /**
@@ -83,20 +83,23 @@ public class RobotContainer {
         // shooter.spinUpFlywheelsCommand(ShooterConfig.STOPPED_SPEEDS)));
 
         // POV UP - Fully retracted intake
-        /*
-         * new POVButton(operator, 0)
-         * .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Retracted));
-         * 
-         * // POV RIGHT or LEFT - Half extend intake
-         * new POVButton(operator, 90)
-         * .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Middle));
-         * new POVButton(operator, 270)
-         * .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Middle));
-         * 
-         * // POV DOWN - Fully extended intake
-         * new POVButton(operator, 180)
-         * .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Extended));
-         */
+
+        // new POVButton(operator, 180)
+        // .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Retracted));
+
+        // // POV RIGHT or LEFT - Half extend intake
+        // new POVButton(operator, 90)
+        // .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Middle));
+        // new POVButton(operator, 270)
+        // .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Middle));
+
+        // // POV DOWN - Fully extended intake
+        // new POVButton(operator, 0)
+        // .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Extended));
+
+        new JoystickButton(operator, Button.kX.value)
+                .onTrue(shooter.spinUpFlywheelsCommand(ShooterConfig.HIGH_SPEEDS))
+                .onFalse(shooter.stopFlywheelsCommand());
     }
 
     /**

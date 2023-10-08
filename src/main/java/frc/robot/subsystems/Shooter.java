@@ -14,55 +14,63 @@ import frc.robot.Constants;
 import frc.robot.Constants.CANConfig;
 
 public class Shooter extends SubsystemBase {
-    private final CANSparkMax frontMotor, backMotor;
+    private final CANSparkMax bottomMotor, topMotor;
 
-    private final GenericEntry frontSpeedEntry, backSpeedEntry;
+    private final GenericEntry bottomSpeedEntry, topSpeedEntry;
 
     public Shooter() {
-        frontMotor = new CANSparkMax(CANConfig.LEFT_SHOOT_PORT, MotorType.kBrushless);
-        backMotor = new CANSparkMax(CANConfig.RIGHT_SHOOT_PORT, MotorType.kBrushless);
+        bottomMotor = new CANSparkMax(CANConfig.TOP_SHOOT_PORT, MotorType.kBrushless);
+        topMotor = new CANSparkMax(CANConfig.BOTTOM_SHOOT_PORT, MotorType.kBrushless);
 
-        frontMotor.restoreFactoryDefaults();
-        backMotor.restoreFactoryDefaults();
-        backMotor.setInverted(true);
+        bottomMotor.restoreFactoryDefaults();
+        topMotor.restoreFactoryDefaults();
+        topMotor.setInverted(true);
 
-        frontSpeedEntry = Constants.SHOOTER_TAB.add("Front Speed", 0)
+        bottomSpeedEntry = Constants.SHOOTER_TAB.add("Bottom Speed", 0)
                 .withWidget(BuiltInWidgets.kNumberBar)
-                .withProperties(Map.of("min", 0, "max", 1)).getEntry();
+                .withProperties(Map.of("min", -1, "max", 1)).getEntry();
 
-        backSpeedEntry = Constants.SHOOTER_TAB.add("Back Speed", 0)
+        topSpeedEntry = Constants.SHOOTER_TAB.add("Top Speed", 0)
                 .withWidget(BuiltInWidgets.kNumberBar)
-                .withProperties(Map.of("min", 0, "max", 1)).getEntry();
+                .withProperties(Map.of("min", -1, "max", 1)).getEntry();
     }
 
     public void spinUpFlywheels(ShooterSpeeds speeds) {
-        setMotorOutputs(speeds.frontSpeed, speeds.backSpeed);
+        setMotorOutputs(speeds.topSpeed, speeds.bottomSpeed);
     }
 
     public Command spinUpFlywheelsCommand(ShooterSpeeds speeds) {
         return Commands.runOnce(() -> spinUpFlywheels(speeds), this);
     }
 
-    private void setMotorOutputs(double frontSpeed, double backSpeed) {
-        // frontMotor.set(frontSpeed);
-        // backMotor.set(backSpeed);
+    public void stopFlywheels() {
+        setMotorOutputs(0, 0);
+    }
 
-        frontSpeedEntry.setDouble(frontSpeed);
-        backSpeedEntry.setDouble(backSpeed);
+    public Command stopFlywheelsCommand() {
+        return Commands.runOnce(() -> stopFlywheels());
+    }
+
+    private void setMotorOutputs(double bottomSpeed, double topSpeed) {
+        topMotor.set(bottomSpeed);
+        bottomMotor.set(topSpeed);
+
+        bottomSpeedEntry.setDouble(bottomSpeed);
+        topSpeedEntry.setDouble(topSpeed);
     }
 
     public void periodic() {
-        frontMotor.set(0.5);
-        backMotor.set(0.5);
+        // bottomMotor.set(0.5);
+        // topMotor.set(0.5);
     }
 
     public static class ShooterSpeeds {
-        public final double backSpeed;
-        public final double frontSpeed;
+        public final double bottomSpeed;
+        public final double topSpeed;
 
-        public ShooterSpeeds(double backSpeed, double frontSpeed) {
-            this.backSpeed = backSpeed;
-            this.frontSpeed = frontSpeed;
+        public ShooterSpeeds(double bottomSpeed, double topSpeed) {
+            this.bottomSpeed = topSpeed;
+            this.topSpeed = bottomSpeed;
         }
     }
 }

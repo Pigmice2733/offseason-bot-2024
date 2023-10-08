@@ -38,8 +38,8 @@ public final class Constants {
         public static final int RIGHT_INTAKE_EXTEND_PORT = 30;
         public static final int INTAKE_WHEELS_PORT = 2;
 
-        public static final int LEFT_SHOOT_PORT = 21;
-        public static final int RIGHT_SHOOT_PORT = 20;
+        public static final int BOTTOM_SHOOT_PORT = 21;
+        public static final int TOP_SHOOT_PORT = 22;
     }
 
     public static final class DrivetrainConfig {
@@ -72,12 +72,12 @@ public final class Constants {
 
         public static final double POSITION_TOLERANCE = 0.1;
 
-        public static final double EXTENSION_P = 0.028;
+        public static final double EXTENSION_P = 0.035;
         public static final double EXTENSION_I = 0.000;
         public static final double EXTENSION_D = 0;
 
-        public static final double MAX_EXTENSION_VELOSITY = 2; // rad/sec
-        public static final double MAX_EXTENSION_ACCELERATION = 5; // rad/sec/sec
+        public static final double MAX_EXTENSION_VELOSITY = 0.5; // rad/sec
+        public static final double MAX_EXTENSION_ACCELERATION = 2; // rad/sec/sec
 
         public static final double FEED_SHOOTER_SPEEDS = 0.3;
     }
@@ -85,6 +85,6 @@ public final class Constants {
     public static final class ShooterConfig {
         public static final ShooterSpeeds STOPPED_SPEEDS = new ShooterSpeeds(0, 0);
         public static final ShooterSpeeds MID_SPEEDS = new ShooterSpeeds(0.5, 0.5);
-        public static final ShooterSpeeds HIGH_SPEEDS = new ShooterSpeeds(0.5, 0.5);
+        public static final ShooterSpeeds HIGH_SPEEDS = new ShooterSpeeds(1, 1);
     }
 }
