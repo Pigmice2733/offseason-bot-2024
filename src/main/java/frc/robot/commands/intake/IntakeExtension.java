@@ -46,7 +46,9 @@ public class IntakeExtension extends CommandBase {
     @Override
     public void execute() {
         super.execute();
-        intake.changeSetpoint(manualControl.get());
+        // intake.changeSetpoint(manualControl.get());
+
+        // public double
 
         leftController.setGoal(intake.getTargetExtensionPosition());
         rightController.setGoal(intake.getTargetExtensionPosition());

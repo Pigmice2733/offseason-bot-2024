@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.DrivetrainConfig;
+import frc.robot.Constants.IntakeConfig;
 import frc.robot.Constants.ShooterConfig;
 import frc.robot.commands.intake.FeedShooter;
 import frc.robot.commands.intake.IntakeExtension;
@@ -35,103 +36,116 @@ import frc.robot.subsystems.Intake.IntakeState;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    private final DifferentialDrivetrain drivetrain = new DifferentialDrivetrain(
-            DrivetrainConfig.DRIVETRAIN_CONFIG, true);
-    // private final Intake intake = new Intake();
-    private final Shooter shooter = new Shooter();
+	private final DifferentialDrivetrain drivetrain = new DifferentialDrivetrain(
+			DrivetrainConfig.DRIVETRAIN_CONFIG, true);
+	// public final Intake intake = new Intake();
+	private final Shooter shooter = new Shooter();
 
-    private final XboxController driver = new XboxController(0);
-    private final XboxController operator = new XboxController(1);
-    private final Controls controls = new Controls(driver, operator);
+	private final XboxController driver = new XboxController(0);
+	private final XboxController operator = new XboxController(1);
+	private final Controls controls = new Controls(driver, operator);
 
-    /**
-     * The container for the robot. Contains subsystems, OI devices, and commands.
-     */
-    public RobotContainer() {
-        drivetrain.setDefaultCommand(
-                new ArcadeDriveDifferential(drivetrain, controls::getDriveSpeed,
-                        controls::getTurnSpeed));
+	/**
+	 * The container for the robot. Contains subsystems, OI devices, and commands.
+	 */
+	public RobotContainer() {
+		drivetrain.setDefaultCommand(
+				new ArcadeDriveDifferential(drivetrain, controls::getDriveSpeed,
+						controls::getTurnSpeed));
 
-        // intake.setDefaultCommand(new IntakeExtension(intake,
-        // controls::getManualIntakeSpeed)); TODO
+		// intake.setDefaultCommand(new IntakeExtension(intake,
+		// controls::getManualIntakeSpeed));
 
-        configureButtonBindings();
+		configureButtonBindings();
 
-        // shooter.spinUpFlywheels(ShooterConfig.HIGH_SPEEDS);
-    }
+		// shooter.spinUpFlywheels(ShooterConfig.HIGH_SPEEDS);
+	}
 
-    /**
-     * Use this method to define your button->command mappings. Buttons can be
-     * created by
-     * instantiating a {@link GenericHID} or one of its subclasses ({@link
-     * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
-     * it to a {@link
-     * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-     */
-    private void configureButtonBindings() {
-        // A - Set shooter wheels to mid speeds
-        // new JoystickButton(operator, Button.kA.value)
-        // .toggleOnTrue(shooter.spinUpFlywheelsCommand(ShooterConfig.MID_SPEEDS));
+	/**
+	 * Use this method to define your button->command mappings. Buttons can be
+	 * created by
+	 * instantiating a {@link GenericHID} or one of its subclasses ({@link
+	 * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
+	 * it to a {@link
+	 * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+	 */
+	private void configureButtonBindings() {
+		// A - Set shooter wheels to mid speeds
+		// new JoystickButton(operator, Button.kA.value)
+		// .toggleOnTrue(shooter.spinUpFlywheelsCommand(ShooterConfig.MID_SPEEDS));
 
-        // // Y - Set shooter wheels to high speeds
-        // new JoystickButton(operator, Button.kY.value)
-        // .onTrue(shooter.spinUpFlywheelsCommand(ShooterConfig.HIGH_SPEEDS));
+		// // Y - Set shooter wheels to high speeds
+		// new JoystickButton(operator, Button.kY.value)
+		// .onTrue(shooter.spinUpFlywheelsCommand(ShooterConfig.HIGH_SPEEDS));
 
-        // // X - Feed intake
-        // new JoystickButton(operator, Button.kX.value)
-        // .onTrue(Commands.sequence(
-        // new FeedShooter(intake),
-        // Commands.waitSeconds(1),
-        // shooter.spinUpFlywheelsCommand(ShooterConfig.STOPPED_SPEEDS)));
+		// // X - Feed intake
+		// new JoystickButton(operator, Button.kX.value)
+		// .onTrue(Commands.sequence(
+		// new FeedShooter(intake),
+		// Commands.waitSeconds(1),
+		// shooter.spinUpFlywheelsCommand(ShooterConfig.STOPPED_SPEEDS)));
 
-        // POV UP - Fully retracted intake
+		// POV UP - Fully retracted intake
 
-        // new POVButton(operator, 180) TODO
-        // .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Retracted));
+		// new POVButton(operator, 180) TODO
+		// .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Retracted));
 
-        // // POV RIGHT or LEFT - Half extend intake
-        // new POVButton(operator, 90)
-        // .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Middle));
-        // new POVButton(operator, 270)
-        // .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Middle));
+		// // POV RIGHT or LEFT - Half extend intake
+		// new POVButton(operator, 90)
+		// .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Middle));
+		// new POVButton(operator, 270)
+		// .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Middle));
 
-        // // POV DOWN - Fully extended intake
-        // new POVButton(operator, 0)
-        // .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Extended));
+		// // POV DOWN - Fully extended intake
+		// new POVButton(operator, 0)
+		// .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Extended));
 
-        // new JoystickButton(operator, Button.kX.value)
-        // .onTrue(shooter.spinUpFlywheelsCommand(ShooterConfig.HIGH_SPEEDS))
-        // .onFalse(shooter.stopFlywheelsCommand());
-        // new JoystickButton(operator, Button.kA.value)
-        // .onTrue(shooter.spinUpFlywheelsCommand(ShooterConfig.INTAKE_SPEEDS))
-        // .onFalse(shooter.stopFlywheelsCommand());
+		// new JoystickButton(operator, Button.kX.value)
+		// .onTrue(shooter.spinUpFlywheelsCommand(ShooterConfig.HIGH_SPEEDS))
+		// .onFalse(shooter.stopFlywheelsCommand());
+		// new JoystickButton(operator, Button.kA.value)
+		// .onTrue(shooter.spinUpFlywheelsCommand(ShooterConfig.INTAKE_SPEEDS))
+		// .onFalse(shooter.stopFlywheelsCommand());
 
-        // intake
-        new JoystickButton(operator, Button.kY.value).onTrue(shooter.setTopMotorOutputCommand(-0.14))
-                .onFalse(shooter.setTopMotorOutputCommand(0));
+		// intake
+		new JoystickButton(operator, Button.kY.value).onTrue(shooter.setTopMotorOutputCommand(-0.14))
+				.onFalse(shooter.setTopMotorOutputCommand(0));
 
-        // spin up
-        // new JoystickButton(operator,
-        // Button.kA.value).onTrue(shooter.setBottomMotorOutputCommand(1))
-        // .onFalse(shooter.setBottomMotorOutputCommand(0));
+		// spin up
+		// new JoystickButton(operator,
+		// Button.kA.value).onTrue(shooter.setBottomMotorOutputCommand(1))
+		// .onFalse(shooter.setBottomMotorOutputCommand(0));
 
-        // shoot
-        new JoystickButton(operator, Button.kX.value).onTrue(shooter.setTopMotorOutputCommand(1))
-                .onFalse(shooter.setTopMotorOutputCommand(0));
-    }
+		// shoot
+		new JoystickButton(operator, Button.kX.value).onTrue(shooter.setTopMotorOutputCommand(1))
+				.onFalse(shooter.setTopMotorOutputCommand(0));
 
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-        return new SequentialCommandGroup(// shooter.setBottomMotorOutputCommand(1),
-                // Commands.waitSeconds(2),
-                shooter.setTopMotorOutputCommand(0.7),
-                Commands.waitSeconds(1), shooter.setTopMotorOutputCommand(0),
-                new LeaveAuto(drivetrain).withTimeout(10));
-        // return shooter.setBottomMotorOutputCommand(1);
-        // return new LeaveAuto(drivetrain);
-    }
+		// Intake
+		// new JoystickButton(operator, Button.kB.value).onTrue(
+		// Commands.parallel(
+		// Commands.runOnce(() -> intake.setIntakeWheelsOutput(0.2)),
+		// Commands.runOnce(() ->
+		// intake.setTargetExtensionState(IntakeState.Extended))))
+		// .onFalse(
+		// Commands.parallel(
+		// Commands.runOnce(() -> intake.setIntakeWheelsOutput(0)),
+		// Commands.runOnce(() ->
+		// intake.setTargetExtensionState(IntakeState.Retracted))));
+
+	}
+
+	/**
+	 * Use this to pass the autonomous command to the main {@link Robot} class.
+	 *
+	 * @return the command to run in autonomous
+	 */
+	public Command getAutonomousCommand() {
+		return new SequentialCommandGroup(// shooter.setBottomMotorOutputCommand(1),
+				// Commands.waitSeconds(2),
+				shooter.setTopMotorOutputCommand(0.7),
+				Commands.waitSeconds(1), shooter.setTopMotorOutputCommand(0),
+				new LeaveAuto(drivetrain).withTimeout(10));
+		// return shooter.setBottomMotorOutputCommand(1);
+		// return new LeaveAuto(drivetrain);
+	}
 }

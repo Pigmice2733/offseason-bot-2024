@@ -72,12 +72,12 @@ public final class Constants {
 
         public static final double POSITION_TOLERANCE = 0.1;
 
-        public static final double EXTENSION_P = 0.035;
-        public static final double EXTENSION_I = 0.000;
+        public static final double EXTENSION_P = 0.02;
+        public static final double EXTENSION_I = 0.005;
         public static final double EXTENSION_D = 0;
 
-        public static final double MAX_EXTENSION_VELOSITY = 0.5; // rad/sec
-        public static final double MAX_EXTENSION_ACCELERATION = 2; // rad/sec/sec
+        public static final double MAX_EXTENSION_VELOSITY = 1; // rad/sec
+        public static final double MAX_EXTENSION_ACCELERATION = 3; // rad/sec/sec
 
         public static final double FEED_SHOOTER_SPEEDS = 0.3;
     }

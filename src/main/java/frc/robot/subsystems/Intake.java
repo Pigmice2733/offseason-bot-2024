@@ -65,6 +65,7 @@ public class Intake extends SubsystemBase {
     }
 
     public void leftExtensionOutput(double percent) {
+        percent *= 1.5;
         rightExtend.set(percent);
         rightSpeedEntry.setDouble(percent);
     }
@@ -94,7 +95,7 @@ public class Intake extends SubsystemBase {
     }
 
     public double getRightPosition() {
-        return rightExtend.getEncoder().getPosition();
+        return -rightExtend.getEncoder().getPosition();
     }
 
     // public boolean atState(IntakeState state) {
