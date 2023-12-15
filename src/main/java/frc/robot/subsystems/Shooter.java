@@ -62,7 +62,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setTopMotorOutput(double speed) {
-        // topMotor.set(speed);
+        topMotor.set(speed);
         topSpeedEntry.setDouble(speed);
     }
 
@@ -71,7 +71,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setBottomMotorOutput(double speed) {
-        // bottomMotor.set(speed);
+        bottomMotor.set(speed);
         bottomSpeedEntry.setDouble(speed);
     }
 
@@ -80,8 +80,8 @@ public class Shooter extends SubsystemBase {
     }
 
     public void periodic() {
-        // bottomMotor.set(0.5);
-        // topMotor.set(0.5);
+        bottomMotor.set(0.5);
+        topMotor.set(0.5);
     }
 
     public static class ShooterSpeeds {

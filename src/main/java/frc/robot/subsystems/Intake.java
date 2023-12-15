@@ -63,6 +63,7 @@ public class Intake extends SubsystemBase {
 
     @Override
     public void periodic() {
+        setIntakeWheelsOutput(0.3);
         extensionOutput(inputSpeed.getAsDouble() * IntakeConfig.EXTENDING_SPEED);
         // double calculatedOutput = pidController.calculate(getPosition(),
         // targetExtensionPosition);
