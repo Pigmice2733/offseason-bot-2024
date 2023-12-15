@@ -4,41 +4,29 @@
 
 package frc.robot.commands.intake;
 
-import com.pigmice.frc.lib.drivetrain.differential.DifferentialDrivetrain;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class LeaveAuto extends CommandBase {
-  private final DifferentialDrivetrain drivetrain;
-
-  /** Creates a new LeaveAuto. */
-  public LeaveAuto(DifferentialDrivetrain drivetrain) {
-    this.drivetrain = drivetrain;
-    addRequirements(drivetrain);
+public class ManualIntake extends CommandBase {
+  /** Creates a new ManualIntake. */
+  public ManualIntake() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    drivetrain.arcadeDrive(-0.25, 0);
-    System.out.println(drivetrain.getAverageDistance());
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    drivetrain.arcadeDrive(0, 0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(drivetrain.getAverageDistance()) > 4.5;
+    return false;
   }
 }

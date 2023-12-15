@@ -62,7 +62,7 @@ public final class Constants {
     }
 
     public static final class IntakeConfig {
-        public static final double EXTENDING_SPEED = .2;
+        public static final double EXTENDING_SPEED = .15;
         public static final double SPINNING_SPEED = 0.5;
 
         public static final double MANUAL_EXTENSION_SPEED = 0.2;
@@ -76,7 +76,7 @@ public final class Constants {
         public static final double EXTENSION_I = 0.005;
         public static final double EXTENSION_D = 0;
 
-        public static final double MAX_EXTENSION_VELOSITY = 1; // rad/sec
+        public static final double MAX_EXTENSION_VELOCITY = 1; // rad/sec
         public static final double MAX_EXTENSION_ACCELERATION = 3; // rad/sec/sec
 
         public static final double FEED_SHOOTER_SPEEDS = 0.3;

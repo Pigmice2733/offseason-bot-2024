@@ -1,11 +1,14 @@
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
 import com.pigmice.frc.lib.shuffleboard_helper.ShuffleboardHelper;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -14,64 +17,68 @@ import frc.robot.Constants.CANConfig;
 import frc.robot.Constants.IntakeConfig;
 
 public class Intake extends SubsystemBase {
-    private final CANSparkMax leftExtend = new CANSparkMax(CANConfig.LEFT_INTAKE_EXTEND_PORT,
-            MotorType.kBrushless);
-
-    private final CANSparkMax rightExtend = new CANSparkMax(CANConfig.RIGHT_INTAKE_EXTEND_PORT,
+    private final CANSparkMax extendMotor = new CANSparkMax(CANConfig.LEFT_INTAKE_EXTEND_PORT,
             MotorType.kBrushless);
 
     private final CANSparkMax intakeWheels;
 
     private double targetExtensionPosition;
-    public double setpoint;
 
-    GenericEntry leftSpeedEntry, rightSpeedEntry;
+    private final ProfiledPIDController pidController;
+    DoubleSupplier inputSpeed;
 
-    public Intake() {
+    public Intake(DoubleSupplier inputSpeed) {
+        this.inputSpeed = inputSpeed;
         intakeWheels = new CANSparkMax(CANConfig.INTAKE_WHEELS_PORT, MotorType.kBrushless);
 
-        leftExtend.restoreFactoryDefaults();
-        rightExtend.restoreFactoryDefaults();
+        pidController = new ProfiledPIDController(IntakeConfig.EXTENSION_P, IntakeConfig.EXTENSION_I,
+                IntakeConfig.EXTENSION_D,
+                new Constraints(IntakeConfig.MAX_EXTENSION_VELOCITY,
+                        IntakeConfig.MAX_EXTENSION_ACCELERATION));
+
+        ShuffleboardHelper.addProfiledController("Controller", Constants.INTAKE_TAB, pidController,
+                IntakeConfig.MAX_EXTENSION_VELOCITY, IntakeConfig.MAX_EXTENSION_ACCELERATION);
+
+        extendMotor.restoreFactoryDefaults();
+        extendMotor.getEncoder().setPosition(0);
         intakeWheels.restoreFactoryDefaults();
 
-        rightExtend.setInverted(true);
-        leftExtend.setInverted(false);
+        extendMotor.setInverted(false);
 
         ShuffleboardHelper.addOutput("Target Pos", Constants.INTAKE_TAB, () -> targetExtensionPosition)
                 .asDial(0.0, IntakeConfig.MAX_EXTEND_DISTANCE);
 
-        ShuffleboardHelper.addOutput("Left Pos", Constants.INTAKE_TAB, () -> getLeftPosition())
+        ShuffleboardHelper.addOutput("Pos", Constants.INTAKE_TAB, () -> getPosition())
                 .asDial(0.0, IntakeConfig.MAX_EXTEND_DISTANCE);
 
-        ShuffleboardHelper.addOutput("Right Pos", Constants.INTAKE_TAB, () -> getRightPosition())
+        ShuffleboardHelper.addOutput("Setpoint", Constants.INTAKE_TAB, () -> pidController.getSetpoint().position)
                 .asDial(0.0, IntakeConfig.MAX_EXTEND_DISTANCE);
 
-        ShuffleboardHelper.addOutput("Setpoint", Constants.INTAKE_TAB, () -> setpoint)
-                .asDial(0.0, IntakeConfig.MAX_EXTEND_DISTANCE);
+        ShuffleboardHelper.addOutput("Output", Constants.INTAKE_TAB, () -> extendMotor.get());
 
-        leftSpeedEntry = Constants.INTAKE_TAB.add("left out", 0).getEntry();
-        rightSpeedEntry = Constants.INTAKE_TAB.add("right out", 0).getEntry();
+        ShuffleboardHelper.addInput("Input", Constants.INTAKE_TAB,
+                (input) -> setTargetExtensionPos((double) input), 0.0);
 
     }
 
     @Override
     public void periodic() {
-
+        extensionOutput(inputSpeed.getAsDouble() * IntakeConfig.EXTENDING_SPEED);
+        // double calculatedOutput = pidController.calculate(getPosition(),
+        // targetExtensionPosition);
+        // extensionOutput(calculatedOutput);
     }
 
-    public void rightExtensionOutput(double percent) {
-        leftExtend.set(percent);
-        leftSpeedEntry.setDouble(percent);
-    }
-
-    public void leftExtensionOutput(double percent) {
-        percent *= 1.5;
-        rightExtend.set(percent);
-        rightSpeedEntry.setDouble(percent);
+    public void extensionOutput(double percent) {
+        extendMotor.set(-percent);
     }
 
     public void setTargetExtensionState(IntakeState state) {
         targetExtensionPosition = getExtendDistance(state);
+    }
+
+    public void setTargetExtensionPos(double pos) {
+        targetExtensionPosition = pos;
     }
 
     public Command setTargetExtensionStateCommand(IntakeState state) {
@@ -90,12 +97,8 @@ public class Intake extends SubsystemBase {
         intakeWheels.set(percent);
     }
 
-    public double getLeftPosition() {
-        return leftExtend.getEncoder().getPosition();
-    }
-
-    public double getRightPosition() {
-        return -rightExtend.getEncoder().getPosition();
+    public double getPosition() {
+        return extendMotor.getEncoder().getPosition();
     }
 
     // public boolean atState(IntakeState state) {
@@ -123,7 +126,6 @@ public class Intake extends SubsystemBase {
     }
 
     public void resetEncoders() {
-        leftExtend.getEncoder().setPosition(0);
-        rightExtend.getEncoder().setPosition(0);
+        extendMotor.getEncoder().setPosition(0);
     }
 }

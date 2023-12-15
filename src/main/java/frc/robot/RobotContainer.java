@@ -4,27 +4,20 @@
 
 package frc.robot;
 
+import com.pigmice.frc.lib.drivetrain.differential.DifferentialDrivetrain;
 import com.pigmice.frc.lib.drivetrain.differential.commands.manual.ArcadeDriveDifferential;
-import com.pigmice.frc.lib.drivetrain.subysytems.DifferentialDrivetrain;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.DrivetrainConfig;
-import frc.robot.Constants.IntakeConfig;
-import frc.robot.Constants.ShooterConfig;
-import frc.robot.commands.intake.FeedShooter;
-import frc.robot.commands.intake.IntakeExtension;
 import frc.robot.commands.intake.LeaveAuto;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Intake.IntakeState;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -38,7 +31,7 @@ import frc.robot.subsystems.Intake.IntakeState;
 public class RobotContainer {
 	private final DifferentialDrivetrain drivetrain = new DifferentialDrivetrain(
 			DrivetrainConfig.DRIVETRAIN_CONFIG, true);
-	// public final Intake intake = new Intake();
+	public final Intake intake;
 	private final Shooter shooter = new Shooter();
 
 	private final XboxController driver = new XboxController(0);
@@ -49,6 +42,7 @@ public class RobotContainer {
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
+		intake = new Intake(operator::getRightY);
 		drivetrain.setDefaultCommand(
 				new ArcadeDriveDifferential(drivetrain, controls::getDriveSpeed,
 						controls::getTurnSpeed));
