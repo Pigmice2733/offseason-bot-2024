@@ -12,57 +12,62 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.CANConfig;
+import frc.robot.Constants.ShooterConfig;
 
 public class Shooter extends SubsystemBase {
-    private final CANSparkMax frontMotor, backMotor;
-
-    private final GenericEntry frontSpeedEntry, backSpeedEntry;
+    private final CANSparkMax upperWheel, lowerWheel;
+    private final GenericEntry upperWheelEntry, lowerWheelEntry;
 
     public Shooter() {
-        frontMotor = new CANSparkMax(CANConfig.LEFT_SHOOT_PORT, MotorType.kBrushless);
-        backMotor = new CANSparkMax(CANConfig.RIGHT_SHOOT_PORT, MotorType.kBrushless);
+        upperWheel = new CANSparkMax(CANConfig.UPPER_SHOOT_PORT, MotorType.kBrushless);
+        lowerWheel = new CANSparkMax(CANConfig.LOWER_SHOOT_PORT, MotorType.kBrushless);
 
-        frontMotor.restoreFactoryDefaults();
-        backMotor.restoreFactoryDefaults();
-        backMotor.setInverted(true);
+        upperWheel.restoreFactoryDefaults();
+        lowerWheel.restoreFactoryDefaults();
+        lowerWheel.setInverted(true);
 
-        frontSpeedEntry = Constants.SHOOTER_TAB.add("Front Speed", 0)
+        upperWheelEntry = Constants.SYSTEMS_TAB.add("Upper Shooter Wheel Speed", 0)
                 .withWidget(BuiltInWidgets.kNumberBar)
                 .withProperties(Map.of("min", 0, "max", 1)).getEntry();
 
-        backSpeedEntry = Constants.SHOOTER_TAB.add("Back Speed", 0)
+        lowerWheelEntry = Constants.SYSTEMS_TAB.add("Lower Shooter Wheel Speed", 0)
                 .withWidget(BuiltInWidgets.kNumberBar)
                 .withProperties(Map.of("min", 0, "max", 1)).getEntry();
     }
 
-    public void spinUpFlywheels(ShooterSpeeds speeds) {
-        setMotorOutputs(speeds.frontSpeed, speeds.backSpeed);
-    }
-
-    public Command spinUpFlywheelsCommand(ShooterSpeeds speeds) {
-        return Commands.runOnce(() -> spinUpFlywheels(speeds), this);
-    }
-
-    private void setMotorOutputs(double frontSpeed, double backSpeed) {
-        // frontMotor.set(frontSpeed);
-        // backMotor.set(backSpeed);
-
-        frontSpeedEntry.setDouble(frontSpeed);
-        backSpeedEntry.setDouble(backSpeed);
-    }
-
+    @Override
     public void periodic() {
-        frontMotor.set(0.5);
-        backMotor.set(0.5);
+        
+    }
+
+    public Command prepareToShoot() {
+        return Commands.runOnce(() -> setMotors(ShooterConfig.MID_SPEEDS), this);
+    }
+
+    public Command stopShooter() {
+        return Commands.runOnce(() -> setMotors(ShooterConfig.STOPPED), this);
+    }
+
+    private void setMotors(ShooterSpeeds speeds) {
+        setMotorOutputs(speeds.upperSpeed, speeds.lowerSpeed);
+    }
+
+    private void setMotorOutputs(double upperSpeed, double lowerSpeed) {
+        if(Math.abs(upperSpeed) > 1 || Math.abs(lowerSpeed) > 1) return;
+        
+        upperWheel.set(upperSpeed);
+        lowerWheel.set(lowerSpeed);
+        upperWheelEntry.setDouble(upperSpeed);
+        lowerWheelEntry.setDouble(lowerSpeed);
     }
 
     public static class ShooterSpeeds {
-        public final double backSpeed;
-        public final double frontSpeed;
+        public final double upperSpeed;
+        public final double lowerSpeed;
 
         public ShooterSpeeds(double backSpeed, double frontSpeed) {
-            this.backSpeed = backSpeed;
-            this.frontSpeed = frontSpeed;
+            this.upperSpeed = backSpeed;
+            this.lowerSpeed = frontSpeed;
         }
     }
 }

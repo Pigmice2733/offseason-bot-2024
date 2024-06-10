@@ -1,18 +1,11 @@
-updated 8/29/2023
+updated 6/10/2023
 driver:
     left y-axis - drive up/down
     right x-axis - turn left/right
 
 operator:
-    left trigger - manually raise intake
-    right trigger - manually lower intake
-    d-pad up - move intake to up position
-    d-pad left or right - move intake to mid position
-    d-pad down - move intake to low position
-    a - spin up shooter to low speed
-    y - spin up shooter to high speed
-    x - feed shooter
-    **b - toggle intake wheels** (might have the intake wheels automatically toggle)
+    A - launch ball
+    Y - stop subsystems
 
     * = not implemented yet
-    ** = might not use
+    ** = maybe

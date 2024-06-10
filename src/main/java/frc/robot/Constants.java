@@ -27,19 +27,16 @@ public final class Constants {
     public static final double AXIS_THRESHOLD = 0.1;
 
     public static final ShuffleboardTab DRIVETRAIN_TAB = Shuffleboard.getTab("Drivetrain");
-    public static final ShuffleboardTab INTAKE_TAB = Shuffleboard.getTab("Intake");
-    public static final ShuffleboardTab SHOOTER_TAB = Shuffleboard.getTab("Shooter");
+    public static final ShuffleboardTab SYSTEMS_TAB = Shuffleboard.getTab("Subsystems");
 
     public static final class CANConfig {
         public static final int LEFT_DRIVE_PORT = 11;
         public static final int RIGHT_DRIVE_PORT = 12;
 
-        public static final int LEFT_INTAKE_EXTEND_PORT = 31;
-        public static final int RIGHT_INTAKE_EXTEND_PORT = 30;
-        public static final int INTAKE_WHEELS_PORT = 2;
+        public static final int INDEXER_PORT = 2;
 
-        public static final int LEFT_SHOOT_PORT = 21;
-        public static final int RIGHT_SHOOT_PORT = 20;
+        public static final int UPPER_SHOOT_PORT = 21;
+        public static final int LOWER_SHOOT_PORT = 20;
     }
 
     public static final class DrivetrainConfig {
@@ -62,28 +59,12 @@ public final class Constants {
     }
 
     public static final class IntakeConfig {
-        public static final double EXTENDING_SPEED = .2;
-        public static final double SPINNING_SPEED = 0.5;
-
-        public static final double MANUAL_EXTENSION_SPEED = 0.2;
-
-        public static final double MAX_EXTEND_DISTANCE = 10;
-        public static final double MID_EXTEND_DISTANCE = 5;
-
-        public static final double POSITION_TOLERANCE = 0.1;
-
-        public static final double EXTENSION_P = 0.028;
-        public static final double EXTENSION_I = 0.000;
-        public static final double EXTENSION_D = 0;
-
-        public static final double MAX_EXTENSION_VELOSITY = 2; // rad/sec
-        public static final double MAX_EXTENSION_ACCELERATION = 5; // rad/sec/sec
-
-        public static final double FEED_SHOOTER_SPEEDS = 0.3;
+        public static final double INTAKE_SPEED = 0.5;
+        public static final double FEED_SHOOTER_SPEED = 0.3;
     }
 
     public static final class ShooterConfig {
-        public static final ShooterSpeeds STOPPED_SPEEDS = new ShooterSpeeds(0, 0);
+        public static final ShooterSpeeds STOPPED = new ShooterSpeeds(0, 0);
         public static final ShooterSpeeds MID_SPEEDS = new ShooterSpeeds(0.5, 0.5);
         public static final ShooterSpeeds HIGH_SPEEDS = new ShooterSpeeds(0.5, 0.5);
     }

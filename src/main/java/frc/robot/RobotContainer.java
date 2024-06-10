@@ -10,18 +10,13 @@ import com.pigmice.frc.lib.drivetrain.subysytems.DifferentialDrivetrain;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.DrivetrainConfig;
-import frc.robot.Constants.ShooterConfig;
-import frc.robot.commands.intake.FeedShooter;
-import frc.robot.commands.intake.IntakeExtension;
+import frc.robot.commands.Launch;
+import frc.robot.commands.Reset;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Intake.IntakeState;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -35,7 +30,7 @@ import frc.robot.subsystems.Intake.IntakeState;
 public class RobotContainer {
     private final DifferentialDrivetrain drivetrain = new DifferentialDrivetrain(
             DrivetrainConfig.DRIVETRAIN_CONFIG, true);
-    // private final Intake intake = new Intake();
+    private final Intake intake = new Intake();
     private final Shooter shooter = new Shooter();
 
     private final XboxController driver = new XboxController(0);
@@ -54,8 +49,6 @@ public class RobotContainer {
         // controls::getManualIntakeSpeed));
 
         configureButtonBindings();
-
-        shooter.spinUpFlywheels(ShooterConfig.HIGH_SPEEDS);
     }
 
     /**
@@ -67,36 +60,11 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        // A - Set shooter wheels to mid speeds
-        // new JoystickButton(operator, Button.kA.value)
-        // .toggleOnTrue(shooter.spinUpFlywheelsCommand(ShooterConfig.MID_SPEEDS));
+        // A - launch ball
+        new JoystickButton(operator, Button.kA.value).onTrue(new Launch(intake, shooter));
 
-        // // Y - Set shooter wheels to high speeds
-        // new JoystickButton(operator, Button.kY.value)
-        // .onTrue(shooter.spinUpFlywheelsCommand(ShooterConfig.HIGH_SPEEDS));
-
-        // // X - Feed intake
-        // new JoystickButton(operator, Button.kX.value)
-        // .onTrue(Commands.sequence(
-        // new FeedShooter(intake),
-        // Commands.waitSeconds(1),
-        // shooter.spinUpFlywheelsCommand(ShooterConfig.STOPPED_SPEEDS)));
-
-        // POV UP - Fully retracted intake
-        /*
-         * new POVButton(operator, 0)
-         * .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Retracted));
-         * 
-         * // POV RIGHT or LEFT - Half extend intake
-         * new POVButton(operator, 90)
-         * .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Middle));
-         * new POVButton(operator, 270)
-         * .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Middle));
-         * 
-         * // POV DOWN - Fully extended intake
-         * new POVButton(operator, 180)
-         * .onTrue(intake.setTargetExtensionStateCommand(IntakeState.Extended));
-         */
+        // Y - stop subsystems
+        new JoystickButton(operator, Button.kY.value).onTrue(new Reset(intake, shooter));
     }
 
     /**
