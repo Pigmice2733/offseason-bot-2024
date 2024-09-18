@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DrivetrainConfig;
 import frc.robot.commands.Launch;
 import frc.robot.commands.Reset;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -30,7 +30,7 @@ import frc.robot.subsystems.Shooter;
 public class RobotContainer {
     private final DifferentialDrivetrain drivetrain = new DifferentialDrivetrain(
             DrivetrainConfig.DRIVETRAIN_CONFIG, true);
-    private final Intake intake = new Intake();
+    private final Indexer indexer = new Indexer();
     private final Shooter shooter = new Shooter();
 
     private final XboxController driver = new XboxController(0);
@@ -61,10 +61,10 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         // A - launch ball
-        new JoystickButton(operator, Button.kA.value).onTrue(new Launch(intake, shooter));
+        new JoystickButton(operator, Button.kA.value).onTrue(new Launch(indexer, shooter));
 
         // Y - stop subsystems
-        new JoystickButton(operator, Button.kY.value).onTrue(new Reset(intake, shooter));
+        new JoystickButton(operator, Button.kY.value).onTrue(new Reset(indexer, shooter));
     }
 
     /**
