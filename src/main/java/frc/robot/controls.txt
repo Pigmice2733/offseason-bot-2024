@@ -1,0 +1,11 @@
+updated 6/10/2023
+driver:
+    left y-axis - drive up/down
+    right x-axis - turn left/right
+
+operator:
+    A - launch ball
+    Y - stop subsystems
+
+    * = not implemented yet
+    ** = maybe
