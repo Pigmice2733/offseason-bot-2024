@@ -28,8 +28,13 @@ import frc.robot.subsystems.Shooter;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+<<<<<<< HEAD
     // private final DifferentialDrivetrain drivetrain = new DifferentialDrivetrain(
     //        DrivetrainConfig.DRIVETRAIN_CONFIG, true);
+=======
+    private final DifferentialDrivetrain drivetrain = new DifferentialDrivetrain(
+            DrivetrainConfig.DRIVETRAIN_CONFIG, true);
+>>>>>>> 2e798f07980545b83d5213ffe81a0965bc68419f
     private final Indexer indexer = new Indexer();
     private final Shooter shooter = new Shooter();
 
@@ -41,9 +46,15 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+<<<<<<< HEAD
         // drivetrain.setDefaultCommand(
         //        new ArcadeDriveDifferential(drivetrain, controls::getDriveSpeed,
         //                controls::getTurnSpeed));
+=======
+        drivetrain.setDefaultCommand(
+                new ArcadeDriveDifferential(drivetrain, controls::getDriveSpeed,
+                        controls::getTurnSpeed));
+>>>>>>> 2e798f07980545b83d5213ffe81a0965bc68419f
 
         // intake.setDefaultCommand(new IntakeExtension(intake,
         // controls::getManualIntakeSpeed));

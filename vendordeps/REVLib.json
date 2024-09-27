@@ -12,14 +12,8 @@
         {
             "groupId": "com.revrobotics.frc",
             "artifactId": "REVLib-java",
-            "version": "2024.2.4"
-        }
-    ],
-    "jniDependencies": [
-        {
-            "groupId": "com.revrobotics.frc",
-            "artifactId": "REVLib-driver",
             "version": "2024.2.4",
+        
             "skipInvalidPlatforms": true,
             "isJar": false,
             "validPlatforms": [
