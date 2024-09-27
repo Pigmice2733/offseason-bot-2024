@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Constants.DrivetrainConfig;
 import frc.robot.commands.Launch;
 import frc.robot.commands.Reset;
 import frc.robot.subsystems.Indexer;
@@ -25,8 +24,6 @@ import frc.robot.subsystems.Shooter;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    // private final DifferentialDrivetrain drivetrain = new DifferentialDrivetrain(
-    //         DrivetrainConfig.DRIVETRAIN_CONFIG, true);
     private final Indexer indexer = new Indexer();
     private final Shooter shooter = new Shooter();
 
@@ -38,13 +35,6 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        // drivetrain.setDefaultCommand(
-        //         new ArcadeDriveDifferential(drivetrain, controls::getDriveSpeed,
-        //                 controls::getTurnSpeed));
-
-        // intake.setDefaultCommand(new IntakeExtension(intake,
-        // controls::getManualIntakeSpeed));
-
         configureButtonBindings();
     }
 
