@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-import com.pigmice.frc.lib.drivetrain.differential.commands.manual.ArcadeDriveDifferential;
-import com.pigmice.frc.lib.drivetrain.subysytems.DifferentialDrivetrain;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -28,8 +25,8 @@ import frc.robot.subsystems.Shooter;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    private final DifferentialDrivetrain drivetrain = new DifferentialDrivetrain(
-            DrivetrainConfig.DRIVETRAIN_CONFIG, true);
+    // private final DifferentialDrivetrain drivetrain = new DifferentialDrivetrain(
+    //         DrivetrainConfig.DRIVETRAIN_CONFIG, true);
     private final Indexer indexer = new Indexer();
     private final Shooter shooter = new Shooter();
 
@@ -41,9 +38,9 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        drivetrain.setDefaultCommand(
-                new ArcadeDriveDifferential(drivetrain, controls::getDriveSpeed,
-                        controls::getTurnSpeed));
+        // drivetrain.setDefaultCommand(
+        //         new ArcadeDriveDifferential(drivetrain, controls::getDriveSpeed,
+        //                 controls::getTurnSpeed));
 
         // intake.setDefaultCommand(new IntakeExtension(intake,
         // controls::getManualIntakeSpeed));

@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    ShuffleboardHelper.update();
+    ShuffleboardHelper.update(true);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -107,13 +107,11 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
-    MotorTester.createWidgets();
   }
 
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
-    MotorTester.periodic();
   }
 
   /** This function is called once when the robot is first started up. */

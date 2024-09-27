@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import com.pigmice.frc.lib.drivetrain.differential.DifferentialConfig;
-
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -52,10 +50,10 @@ public final class Constants {
 
     public static final double SLOW_MULTIPLIER = 0.5;
 
-    public static final DifferentialConfig DRIVETRAIN_CONFIG = new DifferentialConfig(
-        CANConfig.LEFT_DRIVE_PORT, CANConfig.RIGHT_DRIVE_PORT, -1,
-        -1, LEFT_INVERTED, RIGHT_INVERTED, TRACK_WIDTH, GEAR_RATIO, WHEEL_DIAMETER_METERS, SLOW_MULTIPLIER,
-        0, 0, 0, 0.089779, 2.4 - 706, 1, 1);
+    // public static final DifferentialConfig DRIVETRAIN_CONFIG = new DifferentialConfig(
+    //     CANConfig.LEFT_DRIVE_PORT, CANConfig.RIGHT_DRIVE_PORT, -1,
+    //     -1, LEFT_INVERTED, RIGHT_INVERTED, TRACK_WIDTH, GEAR_RATIO, WHEEL_DIAMETER_METERS, SLOW_MULTIPLIER,
+    //     0, 0, 0, 0.089779, 2.4 - 706, 1, 1);
   }
 
   public static final class IndexerConfig {
