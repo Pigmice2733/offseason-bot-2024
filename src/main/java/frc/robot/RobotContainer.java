@@ -8,9 +8,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Launch;
 import frc.robot.commands.Reset;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 
@@ -26,6 +28,7 @@ import frc.robot.subsystems.Shooter;
 public class RobotContainer {
     private final Indexer indexer = new Indexer();
     private final Shooter shooter = new Shooter();
+    private final Drivetrain drivetrain;
 
     private final XboxController driver = new XboxController(0);
     private final XboxController operator = new XboxController(1);
@@ -36,6 +39,8 @@ public class RobotContainer {
      */
     public RobotContainer() {
         configureButtonBindings();
+
+        drivetrain = new Drivetrain(controls);
     }
 
     /**
@@ -47,6 +52,9 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
+        // Driver X - slow mode
+        new JoystickButton(driver, Button.kX.value).onTrue(new InstantCommand(drivetrain::toggleSlowMode, drivetrain));
+
         // A - launch ball
         new JoystickButton(operator, Button.kA.value).onTrue(new Launch(indexer, shooter));
 
