@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -54,10 +55,13 @@ public class RobotContainer {
         // controls::getManualIntakeSpeed));
 
         configureButtonBindings();
+        m_rightMotor.setIdleMode(IdleMode.kBrake);
+        m_leftMotor.setIdleMode(IdleMode.kBrake);
         m_rightMotor.setInverted(true);
 
-        m_robotDrive = new DifferentialDrive(m_leftMotor::set, m_rightMotor::set);
+        m_robotDrive = new DifferentialDrive(m_leftMotor::set, m_rightMotor::set); 
     }
+
 
     /**
      * Use this method to define your button->command mappings. Buttons can be
@@ -75,8 +79,16 @@ public class RobotContainer {
         new JoystickButton(operator, Button.kY.value).onTrue(new Reset(indexer, shooter));
     }
 
+    private double getDriveSpeed() {
+        return DrivetrainConfig.DRIVE_SPEED*driver.getLeftY();
+    }
+
+    private double getTurnSpeed() {
+        return -driver.getRightX();
+    }
+
     public void periodic() {
-        m_robotDrive.arcadeDrive(driver.getLeftY(), -driver.getRightX());
+        m_robotDrive.arcadeDrive(getDriveSpeed(), getTurnSpeed());
     }
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
