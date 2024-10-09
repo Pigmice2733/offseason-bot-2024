@@ -4,9 +4,14 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DrivetrainConfig;
@@ -34,6 +39,9 @@ public class RobotContainer {
     private final XboxController operator = new XboxController(1);
     private final Controls controls = new Controls(driver, operator);
 
+    private DifferentialDrive m_robotDrive;
+    private final CANSparkMax m_leftMotor = new CANSparkMax(11, com.revrobotics.CANSparkLowLevel.MotorType.kBrushless);
+    private final CANSparkMax m_rightMotor = new CANSparkMax(12, com.revrobotics.CANSparkLowLevel.MotorType.kBrushless);
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
@@ -46,6 +54,9 @@ public class RobotContainer {
         // controls::getManualIntakeSpeed));
 
         configureButtonBindings();
+        m_rightMotor.setInverted(true);
+
+        m_robotDrive = new DifferentialDrive(m_leftMotor::set, m_rightMotor::set);
     }
 
     /**
@@ -64,6 +75,9 @@ public class RobotContainer {
         new JoystickButton(operator, Button.kY.value).onTrue(new Reset(indexer, shooter));
     }
 
+    public void periodic() {
+        m_robotDrive.arcadeDrive(driver.getLeftY(), -driver.getRightX());
+    }
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
      *
