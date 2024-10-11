@@ -17,6 +17,7 @@ import frc.robot.Constants.ShooterConfig;
 public class Shooter extends SubsystemBase {
   private final CANSparkMax upperWheel, lowerWheel;
   private final GenericEntry upperWheelEntry, lowerWheelEntry;
+  private ShooterSpeeds targetSpeeds = ShooterConfig.STOPPED;
 
   public Shooter() {
     upperWheel = new CANSparkMax(CANConfig.UPPER_SHOOT_PORT, MotorType.kBrushless);
@@ -24,7 +25,6 @@ public class Shooter extends SubsystemBase {
 
     upperWheel.restoreFactoryDefaults();
     lowerWheel.restoreFactoryDefaults();
-    lowerWheel.setInverted(true);
 
     upperWheelEntry = Constants.SYSTEMS_TAB.add("Upper Shooter Wheel Speed", 0)
         .withWidget(BuiltInWidgets.kNumberBar)
@@ -40,12 +40,22 @@ public class Shooter extends SubsystemBase {
 
   }
 
+
   public Command stopShooter() {
     return Commands.runOnce(() -> setMotors(ShooterConfig.STOPPED), this);
   }
 
+  public Command startShooter(ShooterSpeeds speeds) {
+    return Commands.runOnce(() -> setMotors(speeds), this);    
+  }
+
+  public ShooterSpeeds getTargetSpeeds() {
+    return targetSpeeds;
+  }
+
   public void setMotors(ShooterSpeeds speeds) {
-    setMotorOutputs(speeds.upperSpeed, speeds.lowerSpeed);
+    targetSpeeds = speeds;
+    setMotorOutputs(targetSpeeds.upperSpeed, targetSpeeds.lowerSpeed);
   }
 
   private void setMotorOutputs(double upperSpeed, double lowerSpeed) {
@@ -59,7 +69,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean shooterAtSpeed(ShooterSpeeds speeds) {
-    return upperWheel.get() >= speeds.upperSpeed;
+    return upperWheel.get() >= speeds.upperSpeed && lowerWheel.get() >= speeds.lowerSpeed;
   }
 
   public static class ShooterSpeeds {
@@ -70,5 +80,17 @@ public class Shooter extends SubsystemBase {
       this.upperSpeed = backSpeed;
       this.lowerSpeed = frontSpeed;
     }
+
+    public boolean equals(Object object) {
+      if (!(object instanceof ShooterSpeeds)) {
+        return false;
+      }
+      ShooterSpeeds otherSpeeds = (ShooterSpeeds) object;
+      return otherSpeeds.lowerSpeed == lowerSpeed && otherSpeeds.upperSpeed == upperSpeed;
+    }
+  }
+
+  public boolean isStopped() {
+      return targetSpeeds.equals(ShooterConfig.STOPPED);
   }
 }

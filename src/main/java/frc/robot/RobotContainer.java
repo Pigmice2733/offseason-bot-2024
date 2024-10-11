@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DrivetrainConfig;
+import frc.robot.Constants.ShooterConfig;
 import frc.robot.commands.Launch;
 import frc.robot.commands.Reset;
 import frc.robot.subsystems.Indexer;
@@ -73,10 +74,14 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         // A - launch ball
-        new JoystickButton(operator, Button.kA.value).onTrue(new Launch(indexer, shooter));
-
-        // Y - stop subsystems
-        new JoystickButton(operator, Button.kY.value).onTrue(new Reset(indexer, shooter));
+        new JoystickButton(operator,Button.kRightBumper.value).onTrue(indexer.startIndexer(true));
+        new JoystickButton(operator,Button.kRightBumper.value).onFalse(indexer.stopIndexer());
+        new JoystickButton(operator,Button.kLeftBumper.value).onTrue(indexer.startIndexer(false));
+        new JoystickButton(operator,Button.kLeftBumper.value).onFalse(indexer.stopIndexer());
+        
+        new JoystickButton(operator, Button.kY.value).onTrue(shooter.startShooter(ShooterConfig.HIGH_SPEEDS));
+        new JoystickButton(operator, Button.kA.value).onTrue(shooter.startShooter(ShooterConfig.LOW_SPEEDS));
+        new JoystickButton(operator, Button.kX.value).onTrue(shooter.stopShooter());
     }
 
     private double getDriveSpeed() {

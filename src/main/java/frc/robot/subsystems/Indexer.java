@@ -18,6 +18,7 @@ public class Indexer extends SubsystemBase {
   public Indexer() {
     indexer = new CANSparkMax(CANConfig.INDEXER_PORT, MotorType.kBrushless);
     indexer.restoreFactoryDefaults();
+    indexer.setInverted(true);
 
     wheelSpeedEntry = Constants.SYSTEMS_TAB.add("Indexer Speed", 0).getEntry();
   }
@@ -38,8 +39,8 @@ public class Indexer extends SubsystemBase {
     return indexer.get();
   }
 
-  public Command startIndexer() {
-    return Commands.runOnce(() -> setIndexerOutput(IndexerConfig.INDEXER_SPEED), this);
+  public Command startIndexer(boolean forward) {
+    return Commands.runOnce(() -> setIndexerOutput(forward?IndexerConfig.INDEXER_SPEED:-IndexerConfig.INDEXER_SPEED), this);
   }
 
   public Command stopIndexer() {
