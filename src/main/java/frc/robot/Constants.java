@@ -62,5 +62,7 @@ public final class Constants {
     public static final ShooterSpeeds STOPPED = new ShooterSpeeds(0, 0);
     public static final ShooterSpeeds LOW_SPEEDS = new ShooterSpeeds(0.5, 0.5);
     public static final ShooterSpeeds HIGH_SPEEDS = new ShooterSpeeds(0.5, 0.5);
+
+    public static final double SHOOTING_LIMIT = 75;
   }
 }
