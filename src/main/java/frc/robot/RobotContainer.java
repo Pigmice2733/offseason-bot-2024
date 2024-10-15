@@ -14,8 +14,9 @@ import frc.robot.commands.Launch;
 import frc.robot.commands.Reset;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
-import frc.robot.subsystems.RangeSensor;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.RangeSensor;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -27,14 +28,14 @@ import frc.robot.subsystems.Shooter;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    private final Indexer indexer = new Indexer();
-    private final Shooter shooter = new Shooter();
-    private final RangeSensor sensor = new RangeSensor();
+    private final Indexer indexer;
+    private final Shooter shooter;
     private final Drivetrain drivetrain;
+    private final RangeSensor sensor;
 
-    private final XboxController driver = new XboxController(0);
-    private final XboxController operator = new XboxController(1);
-    private final Controls controls = new Controls(driver, operator);
+    private final XboxController driver;
+    private final XboxController operator;
+    private final Controls controls;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -42,7 +43,15 @@ public class RobotContainer {
     public RobotContainer() {
         configureButtonBindings();
 
+        driver = new XboxController(0);
+        operator = new XboxController(1);
+
+        controls = new Controls(driver, operator);
         drivetrain = new Drivetrain(controls);
+
+        indexer = new Indexer();
+        shooter = new Shooter();
+        sensor = new RangeSensor();
     }
 
     /**
