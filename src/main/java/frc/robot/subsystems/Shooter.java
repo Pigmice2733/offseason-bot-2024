@@ -3,7 +3,9 @@ package frc.robot.subsystems;
 import java.util.Map;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.Rev2mDistanceSensor;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.Rev2mDistanceSensor.Port;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -18,8 +20,12 @@ public class Shooter extends SubsystemBase {
   private final CANSparkMax upperWheel, lowerWheel;
   private final GenericEntry upperWheelEntry, lowerWheelEntry;
   private ShooterSpeeds targetSpeeds = ShooterConfig.STOPPED;
+  private final Rev2mDistanceSensor sensor;
+ 
+
 
   public Shooter() {
+    sensor = new Rev2mDistanceSensor(Port.kOnboard); 
     upperWheel = new CANSparkMax(CANConfig.UPPER_SHOOT_PORT, MotorType.kBrushless);
     lowerWheel = new CANSparkMax(CANConfig.LOWER_SHOOT_PORT, MotorType.kBrushless);
 
@@ -51,6 +57,10 @@ public class Shooter extends SubsystemBase {
 
   public ShooterSpeeds getTargetSpeeds() {
     return targetSpeeds;
+  }
+
+  public boolean isObstacleDetected(double maxRange) {
+    return sensor.getRange() <= maxRange;
   }
 
   public void setMotors(ShooterSpeeds speeds) {
