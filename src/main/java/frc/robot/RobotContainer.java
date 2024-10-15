@@ -14,6 +14,7 @@ import frc.robot.commands.Launch;
 import frc.robot.commands.Reset;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.RangeSensor;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -28,6 +29,7 @@ import frc.robot.subsystems.Shooter;
 public class RobotContainer {
     private final Indexer indexer = new Indexer();
     private final Shooter shooter = new Shooter();
+    private final RangeSensor sensor = new RangeSensor();
     private final Drivetrain drivetrain;
 
     private final XboxController driver = new XboxController(0);
