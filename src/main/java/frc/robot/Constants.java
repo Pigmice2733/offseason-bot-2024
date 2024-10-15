@@ -38,9 +38,6 @@ public final class Constants {
   }
 
   public static final class DrivetrainConfig {
-    public static final boolean LEFT_INVERTED = false;
-    public static final boolean RIGHT_INVERTED = false;
-
     public static final double DRIVE_SPEED = 0.5;
     public static final double TURN_SPEED = 0.3;
 
@@ -65,5 +62,7 @@ public final class Constants {
     public static final ShooterSpeeds STOPPED = new ShooterSpeeds(0, 0);
     public static final ShooterSpeeds HIGH_SPEEDS = new ShooterSpeeds(0.99, 0.99);
     public static final ShooterSpeeds LOW_SPEEDS = new ShooterSpeeds(0.4, 0.4);
+    public static final double SHOOTING_LIMIT = 75;
+
   }
 }

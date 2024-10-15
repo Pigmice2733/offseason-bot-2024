@@ -8,17 +8,21 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import com.revrobotics.Rev2mDistanceSensor;
+import com.revrobotics.Rev2mDistanceSensor.Port;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Constants.DrivetrainConfig;
 import frc.robot.Constants.ShooterConfig;
 import frc.robot.commands.Launch;
 import frc.robot.commands.Reset;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 
@@ -32,14 +36,17 @@ import frc.robot.subsystems.Shooter;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    // private final DifferentialDrivetrain drivetrain = new DifferentialDrivetrain(
-    //         DrivetrainConfig.DRIVETRAIN_CONFIG, true);
     private final Indexer indexer = new Indexer();
     private final Shooter shooter = new Shooter();
+    private final Drivetrain drivetrain;
 
     private final XboxController driver = new XboxController(0);
     private final XboxController operator = new XboxController(1);
     private final Controls controls = new Controls(driver, operator);
+
+    private final Rev2mDistanceSensor sensor;
+
+    private final Rev2mDistanceSensor sensor;
 
     private DifferentialDrive m_robotDrive;
     private final CANSparkMax m_leftMotor = new CANSparkMax(11, com.revrobotics.CANSparkLowLevel.MotorType.kBrushless);
@@ -48,14 +55,10 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        // drivetrain.setDefaultCommand(
-        //         new ArcadeDriveDifferential(drivetrain, controls::getDriveSpeed,
-        //                 controls::getTurnSpeed));
-
-        // intake.setDefaultCommand(new IntakeExtension(intake,
-        // controls::getManualIntakeSpeed));
-
         configureButtonBindings();
+
+        drivetrain = new Drivetrain(controls);
+        sensor = new Rev2mDistanceSensor(Port.kOnboard); 
         m_rightMotor.setIdleMode(IdleMode.kBrake);
         m_leftMotor.setIdleMode(IdleMode.kBrake);
         m_rightMotor.setInverted(true);
@@ -73,6 +76,9 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
+        // Driver X - slow mode
+        new JoystickButton(driver, Button.kX.value).onTrue(new InstantCommand(drivetrain::toggleSlowMode, drivetrain));
+
         // A - launch ball
         new JoystickButton(operator,Button.kRightBumper.value).onTrue(indexer.startIndexer(true));
         new JoystickButton(operator,Button.kRightBumper.value).onFalse(indexer.stopIndexer());
