@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.networktables.GenericEntry;
@@ -27,6 +28,9 @@ public class Drivetrain extends SubsystemBase {
         rightMotor.restoreFactoryDefaults();
         leftMotor.setInverted(false);
         rightMotor.setInverted(true);
+        leftMotor.setIdleMode(IdleMode.kBrake);
+        rightMotor.setIdleMode(IdleMode.kBrake);
+
 
         drivetrain = new DifferentialDrive(leftMotor, rightMotor);
 

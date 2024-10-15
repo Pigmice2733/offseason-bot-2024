@@ -26,7 +26,7 @@ public class Controls {
     }
 
     public double getTurnSpeed() {
-        double joystickValue = driver.getRightX();
+        double joystickValue = -driver.getRightX();
         joystickValue = MathUtil.applyDeadband(joystickValue, threshold); // deals with stick drag
 
         return joystickValue * DrivetrainConfig.TURN_SPEED;
