@@ -8,8 +8,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import com.revrobotics.Rev2mDistanceSensor;
-import com.revrobotics.Rev2mDistanceSensor.Port;
+// import com.revrobotics.Rev2mDistanceSensor;
+// import com.revrobotics.Rev2mDistanceSensor.Port;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -25,7 +25,7 @@ import frc.robot.commands.Reset;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
-
+import frc.robot.Constants.*;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -38,15 +38,11 @@ import frc.robot.subsystems.Shooter;
 public class RobotContainer {
     private final Indexer indexer = new Indexer();
     private final Shooter shooter = new Shooter();
-    private final Drivetrain drivetrain;
-
     private final XboxController driver = new XboxController(0);
     private final XboxController operator = new XboxController(1);
     private final Controls controls = new Controls(driver, operator);
 
-    private final Rev2mDistanceSensor sensor;
-
-    private final Rev2mDistanceSensor sensor;
+//    private final Rev2mDistanceSensor sensor;
 
     private DifferentialDrive m_robotDrive;
     private final CANSparkMax m_leftMotor = new CANSparkMax(11, com.revrobotics.CANSparkLowLevel.MotorType.kBrushless);
@@ -57,8 +53,7 @@ public class RobotContainer {
     public RobotContainer() {
         configureButtonBindings();
 
-        drivetrain = new Drivetrain(controls);
-        sensor = new Rev2mDistanceSensor(Port.kOnboard); 
+//        sensor = new Rev2mDistanceSensor(Port.kOnboard); 
         m_rightMotor.setIdleMode(IdleMode.kBrake);
         m_leftMotor.setIdleMode(IdleMode.kBrake);
         m_rightMotor.setInverted(true);
@@ -77,7 +72,7 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         // Driver X - slow mode
-        new JoystickButton(driver, Button.kX.value).onTrue(new InstantCommand(drivetrain::toggleSlowMode, drivetrain));
+//        new JoystickButton(driver, Button.kX.value).onTrue(new InstantCommand(drivetrain::toggleSlowMode, drivetrain));
 
         // A - launch ball
         new JoystickButton(operator,Button.kRightBumper.value).onTrue(indexer.startIndexer(true));
