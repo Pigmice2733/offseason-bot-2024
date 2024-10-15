@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import com.revrobotics.Rev2mDistanceSensor;
+import com.revrobotics.Rev2mDistanceSensor.Port;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -15,7 +18,6 @@ import frc.robot.commands.Reset;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.RangeSensor;
 
 
 /**
@@ -31,7 +33,7 @@ public class RobotContainer {
     private final Indexer indexer;
     private final Shooter shooter;
     private final Drivetrain drivetrain;
-    private final RangeSensor sensor;
+    private final Rev2mDistanceSensor sensor;
 
     private final XboxController driver;
     private final XboxController operator;
@@ -51,7 +53,7 @@ public class RobotContainer {
 
         indexer = new Indexer();
         shooter = new Shooter();
-        sensor = new RangeSensor();
+        sensor = new Rev2mDistanceSensor(Port.kOnboard); 
     }
 
     /**
@@ -67,7 +69,7 @@ public class RobotContainer {
         new JoystickButton(driver, Button.kX.value).onTrue(new InstantCommand(drivetrain::toggleSlowMode, drivetrain));
 
         // A - launch ball
-        new JoystickButton(operator, Button.kA.value).onTrue(new Launch(indexer, shooter));
+        new JoystickButton(operator, Button.kA.value).onTrue(new Launch(indexer, shooter, sensor));
 
         // Y - stop subsystems
         new JoystickButton(operator, Button.kY.value).onTrue(new Reset(indexer, shooter));
