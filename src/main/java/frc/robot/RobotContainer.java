@@ -39,6 +39,16 @@ public class RobotContainer {
         configureButtonBindings();
     }
 
+    private void addOperatorControls(XboxController controller) {
+        new JoystickButton(controller,Button.kRightBumper.value).onTrue(indexer.startIndexer(true));
+        new JoystickButton(controller,Button.kRightBumper.value).onFalse(indexer.stopIndexer());
+        new JoystickButton(controller,Button.kLeftBumper.value).onTrue(indexer.startIndexer(false));
+        new JoystickButton(controller,Button.kLeftBumper.value).onFalse(indexer.stopIndexer());
+        
+        new JoystickButton(controller, Button.kY.value).onTrue(shooter.startShooter(ShooterConfig.HIGH_SPEEDS));
+        new JoystickButton(controller, Button.kA.value).onTrue(shooter.startShooter(ShooterConfig.LOW_SPEEDS));
+        new JoystickButton(controller, Button.kX.value).onTrue(shooter.stopShooter());
+    }
 
     /**
      * Use this method to define your button->command mappings. Buttons can be
@@ -51,16 +61,8 @@ public class RobotContainer {
     private void configureButtonBindings() {
         // Driver X - slow mode
         new JoystickButton(driver, Button.kX.value).onTrue(new InstantCommand(drivetrain::toggleSlowMode, drivetrain));
-
-        // A - launch ball
-        new JoystickButton(operator,Button.kRightBumper.value).onTrue(indexer.startIndexer(true));
-        new JoystickButton(operator,Button.kRightBumper.value).onFalse(indexer.stopIndexer());
-        new JoystickButton(operator,Button.kLeftBumper.value).onTrue(indexer.startIndexer(false));
-        new JoystickButton(operator,Button.kLeftBumper.value).onFalse(indexer.stopIndexer());
-        
-        new JoystickButton(operator, Button.kY.value).onTrue(shooter.startShooter(ShooterConfig.HIGH_SPEEDS));
-        new JoystickButton(operator, Button.kA.value).onTrue(shooter.startShooter(ShooterConfig.LOW_SPEEDS));
-        new JoystickButton(operator, Button.kX.value).onTrue(shooter.stopShooter());
+        addOperatorControls(driver);
+        addOperatorControls(operator);
     }
 
     public void periodic() {
