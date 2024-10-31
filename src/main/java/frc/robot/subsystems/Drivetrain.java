@@ -42,8 +42,8 @@ public class Drivetrain extends SubsystemBase {
 
     @Override
     public void periodic() {
-        driveSpeed = setDriveSpeed.getDouble(controls.getDriveSpeed()) * (slowMode ? DrivetrainConfig.SLOW_MULTIPLIER : 1);
-        drivetrain.arcadeDrive(driveSpeed, setTurnSpeed.getDouble(controls.getTurnSpeed()));
+        driveSpeed = controls.getDriveSpeed() * (slowMode ? DrivetrainConfig.SLOW_MULTIPLIER : 1.0);
+        drivetrain.arcadeDrive(driveSpeed, controls.getTurnSpeed());
     }
 
     public boolean getSlowMode() {

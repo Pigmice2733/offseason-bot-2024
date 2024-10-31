@@ -39,7 +39,7 @@ public final class Constants {
 
   public static final class DrivetrainConfig {
     public static final double DRIVE_SPEED = 0.5;
-    public static final double TURN_SPEED = 0.2;
+    public static final double TURN_SPEED = 1.0;
 
     public static final double TRACK_WIDTH = 0.336;
     public static final double GEAR_RATIO = 0.175;
@@ -54,7 +54,7 @@ public final class Constants {
   }
 
   public static final class IndexerConfig {
-    public static final double INDEXER_SPEED = 0.5;
+    public static final double INDEXER_SPEED = 0.25;
     public static final double FEED_SHOOTER_SPEED = 0.3;
   }
 
