@@ -20,8 +20,8 @@ public class Controls {
     public double getDriveSpeed() {
         double joystickValue = driver.getLeftY();
         joystickValue = MathUtil.applyDeadband(-joystickValue, threshold); // deals with stick drag
-        
-        return joystickValue * DrivetrainConfig.DRIVE_SPEED;
+
+        return -joystickValue * DrivetrainConfig.DRIVE_SPEED;
 
     }
 
