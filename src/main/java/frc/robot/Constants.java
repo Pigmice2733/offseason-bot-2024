@@ -47,10 +47,12 @@ public final class Constants {
 
     public static final double SLOW_MULTIPLIER = 0.5;
 
-    // public static final DifferentialConfig DRIVETRAIN_CONFIG = new DifferentialConfig(
-    //     CANConfig.LEFT_DRIVE_PORT, CANConfig.RIGHT_DRIVE_PORT, -1,
-    //     -1, LEFT_INVERTED, RIGHT_INVERTED, TRACK_WIDTH, GEAR_RATIO, WHEEL_DIAMETER_METERS, SLOW_MULTIPLIER,
-    //     0, 0, 0, 0.089779, 2.4 - 706, 1, 1);
+    // public static final DifferentialConfig DRIVETRAIN_CONFIG = new
+    // DifferentialConfig(
+    // CANConfig.LEFT_DRIVE_PORT, CANConfig.RIGHT_DRIVE_PORT, -1,
+    // -1, LEFT_INVERTED, RIGHT_INVERTED, TRACK_WIDTH, GEAR_RATIO,
+    // WHEEL_DIAMETER_METERS, SLOW_MULTIPLIER,
+    // 0, 0, 0, 0.089779, 2.4 - 706, 1, 1);
   }
 
   public static final class IndexerConfig {
@@ -60,8 +62,9 @@ public final class Constants {
 
   public static final class ShooterConfig {
     public static final ShooterSpeeds STOPPED = new ShooterSpeeds(0, 0);
-    public static final ShooterSpeeds HIGH_SPEEDS = new ShooterSpeeds(0.99, 0.99);
-    public static final ShooterSpeeds LOW_SPEEDS = new ShooterSpeeds(0.4, 0.4);
+    public static final ShooterSpeeds HIGH_SPEEDS = new ShooterSpeeds(0.05, 0.9);
+    public static final ShooterSpeeds LOW_SPEEDS = new ShooterSpeeds(0.2, 0.5);
+    public static final ShooterSpeeds MAX_SPEED = new ShooterSpeeds(1, 1);
     public static final double SHOOTING_LIMIT = 75;
 
   }

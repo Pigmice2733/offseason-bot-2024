@@ -9,8 +9,8 @@ import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 
 public class Launch extends SequentialCommandGroup {
-  public Launch(Indexer indexer, Shooter shooter) { //}, Rev2mDistanceSensor sensor) {
-    if (shooter.isObstacleDetected(ShooterConfig.SHOOTING_LIMIT)) {
+  public Launch(Indexer indexer, Shooter shooter) {
+    if (!shooter.isObstacleDetected(ShooterConfig.SHOOTING_LIMIT)) {
       addCommands(
           new PrepareToShoot(shooter),
           indexer.startIndexer(true),

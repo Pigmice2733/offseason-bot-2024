@@ -21,11 +21,9 @@ public class Shooter extends SubsystemBase {
   private final GenericEntry upperWheelEntry, lowerWheelEntry;
   private ShooterSpeeds targetSpeeds = ShooterConfig.STOPPED;
   private final Rev2mDistanceSensor sensor;
- 
-
 
   public Shooter() {
-    sensor = new Rev2mDistanceSensor(Port.kOnboard); 
+    sensor = new Rev2mDistanceSensor(Port.kOnboard);
     upperWheel = new CANSparkMax(CANConfig.UPPER_SHOOT_PORT, MotorType.kBrushless);
     lowerWheel = new CANSparkMax(CANConfig.LOWER_SHOOT_PORT, MotorType.kBrushless);
 
@@ -43,16 +41,14 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-
   }
-
 
   public Command stopShooter() {
     return Commands.runOnce(() -> setMotors(ShooterConfig.STOPPED), this);
   }
 
   public Command startShooter(ShooterSpeeds speeds) {
-    return Commands.runOnce(() -> setMotors(speeds), this);    
+    return Commands.runOnce(() -> setMotors(speeds), this);
   }
 
   public ShooterSpeeds getTargetSpeeds() {
@@ -101,6 +97,6 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean isStopped() {
-      return targetSpeeds.equals(ShooterConfig.STOPPED);
+    return targetSpeeds.equals(ShooterConfig.STOPPED);
   }
 }
