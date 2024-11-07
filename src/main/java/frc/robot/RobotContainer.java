@@ -49,9 +49,12 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Driver X - slow mode
-    new JoystickButton(driver, Button.kX.value).onTrue(new InstantCommand(drivetrain::toggleSlowMode, drivetrain));
+    addDriverControls(driver);
     addOperatorControls(driver);
     addOperatorControls(operator);
+  }
+  private void addDriverControls(XboxController controller) {
+//    new JoystickButton(driver, Button.k .value).onTrue(new InstantCommand(drivetrain::toggleSlowMode, drivetrain));
   }
 
   private void addOperatorControls(XboxController controller) {

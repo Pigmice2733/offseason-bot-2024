@@ -20,7 +20,7 @@ public class Drivetrain extends SubsystemBase {
 
     private boolean slowMode = false;
 
-    GenericEntry setDriveSpeed, setTurnSpeed;
+    GenericEntry driveSpeedReduction, turnSpeedReduction;
 
     public Drivetrain(Controls controls) {
         leftMotor.restoreFactoryDefaults();
@@ -35,14 +35,14 @@ public class Drivetrain extends SubsystemBase {
 
         this.controls = controls;
 
-        setDriveSpeed = Constants.SYSTEMS_TAB.add("Drive Speed", DrivetrainConfig.DRIVE_SPEED).getEntry();
-        setTurnSpeed = Constants.SYSTEMS_TAB.add("Turn Speed", DrivetrainConfig.TURN_SPEED).getEntry();
+        driveSpeedReduction = Constants.DRIVETRAIN_TAB.add("Drive Speed", DrivetrainConfig.DRIVE_SPEED).getEntry();
+        turnSpeedReduction = Constants.DRIVETRAIN_TAB.add("Turn Speed", DrivetrainConfig.TURN_SPEED).getEntry();
     }
 
     @Override
     public void periodic() {
-        double driveSpeed = controls.getDriveSpeed() * setDriveSpeed.getDouble(1.0);
-        double turnSpeed = controls.getTurnSpeed() * setTurnSpeed.getDouble(1.0);
+        double driveSpeed = controls.getDriveSpeed() * driveSpeedReduction.getDouble(1.0);
+        double turnSpeed = controls.getTurnSpeed() * turnSpeedReduction.getDouble(1.0);
         driveSpeed = driveSpeed * (slowMode ? DrivetrainConfig.SLOW_MULTIPLIER : 1.0);
         turnSpeed = turnSpeed * (slowMode ? DrivetrainConfig.SLOW_MULTIPLIER : 1.0);
         drivetrain.arcadeDrive(driveSpeed, turnSpeed);
