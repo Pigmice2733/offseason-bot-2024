@@ -50,7 +50,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean isObstacleDetected(double maxRange) {
-    return sensor.getRange() <= maxRange;
+    return sensor.isRangeValid() && sensor.getRange() <= maxRange;
   }
 
   public void setMotors(ShooterSpeeds speeds) {
@@ -64,7 +64,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean shooterAtSpeed(ShooterSpeeds speeds) {
-    return upperFlywheel.isAtSpeed(speeds.upperSpeed) && lowerFlywheel.isAtSpeed(speeds.lowerSpeed);
+    return upperFlywheel.isAtSetpoint() && lowerFlywheel.isAtSetpoint();
   }
 
   public static class ShooterSpeeds {
