@@ -60,12 +60,96 @@ public final class Constants {
     public static final double FEED_SHOOTER_SPEED = 0.3;
   }
 
+  public static final class FlywheelConfig {
+    public static final double RPM_TOLERANCE = 100.0;
+    private int canId;
+    private double ka = 0.0, ks = 0.0, kv = 0.0;
+    private double kp = 0.0, ki = 0.0, kd = 0.0;
+    private double gearReduction;
+
+    public FlywheelConfig(int canId, double ka,double ks, double kv, double kp, double ki, double kd, double gearReduction) {
+      this.ka = ka;
+      this.ks = ks;
+      this.kv = kv;
+      this.kp = kp;
+      this.ki = ki;
+      this.kd = kd;
+      this.canId = canId;
+      this.gearReduction = gearReduction;
+    }
+
+    public double getKp() {
+      return kp;
+    }
+
+    public void setKp(double kp) {
+      this.kp = kp;
+    }
+
+    public double getKi() {
+      return ki;
+    }
+
+    public void setKi(double ki) {
+      this.ki = ki;
+    }
+
+    public double getKd() {
+      return kd;
+    }
+
+    public void setKd(double kd) {
+      this.kd = kd;
+    }
+
+    public double getGearReduction() {
+      return gearReduction;
+    }
+
+    public void setGearReduction(double gearReduction) {
+      this.gearReduction = gearReduction;
+    }
+
+    public double getKa() {
+      return ka;
+    }
+
+    public void setKa(double ka) {
+      this.ka = ka;
+    }
+
+    public double getKs() {
+      return ks;
+    }
+
+    public void setKs(double ks) {
+      this.ks = ks;
+    }
+
+    public double getKv() {
+      return kv;
+    }
+
+    public void setKv(double kv) {
+      this.kv = kv;
+    }
+
+    public int getCanId() {
+      return canId;
+    }
+
+    public void setCanId(int canId) {
+      this.canId = canId;
+    }
+  }
+
   public static final class ShooterConfig {
     public static final ShooterSpeeds STOPPED = new ShooterSpeeds(0, 0);
-    public static final ShooterSpeeds HIGH_SPEEDS = new ShooterSpeeds(0.05, 0.9);
-    public static final ShooterSpeeds LOW_SPEEDS = new ShooterSpeeds(0.2, 0.5);
-    public static final ShooterSpeeds MAX_SPEED = new ShooterSpeeds(1, 1);
+    public static final ShooterSpeeds HIGH_SPEEDS = new ShooterSpeeds(1000.0, 1000.0);
+    public static final ShooterSpeeds LOW_SPEEDS = new ShooterSpeeds(500.0, 500.0);
+    public static final ShooterSpeeds MAX_SPEED = new ShooterSpeeds(2000.0, 2000.0);
     public static final double SHOOTING_LIMIT = 75;
-
+    public static final FlywheelConfig UPPER_FLYWHEEL = new FlywheelConfig(CANConfig.UPPER_SHOOT_PORT,0.0, 0.0, 0.000075,0.001,0.0,0.0,16.0/32.0); //yes, I know it's 0.5 but I like putting in the teeth counts to make it easier to modify and the JIT will optimize this out anyway
+    public static final FlywheelConfig LOWER_FLYWHEEL = new FlywheelConfig(CANConfig.LOWER_SHOOT_PORT,0.0, 0.0, 0.000075,0.001,0.0,0.0,16.0/32.0);
   }
 }
