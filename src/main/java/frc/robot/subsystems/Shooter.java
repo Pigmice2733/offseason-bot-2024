@@ -59,8 +59,8 @@ public class Shooter extends SubsystemBase {
   }
 
   private void setMotorOutputs(double upperSpeed, double lowerSpeed) {
-    upperFlywheel.setRpmSetPoint(upperSpeed);
-    lowerFlywheel.setRpmSetPoint(lowerSpeed);
+    upperFlywheel.setWheelSpeed(upperSpeed);
+    lowerFlywheel.setWheelSpeed(lowerSpeed);
   }
 
   public boolean shooterAtSpeed(ShooterSpeeds speeds) {
