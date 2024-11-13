@@ -44,7 +44,7 @@ public class CANSparkMaxNEOFlywheel {
 
     maxAccel = 1500;
     pidController.setSmartMotionMaxAccel(maxAccel, 0);
-    pidController.setSmartMotionMaxVelocity(5000, 0);
+    pidController.setSmartMotionMaxVelocity(10000, 0);
     pidController.setSmartMotionMinOutputVelocity(400, 0);
     pidController.setSmartMotionAllowedClosedLoopError(10, 0);
     pidController.setP(p);

@@ -145,9 +145,9 @@ public final class Constants {
 
   public static final class ShooterConfig {
     public static final ShooterSpeeds STOPPED = new ShooterSpeeds(0, 0);
-    public static final ShooterSpeeds HIGH_SPEEDS = new ShooterSpeeds(1000.0, 1000.0);
-    public static final ShooterSpeeds LOW_SPEEDS = new ShooterSpeeds(500.0, 500.0);
-    public static final ShooterSpeeds MAX_SPEED = new ShooterSpeeds(2000.0, 2000.0);
+    public static final ShooterSpeeds HIGH_SPEEDS = new ShooterSpeeds(1800.0, 1800.0);
+    public static final ShooterSpeeds LOW_SPEEDS = new ShooterSpeeds(900.0, 900.0);
+    public static final ShooterSpeeds MAX_SPEED = new ShooterSpeeds(2700.0, 2700.0);
     public static final double SHOOTING_LIMIT = 75;
     public static final FlywheelConfig UPPER_FLYWHEEL = new FlywheelConfig(CANConfig.UPPER_SHOOT_PORT,0.0, 0.0, 0.00017,3e-5,0.0,0.0,16.0/32.0); //yes, I know it's 0.5 but I like putting in the teeth counts to make it easier to modify and the JIT will optimize this out anyway
     public static final FlywheelConfig LOWER_FLYWHEEL = new FlywheelConfig(CANConfig.LOWER_SHOOT_PORT,0.0, 0.0, 0.00017,3e-5,0.0,0.0,16.0/32.0);
