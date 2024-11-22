@@ -26,6 +26,7 @@ public final class Constants {
 
   public static final ShuffleboardTab DRIVETRAIN_TAB = Shuffleboard.getTab("Drivetrain");
   public static final ShuffleboardTab SYSTEMS_TAB = Shuffleboard.getTab("Subsystems");
+  public static final ShuffleboardTab VISION_TAB = Shuffleboard.getTab("Vision");
 
   public static final class CANConfig {
     public static final int LEFT_DRIVE_PORT = 11;
@@ -46,6 +47,9 @@ public final class Constants {
     public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(4);
 
     public static final double SLOW_MULTIPLIER = 0.5;
+
+    public static final double DEG_PER_SEC = 30;
+    public static final double M_PER_SEC = 0.5;
 
     // public static final DifferentialConfig DRIVETRAIN_CONFIG = new
     // DifferentialConfig(
@@ -151,5 +155,9 @@ public final class Constants {
     public static final double SHOOTING_LIMIT = 75;
     public static final FlywheelConfig UPPER_FLYWHEEL = new FlywheelConfig(CANConfig.UPPER_SHOOT_PORT,0.0, 0.0, 0.00017,3e-5,0.0,0.0,16.0/32.0); //yes, I know it's 0.5 but I like putting in the teeth counts to make it easier to modify and the JIT will optimize this out anyway
     public static final FlywheelConfig LOWER_FLYWHEEL = new FlywheelConfig(CANConfig.LOWER_SHOOT_PORT,0.0, 0.0, 0.00017,3e-5,0.0,0.0,16.0/32.0);
+  }
+
+  public static final class VisionConfig {
+    public static final String CAMERA_NAME = "limelight_1";
   }
 }
