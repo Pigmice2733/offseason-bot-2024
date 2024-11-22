@@ -26,6 +26,7 @@ public final class Constants {
 
   public static final ShuffleboardTab DRIVETRAIN_TAB = Shuffleboard.getTab("Drivetrain");
   public static final ShuffleboardTab SYSTEMS_TAB = Shuffleboard.getTab("Subsystems");
+  public static final ShuffleboardTab VISION_TAB = Shuffleboard.getTab("Vision");
 
   public static final class CANConfig {
     public static final int LEFT_DRIVE_PORT = 11;
@@ -47,6 +48,9 @@ public final class Constants {
 
     public static final double SLOW_MULTIPLIER = 0.5;
 
+    public static final double DEG_PER_SEC = 30;
+    public static final double M_PER_SEC = 0.5;
+
     // public static final DifferentialConfig DRIVETRAIN_CONFIG = new
     // DifferentialConfig(
     // CANConfig.LEFT_DRIVE_PORT, CANConfig.RIGHT_DRIVE_PORT, -1,
@@ -66,6 +70,9 @@ public final class Constants {
     public static final ShooterSpeeds LOW_SPEEDS = new ShooterSpeeds(0.2, 0.5);
     public static final ShooterSpeeds MAX_SPEED = new ShooterSpeeds(1, 1);
     public static final double SHOOTING_LIMIT = 75;
+  }
 
+  public static final class VisionConfig {
+    public static final String CAMERA_NAME = "limelight_1";
   }
 }

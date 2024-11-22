@@ -9,11 +9,14 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ShooterConfig;
+import frc.robot.commands.DriveToTarget;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.vision.Vision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -25,17 +28,20 @@ import frc.robot.subsystems.Shooter;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  private final Indexer indexer = new Indexer();
-  private final Shooter shooter = new Shooter();
   private final XboxController driver = new XboxController(0);
   private final XboxController operator = new XboxController(1);
   private final Controls controls = new Controls(driver, operator);
+
   private final Drivetrain drivetrain = new Drivetrain(controls);
+  private final Indexer indexer = new Indexer();
+  private final Shooter shooter = new Shooter();
+  private final Vision vision = new Vision();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    drivetrain.setDefaultCommand(new RepeatCommand(new InstantCommand(drivetrain::driveJoysticks, drivetrain)));
     configureButtonBindings();
   }
 
@@ -66,6 +72,8 @@ public class RobotContainer {
     new JoystickButton(controller, Button.kB.value).onTrue(shooter.startShooter(ShooterConfig.HIGH_SPEEDS));
     new JoystickButton(controller, Button.kA.value).onTrue(shooter.startShooter(ShooterConfig.LOW_SPEEDS));
     new JoystickButton(controller, Button.kX.value).onTrue(shooter.stopShooter());
+
+    new JoystickButton(controller, Button.kStart.value).onTrue(new DriveToTarget(drivetrain, vision));
   }
 
   /**
