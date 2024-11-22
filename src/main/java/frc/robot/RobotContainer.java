@@ -71,9 +71,10 @@ public class RobotContainer {
 
     new JoystickButton(controller, Button.kB.value).onTrue(shooter.startShooter(ShooterConfig.HIGH_SPEEDS));
     new JoystickButton(controller, Button.kA.value).onTrue(shooter.startShooter(ShooterConfig.LOW_SPEEDS));
-    new JoystickButton(controller, Button.kX.value).onTrue(shooter.stopShooter());
+    // new JoystickButton(controller,
+    // Button.kX.value).onTrue(shooter.stopShooter());
 
-    new JoystickButton(controller, Button.kStart.value).onTrue(new DriveToTarget(drivetrain, vision));
+    new JoystickButton(controller, Button.kX.value).onTrue(new DriveToTarget(drivetrain, vision));
   }
 
   /**
