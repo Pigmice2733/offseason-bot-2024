@@ -43,8 +43,8 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void driveJoysticks() {
-        double driveSpeed = controls.getDriveSpeed() * setDriveSpeed.getDouble(1.0);
-        double turnSpeed = controls.getTurnSpeed() * setTurnSpeed.getDouble(1.0);
+        double driveSpeed = controls.getDriveSpeed() * DrivetrainConfig.DRIVE_SPEED; // * setDriveSpeed.getDouble(1.0);
+        double turnSpeed = controls.getTurnSpeed() * DrivetrainConfig.TURN_SPEED; // * setTurnSpeed.getDouble(1.0);
         driveSpeed = driveSpeed * (slowMode ? DrivetrainConfig.SLOW_MULTIPLIER : 1.0);
         turnSpeed = turnSpeed * (slowMode ? DrivetrainConfig.SLOW_MULTIPLIER : 1.0);
         drivetrain.arcadeDrive(driveSpeed, turnSpeed);
@@ -61,6 +61,13 @@ public class Drivetrain extends SubsystemBase {
         return new SequentialCommandGroup(
                 new InstantCommand(() -> drivetrain.arcadeDrive(DrivetrainConfig.DRIVE_SPEED, 0)),
                 new WaitCommand(DrivetrainConfig.M_PER_SEC * meters),
+                new InstantCommand(() -> drivetrain.arcadeDrive(0, 0)));
+    }
+
+    public Command driveTime(double seconds) {
+        return new SequentialCommandGroup(
+                new InstantCommand(() -> drivetrain.arcadeDrive(DrivetrainConfig.DRIVE_SPEED, 0)),
+                new WaitCommand(seconds),
                 new InstantCommand(() -> drivetrain.arcadeDrive(0, 0)));
     }
 

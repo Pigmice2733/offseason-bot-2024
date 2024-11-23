@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Constants.ShooterConfig;
 import frc.robot.commands.DriveToTarget;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
@@ -41,7 +40,7 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    drivetrain.setDefaultCommand(new RepeatCommand(new InstantCommand(drivetrain::driveJoysticks, drivetrain)));
+    drivetrain.setDefaultCommand(new InstantCommand(drivetrain::driveJoysticks, drivetrain));
     configureButtonBindings();
   }
 
@@ -57,24 +56,37 @@ public class RobotContainer {
     // Driver X - slow mode
     new JoystickButton(driver, Button.kX.value).onTrue(new InstantCommand(drivetrain::toggleSlowMode, drivetrain));
     addOperatorControls(driver);
-    addOperatorControls(operator);
+    // addOperatorControls(operator);
   }
 
   private void addOperatorControls(XboxController controller) {
-    new JoystickButton(controller, Button.kRightBumper.value).onTrue(indexer.startIndexer(true));
-    new JoystickButton(controller, Button.kRightBumper.value).onFalse(indexer.stopIndexer());
-    new JoystickButton(controller, Button.kLeftBumper.value).onTrue(indexer.startIndexer(false));
-    new JoystickButton(controller, Button.kLeftBumper.value).onFalse(indexer.stopIndexer());
+    /*
+     * new JoystickButton(controller,
+     * Button.kRightBumper.value).onTrue(indexer.startIndexer(true));
+     * new JoystickButton(controller,
+     * Button.kRightBumper.value).onFalse(indexer.stopIndexer());
+     * new JoystickButton(controller,
+     * Button.kLeftBumper.value).onTrue(indexer.startIndexer(false));
+     * new JoystickButton(controller,
+     * Button.kLeftBumper.value).onFalse(indexer.stopIndexer());
+     * 
+     * /** Be careful!
+     */
+    /*
+     * new JoystickButton(controller,
+     * Button.kY.value).onTrue(shooter.startShooter(ShooterConfig.MAX_SPEED));
+     * 
+     * new JoystickButton(controller,
+     * Button.kB.value).onTrue(shooter.startShooter(ShooterConfig.HIGH_SPEEDS));
+     * new JoystickButton(controller,
+     * Button.kA.value).onTrue(shooter.startShooter(ShooterConfig.LOW_SPEEDS));
+     * new JoystickButton(controller,
+     * Button.kX.value).onTrue(shooter.stopShooter());
+     */
 
-    /** Be careful! */
-    new JoystickButton(controller, Button.kY.value).onTrue(shooter.startShooter(ShooterConfig.MAX_SPEED));
+    new JoystickButton(controller, Button.kY.value).onTrue(new DriveToTarget(drivetrain, vision));
+    new JoystickButton(controller, Button.kB.value).onTrue(drivetrain.driveTime(3));
 
-    new JoystickButton(controller, Button.kB.value).onTrue(shooter.startShooter(ShooterConfig.HIGH_SPEEDS));
-    new JoystickButton(controller, Button.kA.value).onTrue(shooter.startShooter(ShooterConfig.LOW_SPEEDS));
-    // new JoystickButton(controller,
-    // Button.kX.value).onTrue(shooter.stopShooter());
-
-    new JoystickButton(controller, Button.kX.value).onTrue(new DriveToTarget(drivetrain, vision));
   }
 
   /**

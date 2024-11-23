@@ -23,16 +23,11 @@ public class Indexer extends SubsystemBase {
     wheelSpeedEntry = Constants.SYSTEMS_TAB.add("Indexer Speed", 0).getEntry();
   }
 
-  @Override
-  public void periodic() {
-
-  }
-
   public void setIndexerOutput(double percent) {
     if (Math.abs(percent) > 1)
       return;
     indexer.set(percent);
-    wheelSpeedEntry.setDouble(percent);
+    // wheelSpeedEntry.setDouble(percent);
   }
 
   public double getIndexerSpeed() {
@@ -40,7 +35,8 @@ public class Indexer extends SubsystemBase {
   }
 
   public Command startIndexer(boolean forward) {
-    return Commands.runOnce(() -> setIndexerOutput(forward?IndexerConfig.INDEXER_SPEED:-IndexerConfig.INDEXER_SPEED), this);
+    return Commands
+        .runOnce(() -> setIndexerOutput(forward ? IndexerConfig.INDEXER_SPEED : -IndexerConfig.INDEXER_SPEED), this);
   }
 
   public Command stopIndexer() {

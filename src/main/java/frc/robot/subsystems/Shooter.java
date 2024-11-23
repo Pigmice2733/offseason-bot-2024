@@ -39,10 +39,6 @@ public class Shooter extends SubsystemBase {
         .withProperties(Map.of("min", 0, "max", 1)).getEntry();
   }
 
-  @Override
-  public void periodic() {
-  }
-
   public Command stopShooter() {
     return Commands.runOnce(() -> setMotors(ShooterConfig.STOPPED), this);
   }
@@ -70,8 +66,8 @@ public class Shooter extends SubsystemBase {
 
     upperWheel.set(upperSpeed);
     lowerWheel.set(lowerSpeed);
-    upperWheelEntry.setDouble(upperSpeed);
-    lowerWheelEntry.setDouble(lowerSpeed);
+    // upperWheelEntry.setDouble(upperSpeed);
+    // lowerWheelEntry.setDouble(lowerSpeed);
   }
 
   public boolean shooterAtSpeed(ShooterSpeeds speeds) {

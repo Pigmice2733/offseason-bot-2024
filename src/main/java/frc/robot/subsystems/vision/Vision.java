@@ -22,31 +22,37 @@ public class Vision extends SubsystemBase {
   public Vision() {
     camName = VisionConfig.CAMERA_NAME;
 
-    targetX = Constants.VISION_TAB.add("Target X", 0).withPosition(0, 0).getEntry();
-    targetY = Constants.VISION_TAB.add("Target Y", 0).withPosition(1, 0).getEntry();
-    robotX = Constants.VISION_TAB.add("Robot Pose X", 0).withPosition(0, 1).getEntry();
-    robotY = Constants.VISION_TAB.add("Robot Pose Y", 0).withPosition(1, 1).getEntry();
-    translationX = Constants.VISION_TAB.add("Nearest Tag X", 0).withPosition(0, 2).getEntry();
-    translationY = Constants.VISION_TAB.add("Nearest Tag Y", 0).withPosition(1, 2).getEntry();
+    // targetX = Constants.VISION_TAB.add("Target X", 0).withPosition(0,
+    // 0).getEntry();
+    // targetY = Constants.VISION_TAB.add("Target Y", 0).withPosition(1,
+    // 0).getEntry();
+    // robotX = Constants.VISION_TAB.add("Robot Pose X", 0).withPosition(0,
+    // 1).getEntry();
+    // robotY = Constants.VISION_TAB.add("Robot Pose Y", 0).withPosition(1,
+    // 1).getEntry();
+    // translationX = Constants.VISION_TAB.add("Nearest Tag X", 0).withPosition(0,
+    // 2).getEntry();
+    // translationY = Constants.VISION_TAB.add("Nearest Tag Y", 0).withPosition(1,
+    // 2).getEntry();
   }
 
-  @Override
-  public void periodic() {
-    results = LimelightHelpers.getLatestResults(camName);
+  // @Override
+  // public void periodic() {
+  // results = LimelightHelpers.getLatestResults(camName);
 
-    allTargets = results.targets_Fiducials;
+  // allTargets = results.targets_Fiducials;
 
-    if (allTargets.length == 0) {
-      bestTarget = null;
-      hasTarget = false;
-      return;
-    } else {
-      hasTarget = true;
-      bestTarget = allTargets[0];
-    }
+  // if (allTargets.length == 0) {
+  // bestTarget = null;
+  // hasTarget = false;
+  // return;
+  // } else {
+  // hasTarget = true;
+  // bestTarget = allTargets[0];
+  // }
 
-    updateEntries();
-  }
+  // updateEntries();
+  // }
 
   private void updateEntries() {
     targetX.setDouble(hasTarget() ? bestTarget.tx : 0);

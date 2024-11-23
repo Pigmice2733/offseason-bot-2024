@@ -73,6 +73,6 @@ public final class Constants {
   }
 
   public static final class VisionConfig {
-    public static final String CAMERA_NAME = "limelight_1";
+    public static final String CAMERA_NAME = "limelight";
   }
 }
