@@ -1,10 +1,6 @@
 package frc.robot.subsystems;
 
-import java.util.Map;
-
-import com.revrobotics.CANSparkMax;
 import com.revrobotics.Rev2mDistanceSensor;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.Rev2mDistanceSensor.Port;
 
 import edu.wpi.first.networktables.GenericEntry;
@@ -13,30 +9,32 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.CANConfig;
 import frc.robot.Constants.ShooterConfig;
 
 public class Shooter extends SubsystemBase {
-  private final CANSparkMax upperWheel, lowerWheel;
-  private final GenericEntry upperWheelEntry, lowerWheelEntry;
+  private final CANSparkMaxNEOFlywheel upperFlywheel, lowerFlywheel;
   private ShooterSpeeds targetSpeeds = ShooterConfig.STOPPED;
   private final Rev2mDistanceSensor sensor;
+  private GenericEntry shuffleboardRange;
 
   public Shooter() {
     sensor = new Rev2mDistanceSensor(Port.kOnboard);
-    upperWheel = new CANSparkMax(CANConfig.UPPER_SHOOT_PORT, MotorType.kBrushless);
-    lowerWheel = new CANSparkMax(CANConfig.LOWER_SHOOT_PORT, MotorType.kBrushless);
+    sensor.setAutomaticMode(true); // required for onboard as it creates a background thread to read
 
-    upperWheel.restoreFactoryDefaults();
-    lowerWheel.restoreFactoryDefaults();
+    upperFlywheel = new CANSparkMaxNEOFlywheel("SWU", ShooterConfig.UPPER_FLYWHEEL);
+    lowerFlywheel = new CANSparkMaxNEOFlywheel("SWL", ShooterConfig.LOWER_FLYWHEEL);
+    shuffleboardRange = Constants.SYSTEMS_TAB.add("Range", 0).withWidget(BuiltInWidgets.kTextView).getEntry();
+  }
 
-    upperWheelEntry = Constants.SYSTEMS_TAB.add("Upper Shooter Wheel Speed", 0)
-        .withWidget(BuiltInWidgets.kNumberBar)
-        .withProperties(Map.of("min", 0, "max", 1)).getEntry();
-
-    lowerWheelEntry = Constants.SYSTEMS_TAB.add("Lower Shooter Wheel Speed", 0)
-        .withWidget(BuiltInWidgets.kNumberBar)
-        .withProperties(Map.of("min", 0, "max", 1)).getEntry();
+  @Override
+  public void periodic() {
+    // upperFlywheel.updateShuffleboard();
+    // lowerFlywheel.updateShuffleboard();
+    // if (sensor.isRangeValid()) {
+    // shuffleboardRange.setDouble(sensor.getRange());
+    // }
+    // upperFlywheel.updateMotorOutput();
+    // lowerFlywheel.updateMotorOutput();
   }
 
   public Command stopShooter() {
@@ -52,7 +50,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean isObstacleDetected(double maxRange) {
-    return sensor.getRange() <= maxRange;
+    return sensor.isRangeValid() && sensor.getRange() <= maxRange;
   }
 
   public void setMotors(ShooterSpeeds speeds) {
@@ -61,26 +59,21 @@ public class Shooter extends SubsystemBase {
   }
 
   private void setMotorOutputs(double upperSpeed, double lowerSpeed) {
-    if (Math.abs(upperSpeed) > 1 || Math.abs(lowerSpeed) > 1)
-      return;
-
-    upperWheel.set(upperSpeed);
-    lowerWheel.set(lowerSpeed);
-    // upperWheelEntry.setDouble(upperSpeed);
-    // lowerWheelEntry.setDouble(lowerSpeed);
+    upperFlywheel.setWheelSpeed(upperSpeed);
+    lowerFlywheel.setWheelSpeed(lowerSpeed);
   }
 
   public boolean shooterAtSpeed(ShooterSpeeds speeds) {
-    return upperWheel.get() >= speeds.upperSpeed && lowerWheel.get() >= speeds.lowerSpeed;
+    return upperFlywheel.isAtSetpoint() && lowerFlywheel.isAtSetpoint();
   }
 
   public static class ShooterSpeeds {
     public final double upperSpeed;
     public final double lowerSpeed;
 
-    public ShooterSpeeds(double backSpeed, double frontSpeed) {
-      this.upperSpeed = backSpeed;
-      this.lowerSpeed = frontSpeed;
+    public ShooterSpeeds(double upperSpeed, double lowerSpeed) {
+      this.upperSpeed = upperSpeed;
+      this.lowerSpeed = lowerSpeed;
     }
 
     public boolean equals(Object object) {
