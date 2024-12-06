@@ -41,7 +41,7 @@ public final class Constants {
 
   public static final class DrivetrainConfig {
     public static final double DRIVE_SPEED = 0.5;
-    public static final double TURN_SPEED = 0.75;
+    public static final double TURN_SPEED = 0.4;
 
     public static final double TRACK_WIDTH = 0.336;
     public static final double GEAR_RATIO = 0.175;
@@ -49,8 +49,11 @@ public final class Constants {
 
     public static final double SLOW_MULTIPLIER = 0.5;
 
-    public static final double DEG_PER_SEC = 30;
-    public static final double M_PER_SEC = 0.5;
+    public static final double DEG_PER_SEC = 275 * TURN_SPEED;
+    public static final double M_PER_SEC = Units.inchesToMeters(140) * DRIVE_SPEED / 1.5;
+
+    public static final double DRIVE_MULTIPLIER = 0.03;
+    public static final double TURN_MULTIPLIER = 0.3;
 
     // public static final DifferentialConfig DRIVETRAIN_CONFIG = new
     // DifferentialConfig(

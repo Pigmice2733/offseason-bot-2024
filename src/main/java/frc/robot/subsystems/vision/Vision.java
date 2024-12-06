@@ -3,7 +3,6 @@ package frc.robot.subsystems.vision;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.VisionConfig;
 import frc.robot.subsystems.vision.LimelightHelpers.*;
 
@@ -36,23 +35,25 @@ public class Vision extends SubsystemBase {
     // 2).getEntry();
   }
 
-  // @Override
-  // public void periodic() {
-  // results = LimelightHelpers.getLatestResults(camName);
+  @Override
+  public void periodic() {
+    results = LimelightHelpers.getLatestResults(camName);
+    allTargets = results.targets_Fiducials;
 
-  // allTargets = results.targets_Fiducials;
+    // System.out.println(results.getBotPose2d().toString());
 
-  // if (allTargets.length == 0) {
-  // bestTarget = null;
-  // hasTarget = false;
-  // return;
-  // } else {
-  // hasTarget = true;
-  // bestTarget = allTargets[0];
-  // }
+    if (allTargets.length == 0) {
+      bestTarget = null;
+      hasTarget = false;
+      // System.out.println("target: " + -1);
+    } else {
+      hasTarget = true;
+      bestTarget = allTargets[0];
+      // System.out.println("target: " + bestTarget.fiducialID);
+    }
 
-  // updateEntries();
-  // }
+    // updateEntries();
+  }
 
   private void updateEntries() {
     targetX.setDouble(hasTarget() ? bestTarget.tx : 0);
@@ -94,6 +95,6 @@ public class Vision extends SubsystemBase {
    * target.
    */
   public Pose2d getTranslationToBestTarget() {
-    return hasTarget() ? bestTarget.getRobotPose_TargetSpace2D() : null;
+    return hasTarget() ? bestTarget.getRobotPose_TargetSpace2D() : new Pose2d();
   }
 }

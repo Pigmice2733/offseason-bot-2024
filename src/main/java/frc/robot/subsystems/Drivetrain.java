@@ -29,12 +29,13 @@ public class Drivetrain extends SubsystemBase {
     public Drivetrain(Controls controls) {
         leftMotor.restoreFactoryDefaults();
         rightMotor.restoreFactoryDefaults();
-        leftMotor.setInverted(false);
-        rightMotor.setInverted(true);
+        leftMotor.setInverted(true);
+        rightMotor.setInverted(false);
         leftMotor.setIdleMode(IdleMode.kBrake);
         rightMotor.setIdleMode(IdleMode.kBrake);
 
         drivetrain = new DifferentialDrive(leftMotor, rightMotor);
+        drivetrain.setSafetyEnabled(false);
 
         this.controls = controls;
 
@@ -64,12 +65,19 @@ public class Drivetrain extends SubsystemBase {
                 new InstantCommand(() -> drivetrain.arcadeDrive(0, 0)));
     }
 
-    public Command driveTime(double seconds) {
-        return new SequentialCommandGroup(
-                new InstantCommand(() -> drivetrain.arcadeDrive(DrivetrainConfig.DRIVE_SPEED, 0)),
-                new WaitCommand(seconds),
-                new InstantCommand(() -> drivetrain.arcadeDrive(0, 0)));
+    public void driveSpeeds(double driveSpeed, double turnSpeed) {
+        drivetrain.arcadeDrive(driveSpeed, turnSpeed);
     }
+
+    /*
+     * public Command turnTime(double seconds) {
+     * return new SequentialCommandGroup(
+     * new InstantCommand(() -> drivetrain.arcadeDrive(0,
+     * DrivetrainConfig.TURN_SPEED)),
+     * new WaitCommand(seconds),
+     * new InstantCommand(() -> drivetrain.arcadeDrive(0, 0)));
+     * }
+     */
 
     public boolean getSlowMode() {
         return slowMode;

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.DriveToPosition;
 import frc.robot.commands.DriveToTarget;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
@@ -39,7 +40,8 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    drivetrain.setDefaultCommand(new InstantCommand(drivetrain::driveJoysticks, drivetrain));
+    // drivetrain.setDefaultCommand(new InstantCommand(drivetrain::driveJoysticks,
+    // drivetrain));
     configureButtonBindings();
   }
 
@@ -87,9 +89,10 @@ public class RobotContainer {
      * Button.kX.value).onTrue(shooter.stopShooter());
      */
 
-    new JoystickButton(controller, Button.kY.value).onTrue(new DriveToTarget(drivetrain, vision));
-    new JoystickButton(controller, Button.kB.value).onTrue(drivetrain.driveTime(3));
-
+    new JoystickButton(controller, Button.kY.value).onTrue(
+        new DriveToTarget(drivetrain, vision, vision::getTranslationToBestTarget));
+    new JoystickButton(controller, Button.kA.value).onTrue(
+        new DriveToPosition(drivetrain));
   }
 
   /**

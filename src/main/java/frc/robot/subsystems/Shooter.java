@@ -14,12 +14,13 @@ import frc.robot.Constants.ShooterConfig;
 public class Shooter extends SubsystemBase {
   private final CANSparkMaxNEOFlywheel upperFlywheel, lowerFlywheel;
   private ShooterSpeeds targetSpeeds = ShooterConfig.STOPPED;
-  private final Rev2mDistanceSensor sensor;
+  // private final Rev2mDistanceSensor sensor;
   private GenericEntry shuffleboardRange;
 
   public Shooter() {
-    sensor = new Rev2mDistanceSensor(Port.kOnboard);
-    sensor.setAutomaticMode(true); // required for onboard as it creates a background thread to read
+    // sensor = new Rev2mDistanceSensor(Port.kOnboard);
+    // sensor.setAutomaticMode(true); // required for onboard as it creates a
+    // background thread to read
 
     upperFlywheel = new CANSparkMaxNEOFlywheel("SWU", ShooterConfig.UPPER_FLYWHEEL);
     lowerFlywheel = new CANSparkMaxNEOFlywheel("SWL", ShooterConfig.LOWER_FLYWHEEL);
@@ -50,7 +51,8 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean isObstacleDetected(double maxRange) {
-    return sensor.isRangeValid() && sensor.getRange() <= maxRange;
+    // return sensor.isRangeValid() && sensor.getRange() <= maxRange;
+    return false;
   }
 
   public void setMotors(ShooterSpeeds speeds) {
