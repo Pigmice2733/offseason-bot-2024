@@ -38,8 +38,8 @@ public final class Constants {
   }
 
   public static final class DrivetrainConfig {
-    public static final double DRIVE_SPEED = 0.5;
-    public static final double TURN_SPEED = 0.75;
+    public static final double DRIVE_SPEED = 0.4;
+    public static final double TURN_SPEED = 0.4;
 
     public static final double TRACK_WIDTH = 0.336;
     public static final double GEAR_RATIO = 0.175;
@@ -67,7 +67,8 @@ public final class Constants {
     private double kp = 0.0, ki = 0.0, kd = 0.0;
     private double gearReduction;
 
-    public FlywheelConfig(int canId, double ka,double ks, double kv, double kp, double ki, double kd, double gearReduction) {
+    public FlywheelConfig(int canId, double ka, double ks, double kv, double kp, double ki, double kd,
+        double gearReduction) {
       this.ka = ka;
       this.ks = ks;
       this.kv = kv;
@@ -149,7 +150,10 @@ public final class Constants {
     public static final ShooterSpeeds LOW_SPEEDS = new ShooterSpeeds(900.0, 900.0);
     public static final ShooterSpeeds MAX_SPEED = new ShooterSpeeds(2700.0, 2700.0);
     public static final double SHOOTING_LIMIT = 75;
-    public static final FlywheelConfig UPPER_FLYWHEEL = new FlywheelConfig(CANConfig.UPPER_SHOOT_PORT,0.0, 0.0, 0.00017,3e-5,0.0,0.0,16.0/32.0); //yes, I know it's 0.5 but I like putting in the teeth counts to make it easier to modify and the JIT will optimize this out anyway
-    public static final FlywheelConfig LOWER_FLYWHEEL = new FlywheelConfig(CANConfig.LOWER_SHOOT_PORT,0.0, 0.0, 0.00017,3e-5,0.0,0.0,16.0/32.0);
+    public static final FlywheelConfig UPPER_FLYWHEEL = new FlywheelConfig(CANConfig.UPPER_SHOOT_PORT, 0.0, 0.0,
+        0.00017, 3e-5, 0.0, 0.0, 16.0 / 32.0); // yes, I know it's 0.5 but I like putting in the teeth counts to make it
+                                               // easier to modify and the JIT will optimize this out anyway
+    public static final FlywheelConfig LOWER_FLYWHEEL = new FlywheelConfig(CANConfig.LOWER_SHOOT_PORT, 0.0, 0.0,
+        0.00017, 3e-5, 0.0, 0.0, 16.0 / 32.0);
   }
 }

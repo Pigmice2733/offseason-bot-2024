@@ -4,7 +4,6 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.networktables.GenericEntry;
@@ -27,7 +26,7 @@ public class CANSparkMaxNEOFlywheel {
   private final GenericEntry shuffleboardMaxAccel;
   private double rpmSetPoint = 0.0;
   private double wheelSpeed = 0.0;
-  private double p,d,i,v;
+  private double p, d, i, v;
   private double maxAccel = 1500.0;
 
   public CANSparkMaxNEOFlywheel(String shuffleboardName, FlywheelConfig flywheelConfig) {
@@ -68,10 +67,11 @@ public class CANSparkMaxNEOFlywheel {
   public void setWheelSpeed(double wheelspeed) {
     this.wheelSpeed = wheelspeed;
     shuffleboardWheelSpeed.setDouble(wheelspeed);
-    setRpmSetPoint(wheelspeed*(1.0/config.getGearReduction()));
+    setRpmSetPoint(wheelspeed * (1.0 / config.getGearReduction()));
   }
 
   private void setRpmSetPoint(double rpmSetPoint) {
+    pidController.setP((rpmSetPoint < getRPMs()) ? config.getKp() / 2 : config.getKp());
     this.rpmSetPoint = rpmSetPoint;
     if (rpmSetPoint <= 100) {
       motorController.disable();
@@ -90,7 +90,7 @@ public class CANSparkMaxNEOFlywheel {
   }
 
   public void updateMotorOutput() {
-    //look for shuffleboard changes
+    // look for shuffleboard changes
     double newP = shuffleboardP.getDouble(p);
     double newI = shuffleboardI.getDouble(i);
     double newD = shuffleboardD.getDouble(d);
