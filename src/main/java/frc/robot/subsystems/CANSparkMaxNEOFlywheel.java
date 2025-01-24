@@ -29,19 +29,21 @@ public class CANSparkMaxNEOFlywheel {
   private double p, d, i, v;
   private double maxAccel = 1500.0;
 
-  public CANSparkMaxNEOFlywheel(String shuffleboardName, FlywheelConfig flywheelConfig) {
+  public CANSparkMaxNEOFlywheel(String shuffleboardName, FlywheelConfig flywheelConfig, boolean inverted) {
     config = flywheelConfig;
     motorController = new CANSparkMax(config.getCanId(), MotorType.kBrushless);
     motorController.restoreFactoryDefaults();
-    pidController = motorController.getPIDController();
-    encoder = motorController.getEncoder();
     motorController.setIdleMode(IdleMode.kCoast);
+    motorController.setInverted(inverted);
+    
     p = flywheelConfig.getKp();
     i = flywheelConfig.getKi();
     d = flywheelConfig.getKd();
     v = flywheelConfig.getKv();
 
-    maxAccel = 1500;
+    encoder = motorController.getEncoder();
+
+    pidController = motorController.getPIDController();
     pidController.setSmartMotionMaxAccel(maxAccel, 0);
     pidController.setSmartMotionMaxVelocity(10000, 0);
     pidController.setSmartMotionMinOutputVelocity(400, 0);
