@@ -29,10 +29,12 @@ public class CANSparkMaxNEOFlywheel {
   private double p, d, i, v;
   private double maxAccel = 1500.0;
 
-  public CANSparkMaxNEOFlywheel(String shuffleboardName, FlywheelConfig flywheelConfig) {
+  public CANSparkMaxNEOFlywheel(String shuffleboardName, FlywheelConfig flywheelConfig, boolean inverted) {
     config = flywheelConfig;
     motorController = new CANSparkMax(config.getCanId(), MotorType.kBrushless);
     motorController.restoreFactoryDefaults();
+    motorController.setInverted(inverted);
+
     pidController = motorController.getPIDController();
     encoder = motorController.getEncoder();
     motorController.setIdleMode(IdleMode.kCoast);

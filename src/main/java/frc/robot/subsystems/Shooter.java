@@ -19,10 +19,10 @@ public class Shooter extends SubsystemBase {
 
   public Shooter() {
     sensor = new Rev2mDistanceSensor(Port.kOnboard);
-    sensor.setAutomaticMode(true);  //required for onboard as it creates a background thread to read
-    
-    upperFlywheel = new CANSparkMaxNEOFlywheel("SWU", ShooterConfig.UPPER_FLYWHEEL);
-    lowerFlywheel = new CANSparkMaxNEOFlywheel("SWL", ShooterConfig.LOWER_FLYWHEEL);
+    sensor.setAutomaticMode(true); // required for onboard as it creates a background thread to read
+
+    upperFlywheel = new CANSparkMaxNEOFlywheel("SWU", ShooterConfig.UPPER_FLYWHEEL, false);
+    lowerFlywheel = new CANSparkMaxNEOFlywheel("SWL", ShooterConfig.LOWER_FLYWHEEL, true);
     shuffleboardRange = Constants.SYSTEMS_TAB.add("Range", 0).withWidget(BuiltInWidgets.kTextView).getEntry();
   }
 
