@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.subsystems.Shooter.ShooterSpeeds;
 
 /**
@@ -155,5 +156,16 @@ public final class Constants {
                                                // easier to modify and the JIT will optimize this out anyway
     public static final FlywheelConfig LOWER_FLYWHEEL = new FlywheelConfig(CANConfig.LOWER_SHOOT_PORT, 0.0, 0.0,
         0.00017, 3e-5, 0.0, 0.0, 16.0 / 32.0);
+  }
+
+  public static class LEDConfig {
+    public static final int LED_PORT = 0;
+    public static final int LED_LEN = 8;
+    // public static final double brightnessFactor = 0.5;
+
+    public static final Color OFF = new Color(0, 0, 0);
+    public static final Color PURPLE = new Color(180, 0, 255);
+    public static final Color RED = new Color(255, 0, 0);
+    public static final Color BLUE = new Color(0, 0, 255);
   }
 }
