@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.util.PIDConstants;
+
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -38,8 +40,8 @@ public final class Constants {
   }
 
   public static final class DrivetrainConfig {
-    public static final double DRIVE_SPEED = 0.4;
-    public static final double TURN_SPEED = 0.4;
+    public static final double DRIVE_SPEED = 0.7;
+    public static final double TURN_SPEED = 0.7;
 
     public static final double TRACK_WIDTH = 0.336;
     public static final double GEAR_RATIO = 0.175;
@@ -149,11 +151,13 @@ public final class Constants {
     public static final ShooterSpeeds HIGH_SPEEDS = new ShooterSpeeds(1800.0, 1800.0);
     public static final ShooterSpeeds LOW_SPEEDS = new ShooterSpeeds(900.0, 900.0);
     public static final ShooterSpeeds MAX_SPEED = new ShooterSpeeds(2700.0, 2700.0);
+    public static final double MAX_ACCEL = 400;
     public static final double SHOOTING_LIMIT = 75;
     public static final FlywheelConfig UPPER_FLYWHEEL = new FlywheelConfig(CANConfig.UPPER_SHOOT_PORT, 0.0, 0.0,
         0.00017, 3e-5, 0.0, 0.0, 16.0 / 32.0); // yes, I know it's 0.5 but I like putting in the teeth counts to make it
                                                // easier to modify and the JIT will optimize this out anyway
     public static final FlywheelConfig LOWER_FLYWHEEL = new FlywheelConfig(CANConfig.LOWER_SHOOT_PORT, 0.0, 0.0,
         0.00017, 3e-5, 0.0, 0.0, 16.0 / 32.0);
+    public static final PIDConstants SHOOTER_CONSTANTS = new PIDConstants(1, 0, 0);
   }
 }

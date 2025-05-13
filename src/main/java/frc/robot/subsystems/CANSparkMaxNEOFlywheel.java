@@ -10,6 +10,7 @@ import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import frc.robot.Constants;
 import frc.robot.Constants.FlywheelConfig;
+import frc.robot.Constants.ShooterConfig;
 
 public class CANSparkMaxNEOFlywheel {
   private final FlywheelConfig config;
@@ -43,7 +44,7 @@ public class CANSparkMaxNEOFlywheel {
     d = flywheelConfig.getKd();
     v = flywheelConfig.getKv();
 
-    maxAccel = 1500;
+    maxAccel = ShooterConfig.MAX_ACCEL;
     pidController.setSmartMotionMaxAccel(maxAccel, 0);
     pidController.setSmartMotionMaxVelocity(10000, 0);
     pidController.setSmartMotionMinOutputVelocity(400, 0);

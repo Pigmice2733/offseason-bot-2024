@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -37,6 +38,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     configureButtonBindings();
+    DriverStation.silenceJoystickConnectionWarning(true);
   }
 
   /**
@@ -80,5 +82,10 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return null;
+  }
+
+  public void onEnable() {
+    indexer.setIndexerOutput(0);
+    shooter.setMotors(ShooterConfig.STOPPED);
   }
 }

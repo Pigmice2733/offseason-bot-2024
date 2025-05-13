@@ -1,38 +1,23 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.Rev2mDistanceSensor;
-import com.revrobotics.Rev2mDistanceSensor.Port;
-
-import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.ShooterConfig;
 
 public class Shooter extends SubsystemBase {
   private final CANSparkMaxNEOFlywheel upperFlywheel, lowerFlywheel;
   private ShooterSpeeds targetSpeeds = ShooterConfig.STOPPED;
-  private final Rev2mDistanceSensor sensor;
-  private GenericEntry shuffleboardRange;
 
   public Shooter() {
-    sensor = new Rev2mDistanceSensor(Port.kOnboard);
-    sensor.setAutomaticMode(true); // required for onboard as it creates a background thread to read
-
     upperFlywheel = new CANSparkMaxNEOFlywheel("SWU", ShooterConfig.UPPER_FLYWHEEL, false);
-    lowerFlywheel = new CANSparkMaxNEOFlywheel("SWL", ShooterConfig.LOWER_FLYWHEEL, true);
-    shuffleboardRange = Constants.SYSTEMS_TAB.add("Range", 0).withWidget(BuiltInWidgets.kTextView).getEntry();
+    lowerFlywheel = new CANSparkMaxNEOFlywheel("SWL", ShooterConfig.LOWER_FLYWHEEL, false);
   }
 
   @Override
   public void periodic() {
     upperFlywheel.updateShuffleboard();
     lowerFlywheel.updateShuffleboard();
-    if (sensor.isRangeValid()) {
-      shuffleboardRange.setDouble(sensor.getRange());
-    }
     upperFlywheel.updateMotorOutput();
     lowerFlywheel.updateMotorOutput();
   }
@@ -47,10 +32,6 @@ public class Shooter extends SubsystemBase {
 
   public ShooterSpeeds getTargetSpeeds() {
     return targetSpeeds;
-  }
-
-  public boolean isObstacleDetected(double maxRange) {
-    return sensor.isRangeValid() && sensor.getRange() <= maxRange;
   }
 
   public void setMotors(ShooterSpeeds speeds) {
