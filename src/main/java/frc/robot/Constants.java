@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.util.PIDConstants;
-
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -158,6 +156,5 @@ public final class Constants {
                                                // easier to modify and the JIT will optimize this out anyway
     public static final FlywheelConfig LOWER_FLYWHEEL = new FlywheelConfig(CANConfig.LOWER_SHOOT_PORT, 0.0, 0.0,
         0.00017, 3e-5, 0.0, 0.0, 16.0 / 32.0);
-    public static final PIDConstants SHOOTER_CONSTANTS = new PIDConstants(1, 0, 0);
   }
 }

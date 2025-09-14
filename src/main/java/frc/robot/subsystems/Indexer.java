@@ -1,7 +1,11 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -12,13 +16,14 @@ import frc.robot.Constants.CANConfig;
 import frc.robot.Constants.IndexerConfig;
 
 public class Indexer extends SubsystemBase {
-  private final CANSparkMax indexer;
+  private final SparkMax indexer;
   GenericEntry wheelSpeedEntry;
 
   public Indexer() {
-    indexer = new CANSparkMax(CANConfig.INDEXER_PORT, MotorType.kBrushless);
-    indexer.restoreFactoryDefaults();
-    indexer.setInverted(true);
+    indexer = new SparkMax(CANConfig.INDEXER_PORT, MotorType.kBrushless);
+    SparkMaxConfig indexerConfig = new SparkMaxConfig();
+    indexerConfig.inverted(true);
+    indexer.configure(indexerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     wheelSpeedEntry = Constants.SYSTEMS_TAB.add("Indexer Speed", 0).getEntry();
   }
@@ -40,7 +45,8 @@ public class Indexer extends SubsystemBase {
   }
 
   public Command startIndexer(boolean forward) {
-    return Commands.runOnce(() -> setIndexerOutput(forward?IndexerConfig.INDEXER_SPEED:-IndexerConfig.INDEXER_SPEED), this);
+    return Commands
+        .runOnce(() -> setIndexerOutput(forward ? IndexerConfig.INDEXER_SPEED : -IndexerConfig.INDEXER_SPEED), this);
   }
 
   public Command stopIndexer() {

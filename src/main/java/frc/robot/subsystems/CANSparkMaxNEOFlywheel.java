@@ -1,12 +1,17 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.PWM.PeriodMultiplier;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import frc.robot.Constants;
 import frc.robot.Constants.FlywheelConfig;
@@ -14,8 +19,8 @@ import frc.robot.Constants.ShooterConfig;
 
 public class CANSparkMaxNEOFlywheel {
   private final FlywheelConfig config;
-  private final CANSparkMax motorController;
-  private final SparkPIDController pidController;
+  private final SparkMax motorController;
+  private final SparkClosedLoopController pidController;
   private final RelativeEncoder encoder;
   private final GenericEntry shuffleboardRPMDisplay;
   private final GenericEntry shuffleboardSetpoint;
@@ -32,29 +37,29 @@ public class CANSparkMaxNEOFlywheel {
 
   public CANSparkMaxNEOFlywheel(String shuffleboardName, FlywheelConfig flywheelConfig, boolean inverted) {
     config = flywheelConfig;
-    motorController = new CANSparkMax(config.getCanId(), MotorType.kBrushless);
-    motorController.restoreFactoryDefaults();
-    motorController.setInverted(inverted);
+    motorController = new SparkMax(config.getCanId(), MotorType.kBrushless);
+    SparkMaxConfig motorConfig = new SparkMaxConfig();
+    motorConfig.inverted(inverted);
+    motorConfig.idleMode(IdleMode.kCoast);
+    motorConfig.closedLoop.smartMotion.maxAcceleration(maxAccel, ClosedLoopSlot.kSlot0);
+    motorConfig.closedLoop.smartMotion.maxVelocity(10000, ClosedLoopSlot.kSlot0);
+    motorConfig.closedLoop.smartMotion.minOutputVelocity(400, ClosedLoopSlot.kSlot0);
+    motorConfig.closedLoop.smartMotion.allowedClosedLoopError(10, ClosedLoopSlot.kSlot0);
+    motorConfig.closedLoop.p(p).i(i).d(d);
+    motorConfig.closedLoop.iZone(0);
+    motorConfig.closedLoop.velocityFF(v);
+    motorConfig.closedLoop.outputRange(0, 1);
 
-    pidController = motorController.getPIDController();
+    motorController.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    pidController = motorController.getClosedLoopController();
     encoder = motorController.getEncoder();
-    motorController.setIdleMode(IdleMode.kCoast);
     p = flywheelConfig.getKp();
     i = flywheelConfig.getKi();
     d = flywheelConfig.getKd();
     v = flywheelConfig.getKv();
 
     maxAccel = ShooterConfig.MAX_ACCEL;
-    pidController.setSmartMotionMaxAccel(maxAccel, 0);
-    pidController.setSmartMotionMaxVelocity(10000, 0);
-    pidController.setSmartMotionMinOutputVelocity(400, 0);
-    pidController.setSmartMotionAllowedClosedLoopError(10, 0);
-    pidController.setP(p);
-    pidController.setI(i);
-    pidController.setD(d);
-    pidController.setIZone(0);
-    pidController.setFF(v);
-    pidController.setOutputRange(0, 1);
 
     shuffleboardRPMDisplay = Constants.SYSTEMS_TAB.add(shuffleboardName + " RPMs", 0)
         .withWidget(BuiltInWidgets.kTextView).getEntry();
@@ -74,12 +79,16 @@ public class CANSparkMaxNEOFlywheel {
   }
 
   private void setRpmSetPoint(double rpmSetPoint) {
-    pidController.setP((rpmSetPoint < getRPMs()) ? config.getKp() / 2 : config.getKp());
+    double p = rpmSetPoint < getRPMs() ? config.getKp() / 2 : config.getKp();
+    SparkMaxConfig motorConfig = new SparkMaxConfig();
+    motorConfig.closedLoop.p(p);
+    motorController.configure(motorConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+
     this.rpmSetPoint = rpmSetPoint;
     if (rpmSetPoint <= 100) {
       motorController.disable();
     } else {
-      pidController.setReference(rpmSetPoint, CANSparkMax.ControlType.kSmartVelocity);
+      pidController.setReference(rpmSetPoint, SparkMax.ControlType.kSmartVelocity);
     }
     shuffleboardSetpoint.setDouble(this.rpmSetPoint);
   }
@@ -100,28 +109,38 @@ public class CANSparkMaxNEOFlywheel {
     double newV = shuffleboardV.getDouble(v);
     double newWheelSpeed = shuffleboardWheelSpeed.getDouble(wheelSpeed);
     double newMaxAccel = shuffleboardMaxAccel.getDouble(maxAccel);
+    boolean configUpdateRequired = false;
+    SparkMaxConfig motorConfig = new SparkMaxConfig();
     if (p != newP) {
       p = newP;
-      pidController.setP(newP);
+      configUpdateRequired = true;
+      motorConfig.closedLoop.p(p);
     }
     if (i != newI) {
       i = newI;
-      pidController.setI(newI);
+      configUpdateRequired = true;
+      motorConfig.closedLoop.i(i);
     }
     if (d != newD) {
       d = newD;
-      pidController.setD(newD);
+      configUpdateRequired = true;
+      motorConfig.closedLoop.d(d);
     }
     if (v != newV) {
       v = newV;
-      pidController.setFF(newV);
+      configUpdateRequired = true;
+      motorConfig.closedLoop.velocityFF(v);
     }
     if (maxAccel != newMaxAccel) {
       maxAccel = newMaxAccel;
-      pidController.setSmartMotionMaxAccel(newMaxAccel, 0);
+      configUpdateRequired = true;
+      motorConfig.closedLoop.smartMotion.maxAcceleration(maxAccel, ClosedLoopSlot.kSlot0);
     }
     if (newWheelSpeed != wheelSpeed) {
       setWheelSpeed(newWheelSpeed);
+    }
+    if (configUpdateRequired) {
+      motorController.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
   }
 
