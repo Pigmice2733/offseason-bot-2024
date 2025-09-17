@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ShooterConfig;
+import frc.robot.commands.PrepareToShootHigh;
+import frc.robot.commands.PrepareToShootLow;
+import frc.robot.commands.PrepareToShootMax;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
@@ -68,10 +71,9 @@ public class RobotContainer {
     new JoystickButton(controller, Button.kLeftBumper.value).onFalse(indexer.stopIndexer());
 
     /** Be careful! */
-    new JoystickButton(controller, Button.kY.value).onTrue(shooter.startShooter(ShooterConfig.MAX_SPEED));
-
-    new JoystickButton(controller, Button.kB.value).onTrue(shooter.startShooter(ShooterConfig.HIGH_SPEEDS));
-    new JoystickButton(controller, Button.kA.value).onTrue(shooter.startShooter(ShooterConfig.LOW_SPEEDS));
+    new JoystickButton(controller, Button.kY.value).onTrue(new PrepareToShootMax(shooter));
+    new JoystickButton(controller, Button.kB.value).onTrue(new PrepareToShootHigh(shooter));
+    new JoystickButton(controller, Button.kA.value).onTrue(new PrepareToShootLow(shooter));
     new JoystickButton(controller, Button.kX.value).onTrue(shooter.stopShooter());
   }
 

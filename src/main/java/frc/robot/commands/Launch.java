@@ -10,7 +10,7 @@ import frc.robot.subsystems.Shooter;
 public class Launch extends SequentialCommandGroup {
   public Launch(Indexer indexer, Shooter shooter) {
     addCommands(
-        new PrepareToShoot(shooter),
+        new PrepareToShootLow(shooter),
         indexer.startIndexer(true),
         Commands.waitSeconds(2),
         new Reset(indexer, shooter));
